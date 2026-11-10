@@ -1,0 +1,34 @@
+{
+  "Nav": {
+    "home": "Inicio",
+    "howWeWork": "Cómo trabajamos",
+    "whyLatinAmerica": "Por qué América Latina",
+    "about": "Nosotros",
+    "startAConversation": "Conversemos",
+    "privacyNotice": "Aviso de Privacidad",
+    "cookiePolicy": "Política de Cookies"
+  },
+  "Ui": {
+    "skipToContent": "Saltar al contenido principal",
+    "homeLink": "Alva, Inicio",
+    "primaryNavigation": "Principal",
+    "footerNavigation": "Navegación",
+    "legalNavigation": "Legal",
+    "contact": "Contacto",
+    "language": "Idioma",
+    "languageEnglish": "English",
+    "languageSpanish": "Español",
+    "menu": "Menú",
+    "sourceLink": "Fuente {number}: {source} (se abre en una pestaña nueva)",
+    "placeholderNotice": "Esta página estará disponible pronto.",
+    "notFoundTitle": "Página no encontrada",
+    "notFoundDescription": "La página que buscas no existe o cambió de dirección.",
+    "backToHome": "Volver al inicio"
+  },
+  "Sources": {
+    "D1": "Banco Mundial, población",
+    "D2": "Banco Mundial, PIB",
+    "D3": "CEPAL, informe de inversión extranjera directa",
+    "D11": "Banco Mundial, usuarios de internet"
+  }
+}

@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/*
+ * Alva design tokens.
+ *
+ * The palette is exclusive: Tailwind's default colors are removed, so a color
+ * outside the four brand values cannot be used by accident. Opacity variants
+ * (text-alva-blue/70) are not used either, because they would create tints.
+ */
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@theme {
+  --color-*: initial;
+  --color-alva-blue: #0a3161;
+  --color-alva-green: #006847;
+  --color-alva-stone: #cfcac1;
+  --color-alva-paper: #f4f2ee;
+
+  /* Layout */
+  --container-page: 90rem;
+  --spacing-gutter: clamp(1.25rem, 5vw, 6rem);
+  --spacing-section: clamp(4.5rem, 9vw, 8.5rem);
+
+  /*
+   * Fluid type scale. Each token carries size, line height, tracking and
+   * weight, so one utility (for example text-display-1) sets them all.
+   */
+  --text-display-1: clamp(2.75rem, 7.2vw, 6.5rem);
+  --text-display-1--line-height: 1;
+  --text-display-1--letter-spacing: -0.045em;
+  --text-display-1--font-weight: 300;
+
+  --text-display-2: clamp(2.125rem, 4.2vw, 3.75rem);
+  --text-display-2--line-height: 1.06;
+  --text-display-2--letter-spacing: -0.035em;
+  --text-display-2--font-weight: 300;
+
+  --text-title: clamp(1.75rem, 3vw, 2.5rem);
+  --text-title--line-height: 1.12;
+  --text-title--letter-spacing: -0.025em;
+  --text-title--font-weight: 400;
+
+  --text-stat: clamp(1.875rem, 4.4vw, 4rem);
+  --text-stat--line-height: 1.1;
+  --text-stat--letter-spacing: -0.035em;
+  --text-stat--font-weight: 300;
+
+  --text-hero-lead: clamp(1.25rem, 2.2vw, 1.75rem);
+  --text-hero-lead--line-height: 1.35;
+  --text-hero-lead--letter-spacing: -0.015em;
+  --text-hero-lead--font-weight: 300;
+
+  --text-lead: clamp(1.125rem, 0.95rem + 0.55vw, 1.375rem);
+  --text-lead--line-height: 1.58;
+
+  --text-body: clamp(1rem, 0.9375rem + 0.2vw, 1.0625rem);
+  --text-body--line-height: 1.74;
+
+  --text-card-title: clamp(1.125rem, 1.5vw, 1.3125rem);
+  --text-card-title--line-height: 1.35;
+  --text-card-title--letter-spacing: -0.015em;
+  --text-card-title--font-weight: 500;
+
+  --text-profile-name: clamp(1.375rem, 2vw, 1.75rem);
+  --text-profile-name--line-height: 1.2;
+  --text-profile-name--letter-spacing: -0.025em;
+  --text-profile-name--font-weight: 500;
+
+  --text-step-title: clamp(1.25rem, 2vw, 1.5rem);
+  --text-step-title--line-height: 1.35;
+  --text-step-title--letter-spacing: -0.015em;
+  --text-step-title--font-weight: 500;
+
+  --text-question: clamp(1.0625rem, 1.5vw, 1.25rem);
+  --text-question--line-height: 1.45;
+  --text-question--font-weight: 500;
+
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.5;
+  --text-eyebrow--letter-spacing: 0.12em;
+  --text-eyebrow--font-weight: 500;
+
+  --text-ui: 0.9375rem;
+  --text-ui--line-height: 1.4;
+  --text-ui--font-weight: 500;
+
+  --text-ui-sm: 0.8125rem;
+  --text-ui-sm--line-height: 1.4;
+  --text-ui-sm--font-weight: 500;
+
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.55;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  ::selection {
+    background-color: var(--color-alva-blue);
+    color: var(--color-alva-paper);
+  }
+
+  /*
+   * Keyboard focus. The ring color is a variable so dark (blue) surfaces can
+   * swap it to paper, keeping a 3:1 minimum against any background.
+   */
+  :focus-visible {
+    outline: 3px solid var(--focus-ring, var(--color-alva-blue));
+    outline-offset: 3px;
+  }
+
+  [data-surface="dark"] {
+    --focus-ring: var(--color-alva-paper);
+  }
+
+  /* <main> is only focused programmatically by the skip link. */
+  main:focus {
+    outline: none;
+  }
+
+  /* Native <details> markers are replaced by a custom icon. */
+  summary {
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "Nav": {
+    "home": "Home",
+    "howWeWork": "How We Work",
+    "whyLatinAmerica": "Why Latin America",
+    "about": "About Alva",
+    "startAConversation": "Start a Conversation",
+    "privacyNotice": "Privacy Notice",
+    "cookiePolicy": "Cookie Policy"
+  },
+  "Ui": {
+    "skipToContent": "Skip to main content",
+    "homeLink": "Alva, Home",
+    "primaryNavigation": "Primary",
+    "footerNavigation": "Navigation",
+    "legalNavigation": "Legal",
+    "contact": "Contact",
+    "language": "Language",
+    "languageEnglish": "English",
+    "languageSpanish": "Español",
+    "menu": "Menu",
+    "sourceLink": "Source {number}: {source} (opens in a new tab)",
+    "placeholderNotice": "This page is coming soon.",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "The page you are looking for does not exist or has moved.",
+    "backToHome": "Back to Home"
+  },
+  "Sources": {
+    "D1": "World Bank, population",
+    "D2": "World Bank, GDP",
+    "D3": "ECLAC, foreign direct investment report",
+    "D11": "World Bank, internet users"
+  }
+}

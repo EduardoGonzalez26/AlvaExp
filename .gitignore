@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+.next/
+node_modules/
+dist/
+build/
+.DS_Store
+*.log
+*.tsbuildinfo
+next-env.d.ts
+npm-cache/
