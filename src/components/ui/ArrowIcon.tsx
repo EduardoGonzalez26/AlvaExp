@@ -13,7 +13,7 @@ export function ArrowIcon({className}: Props) {
     <svg
       aria-hidden="true"
       className={cn(
-        "size-4 shrink-0 transition-transform duration-150 group-hover:translate-x-1",
+        "size-4 shrink-0 transition-transform duration-300 ease-(--ease-brand) group-hover:translate-x-1",
         className
       )}
       fill="none"

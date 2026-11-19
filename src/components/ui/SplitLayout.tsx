@@ -13,6 +13,8 @@ type Props = {
   ratio?: "editorial" | "wide";
   /** Keep the lead in view while the right column scrolls (desktop only). */
   stickyLead?: boolean;
+  /** The right column rises in as a block when it enters (default). Turn off when its content animates itself. */
+  reveal?: boolean;
   className?: string;
 };
 
@@ -25,6 +27,7 @@ export function SplitLayout({
   children,
   ratio = "editorial",
   stickyLead = false,
+  reveal = true,
   className
 }: Props) {
   const editorial = ratio === "editorial";
@@ -35,7 +38,7 @@ export function SplitLayout({
         className={cn(
           "min-w-0",
           editorial ? "lg:col-span-5" : "lg:col-span-4",
-          stickyLead && "lg:sticky lg:top-8 lg:self-start"
+          stickyLead && "lg:sticky lg:top-28 lg:self-start"
         )}
       >
         {lead}
@@ -45,6 +48,7 @@ export function SplitLayout({
           "min-w-0",
           editorial ? "lg:col-span-6 lg:col-start-7" : "lg:col-span-8 lg:col-start-5"
         )}
+        data-m={reveal ? "reveal" : undefined}
       >
         {children}
       </div>

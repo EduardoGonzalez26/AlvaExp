@@ -39,13 +39,70 @@ Este documento registra las decisiones de implementación de la fundación del s
 
 ## Diseño y marca
 
-- Paleta exclusiva: azul `#0A3161`, verde `#006847`, piedra `#CFCAC1`, papel `#F4F2EE`. No se usan otros colores ni degradados, glassmorphism, 3D, ilustraciones o fotografía de stock.
-- Inter se carga con `next/font` y es la única familia tipográfica de la interfaz.
-- Jerarquía editorial: titulares ligeros de gran escala, cuerpos de 17 px con medida limitada, hairlines de 1 px, índices numéricos decorativos y tarjetas sobrias sin sombras.
-- Contraste comprobado: azul sobre papel 11.56:1, verde sobre papel 6.12:1, azul sobre piedra 7.92:1, papel sobre azul 11.56:1. El verde no se usa como texto sobre piedra ni sobre azul.
+Rediseño basado en `ALVA lookandfeel` (Paleta A: membrete, master deck, template editorial y tarjeta de contacto).
+
+- Colores base: azul `#0A3161`, verde `#006847`, piedra `#CFCAC1`, papel `#F4F2EE`. Son los únicos colores de texto. Tonos de apoyo tomados del arte de marca, solo para superficies y decoración: bruma `#E6E9E2`, verde azulado `#054C55` y salvia `#86B0A0`.
+- Concepto de transición: el azul pasa al verde **de arriba hacia abajo** (azul arriba, verde abajo). Define las superficies con degradado (`bg-brand-gradient`: sección Region, Why Latin America › Region scale y footer), y los estados hover y foco (`.fill-down`): un degradado azul→verde barre el elemento de arriba abajo mientras el texto pasa a papel. Lo usan botones, navegación, selector de idioma, tarjetas, tarjetas de perfil, iconos del FAQ y el botón de envío. El degradado horizontal (`bg-brand-gradient-x`) solo se usa en líneas finas que cruzan la página (cinta superior, franjas inferiores de los héroes, subrayados), como en el membrete. Las paradas intermedias salen del degradado del logo.
+- Tipografía: Source Serif 4 para titulares (con cursiva en la frase final, como en los decks), Inter para cuerpo y DM Mono para etiquetas con tracking amplio. La cursiva la aplica `Emphasis` sin alterar el texto: separa la última cláusula (tras `:` o el último punto) o, si no hay, el último tercio de las palabras.
+- Se mantiene la regla de no aplicar `text-transform: uppercase` a copy del brief. Las mayúsculas solo aparecen en etiquetas de interfaz (menú, títulos de columnas del footer).
+- Superficies: héroes en azul sólido con retícula triangular y fragmentos de la “A” (`Lattice`, `BrandShapes`), franja de degradado en el borde inferior; secciones en papel con ola suave (`BrandWave`); tarjetas de piedra con radio 12 px y rombo; cinta superior tipo membrete (`TopRibbon`); header fijo.
+- Cierre de página: el panel CTA es azul y el footer arranca en azul y termina en verde, sin costura. Todo el texto del footer es papel (≥ 6:1 sobre todo el degradado). La piedra no se usa como texto sobre verde (4.06:1).
+- Índice numérico decorativo por sección (`Section index`), generado con contadores CSS, oculto a lectores de pantalla. En How We Work solo aparece la numeración del brief.
+- Se relajan dos reglas de la Fase 1: ya se usan degradados (solo de marca) y transparencias de papel en hairlines y formas decorativas sobre fondos oscuros. No hay glassmorphism, sombras, 3D ni fotografía.
+- Movimiento: 520 ms con `cubic-bezier(0.22, 1, 0.36, 1)`. Los efectos hover solo actúan en dispositivos con hover; el foco por teclado dispara el mismo efecto. `prefers-reduced-motion` los reduce a un cambio instantáneo.
+- Contraste de referencia: azul sobre papel 11.56:1, verde sobre papel 6.12:1, azul sobre piedra 7.92:1, papel sobre azul 11.56:1, papel sobre verde 6.12:1. El verde no se usa como texto sobre piedra ni sobre azul.
 - Tema claro únicamente. `color-scheme: light`.
-- El logo es un wordmark tipográfico `Alva` mientras no exista un archivo aprobado. `BrandLogo` detecta `public/brand/logo.svg`; al añadirlo y reconstruir, lo usa automáticamente. No se inventó un símbolo de marca.
-- `public/brand/favicon.svg` y `public/brand/og-image.png` son placeholders tipográficos reemplazables. La fuente editable de la OG está en `public/brand/og-image.svg`.
+- El logo usa los archivos aprobados (`logo.svg` para fondos claros, `logo-dark.svg` para azul y degradado). No se redibuja ni se recolorea.
+- `public/brand/favicon.svg` y `public/brand/og-image.png` son placeholders reemplazables. La fuente editable de la OG está en `public/brand/og-image.svg`.
+
+## Movimiento
+
+Capa de animación sobre el rediseño. El concepto no cambia: el azul pasa al verde **de arriba hacia abajo**, y cada animación lo refuerza (secuencias de arriba abajo, líneas que se dibujan desde arriba o desde la izquierda, degradados que se descubren desde arriba).
+
+**Librerías (versiones exactas)**
+- `gsap` 3.15.1 (incluye ScrollTrigger y SplitText, gratuitos desde 3.13), `@gsap/react` 2.1.2 y `lenis` 1.3.27. Nada de pago.
+- Los plugins se registran una sola vez en `src/lib/motion/gsap.ts`, que también define las constantes de easing (`power4.out`, equivalente a `cubic-bezier(0.22, 1, 0.36, 1)`, y `expo.out`) y las media queries.
+
+**Arquitectura**
+- Las páginas y secciones siguen siendo Server Components. Solo colocan atributos `data-m*` (`data-m="reveal|stagger|hero|rail-group|..."`, `data-m-i` para los elementos del héroe y `data-m-pre` para lo que se ve en el primer pintado).
+- Tres islas cliente que no pintan nada: `SmoothScroll` (Lenis), `PageMotion` (todas las animaciones GSAP) y los dos componentes de React Bits. Las animaciones viven en `src/lib/motion/animations.ts`.
+- `PageMotion` usa `useGSAP` + `gsap.matchMedia()`: un contexto para el layout (cinta y footer, una vez) y otro para la página, que se reconstruye en cada cambio de ruta y revierte el anterior.
+- Solo se animan `transform` y `opacity`. Los efectos hover (`fill-down`) siguen en CSS.
+
+**Lenis**
+- Una sola instancia, creada en `SmoothScroll` (dentro de `src/app/[locale]/layout.tsx`) y sincronizada con GSAP: `lenis.on('scroll', ScrollTrigger.update)`, `gsap.ticker.add(lenis.raf)` y `gsap.ticker.lagSmoothing(0)`. Se destruye y restaura el ticker al desmontar.
+- Solo arranca con `(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)`. Con reduce y en táctil no hay instancia, ni listeners, ni clases en `<html>`; el query se observa y la instancia se crea o destruye si cambia.
+- Se quitó `scroll-behavior: smooth` de `globals.css`: Lenis aporta el suavizado y, sin Lenis, el scroll es nativo (`auto`).
+- Anclas (`#main-content`, `#validate`, `#build`, `#scale`): `SmoothScroll` intercepta los enlaces del mismo documento, llama a `lenis.scrollTo` (que respeta `scroll-margin-top`, así que `scroll-mt-28` sigue valiendo), actualiza el hash y mueve el foco al destino como haría el navegador. Los enlaces gestionados por el router de Next no se tocan.
+- `allowNestedScroll` y `data-lenis-prevent` en los `textarea` y `select` del formulario. `stopInertiaOnNavigate` corta la inercia al cambiar de página. Header sticky y `lg:sticky` no cambian (scroll nativo, sin pin ni transform en el documento).
+- Los `<details>` del FAQ siguen siendo nativos; al abrirlos o cerrarlos se llama a `ScrollTrigger.refresh()`.
+
+**Qué se anima**
+- Cinta superior (`TopRibbon`): se dibuja de izquierda a derecha al cargar (una vez por visita).
+- Hero y PageHero: la franja de degradado inferior y las líneas se dibujan; eyebrow, título (SplitText por líneas con máscara), lead, párrafos, fórmula y botones entran escalonados. Las formas de marca (`BrandShapes`) tienen un parallax de ±4 %.
+- Titulares de sección (todo `h1`/`h2` de `main` que no sea héroe): líneas enmascaradas que suben al entrar. Al terminar se revierte SplitText y el marcado original queda intacto (`<em>` final incluido). Durante la animación SplitText añade `aria-label` con el texto completo. No se divide ningún titular con hijos `[lang]`; el de las fases de How We Work (con bloque y `EnglishTerm`) usa el reveal genérico.
+- Bloques de texto (`SplitLayout`, FAQ, formulario): suben una vez, en orden de entrada.
+- Párrafos largos (lead de Shared Vision y Relationships, cierre editorial y cuerpo del CTA): React Bits `ScrollReveal`, palabra por palabra con el scroll.
+- Region (gradiente): una capa azul (`GradientCover`) se encoge hacia el borde inferior y descubre el degradado de arriba abajo. Las dos cifras entran con su línea superior dibujándose. **Las cifras no se cuentan ni se animan numéricamente: el texto es literal.** El mismo descubrimiento se usa en Why Latin America › Region scale y en el footer.
+- Approach: la línea azul→verde se dibuja con el scroll (`scaleX` en desktop, `scaleY` en móvil) y los puntos se activan en orden cuando la línea llega a ellos. El texto de cada etapa entra por separado, sin depender del scrub.
+- Phases (How We Work): el riel se dibuja de arriba abajo con scrub; cada paso entra al cruzar su punto.
+- Tarjetas (`ItemGrid`, `TeamGrid`/`ProfileCard`): entrada escalonada por filas, de arriba abajo.
+- Footer: el degradado se descubre y el logo y las columnas entran.
+- Botones principales (Hero y CTA final): React Bits `Magnet`.
+- Sin pin ni scroll-jacking. Las duraciones van de 0,6 a 1,0 s; los scrubs usan `clamp()` en `start`/`end` para completarse aunque la página no pueda seguir bajando.
+
+**Sin JavaScript, antes de hidratar y reduced motion**
+- Todo el contenido es visible sin JS. El estado inicial lo fija GSAP dentro de `useGSAP` (layout effect), antes del primer pintado de la hidratación.
+- Lo que se ve en el primer pintado (cinta, héroes) lleva `data-m-pre`. Un script inline en `<head>` añade `motion-ok` a `<html>` solo con `prefers-reduced-motion: no-preference`, y solo entonces `html.motion-ok [data-m-pre]` oculta esos elementos hasta que GSAP los toma (y quita el atributo). Si GSAP no llega en 300 ms, una animación CSS de seguridad los muestra: el H1 nunca queda invisible más de ~300 ms. Un `finally` en `PageMotion` libera cualquier atributo restante. `<html>` lleva `suppressHydrationWarning` por la clase añadida antes de hidratar.
+- Con `prefers-reduced-motion: reduce`: no se crea ninguna animación GSAP (la rama reduce de `matchMedia` no hace nada), no hay Lenis, `ScrollReveal` y `Magnet` quedan inertes y todo está en su estado final.
+
+**Componentes de React Bits**
+- Obtenidos del registro oficial (`https://reactbits.dev/r/<Nombre>-TS-TW.json`, el mismo contenido que entrega `npx shadcn@latest add @react-bits/<Nombre>-TS-TW`) y copiados a `src/components/react-bits/`. Se evitó el CLI porque el proyecto no tiene `components.json` y el CLI puede modificar `globals.css` y `package.json`; `globals.css` (`@theme`, paleta) y las dependencias no se tocaron.
+- **Magnet** (usado): inerte salvo con puntero fino y sin reduce; la configuración se sincroniza en un efecto (no durante el render) por las reglas de React 19; solo escribe `transform`.
+- **ScrollReveal** (usado): plugins desde `@/lib/motion/gsap`; renderiza `p` (configurable con `as`) en lugar de `h2`; se quitaron `aria-label` y `aria-hidden` (en un párrafo no son válidos: las palabras siguen siendo texto real); valores por defecto sin blur ni rotación (solo transform y opacity); se eliminó el estado `mounted` (React 19 lint).
+- **SplitText y BlurText** (descartados): solo aceptan un `string`, así que no conservan el `<em>` final de `Emphasis` ni los `lang="en"`, y ocultan el texto con `visibility: hidden` hasta hidratar. Los titulares usan `SplitText` de GSAP directamente, que respeta los nodos anidados y se revierte al terminar.
+- **SpotlightCard** (descartado): trae superficie, borde y sombra propios fuera de la paleta (`#111`, blanco, sombras) y compite con el `fill-down`, que ya es el gesto de las tarjetas.
+- Descartados por WebGL/three/ogl (pesan y rompen la paleta): Aurora, Waves, LightRays y similares.
 
 ## Feature flags y perfiles
 
@@ -59,8 +116,8 @@ Este documento registra las decisiones de implementación de la fundación del s
 - Títulos y descripciones de Home y How We Work se toman literalmente de la sección 8 del brief en ambos idiomas.
 - Canonical por página y alternates `en`, `es`, `x-default` (`x-default` = EN).
 - Sitemap con Home y How We Work en ambos idiomas, con `xhtml:link` alternates. Los placeholders noindex se excluyen del sitemap.
-- Robots permite el sitio y declara el sitemap.
-- Placeholders de las páginas pendientes: `index: false, follow: false`.
+- En Fase 1 robots permitía el sitio y declaraba el sitemap; desde Fase 2 el gate `SITE_INDEXABLE` condiciona ambos comportamientos (ver sección de seguridad).
+- Placeholders de las páginas pendientes: `index: false, follow: true` (noindex, pero los enlaces se siguen).
 - OG image placeholder tipográfica 1200 × 630. Favicon SVG placeholder.
 
 ## Accesibilidad
@@ -71,7 +128,7 @@ Este documento registra las decisiones de implementación de la fundación del s
 - FAQ con `<details>`/`<summary>` nativos, sin JavaScript, con icono decorativo y foco visible.
 - Selector de idioma con enlaces `hreflang` y `lang`, estado actual anunciado con `aria-current`.
 - Enlaces de fuentes con área de objetivo de 24 × 24 px y etiquetas accesibles.
-- `prefers-reduced-motion` desactiva transiciones y scroll suave.
+- `prefers-reduced-motion` desactiva transiciones, Lenis y todas las animaciones (ver «Movimiento»).
 - Revisión axe (WCAG 2.0/2.1 AA, 2.2 AA y best practices) sin violaciones en Home y How We Work, EN y ES, a 1440 px.
 - Sin scroll horizontal a 360, 390, 768, 1024 y 1440 px.
 
@@ -90,6 +147,16 @@ Este documento registra las decisiones de implementación de la fundación del s
 - Los títulos y descripciones de Privacy Notice y Cookie Policy no están definidos en el brief. Se usaron títulos localizados neutros y las páginas son placeholders noindex.
 - El brief de la Fase 2 debe definir el copy de las páginas legales, el formulario, el destino de correo, Turnstile y el consentimiento de analytics.
 - `npm audit` reporta 7 vulnerabilidades moderadas en dependencias de desarrollo de `typescript-eslint`; las dependencias de producción reportan 0 vulnerabilidades. No se forzó un override porque la corrección aún no está disponible en la versión que usa `eslint-config-next`.
+
+## Fase 2 · Seguridad, indexación y lanzamiento
+
+- `SITE_INDEXABLE=false` por defecto. Es una variable server-side evaluada en build: solo el valor exacto `"true"` abre la indexación. Con el gate cerrado, todas las páginas emiten `noindex, nofollow`, `robots.txt` responde `Disallow: /` sin sitemap, el sitemap se genera vacío y todas las respuestas llevan `X-Robots-Tag: noindex, nofollow`. Requiere rebuild al cambiarla.
+- Start a Conversation y los placeholders conservan su `noindex` propio aunque el gate se abra; Start a Conversation sigue fuera del sitemap hasta publicar Privacy Notice y configurar correo real.
+- Headers en `next.config.ts`: CSP en `Content-Security-Policy-Report-Only` para no bloquear Next.js ni Turnstile, HSTS solo con `NODE_ENV=production`, `Referrer-Policy`, `X-Content-Type-Options`, `Permissions-Policy`, `X-Frame-Options` y `Cross-Origin-Opener-Policy`. El siguiente paso es revisar los informes y migrar a CSP enforce con nonces.
+- Cookie `NEXT_LOCALE`: `Path=/`, `SameSite=Lax`, `Secure` en producción y un año de duración. `HttpOnly` no se activa porque `localeCookie` de next-intl no lo expone y el selector escribe la cookie desde el cliente. Solo contiene `en`/`es`.
+- CI en `.github/workflows/ci.yml` (Node 20/22): instalación reproducible, lint, typecheck, test, build, rechazo de `c2pa:manifest` en `public/` y auditoría de producción con umbral high. `scripts/audit-prod.mjs` solo tolera el aviso de picomatch sin parche disponible que llega vía `next-intl > @parcel/watcher`; el resto de vulnerabilidades high/critical bloquean.
+- Dependabot semanal para npm y GitHub Actions, agrupando minor/patch.
+- Protección de staging, checklist de lanzamiento, monitorización sin PII y rollback documentados en `docs/launch-checklist.md`.
 
 ## Verificación
 

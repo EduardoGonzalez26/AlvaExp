@@ -7,16 +7,33 @@ export const BRAND_LOCKUP = "Alva · Business Expansion Partner";
 export const COPYRIGHT = "© 2026 Alva";
 
 /**
- * Replaceable brand assets (all live in /public/brand).
- * - logo.svg: when this file exists, <BrandLogo> uses it; otherwise it falls
- *   back to the typographic wordmark. Rebuild after adding it.
- * - favicon.svg and og-image.png: temporary placeholders. Overwrite them in
- *   place with the approved files (og-image.png must stay 1200 x 630).
+ * Approved brand assets.
+ *
+ * Logo palette exception: the approved wordmark uses a blue-to-green gradient
+ * in the light variant and pure white in the dark variant. Those colours are
+ * part of the supplied artwork, not a change to the interface palette. Never
+ * recolour, redraw or vector-trace the logo to force it into the four brand
+ * colours; the rest of the UI keeps the strict palette defined in globals.css.
+ *
+ * Editing notes:
+ * - logo.svg is the light-surface wordmark (paper and stone backgrounds).
+ * - logo-dark.svg is the dark-surface wordmark (blue backgrounds).
+ * - favicon.svg is the blue (#0A3161) icon with the mark in paper (#F4F2EE);
+ *   the PNG and ICO files are rendered from it. favicon.ico is mirrored at the
+ *   site root (/favicon.ico) so the browser's default request also resolves.
+ * - og-image.svg is the editable source of og-image.png (1200 x 630).
  */
 export const BRAND_ASSETS = {
   logo: "/brand/logo.svg",
+  logoDark: "/brand/logo-dark.svg",
   favicon: "/brand/favicon.svg",
-  ogImage: "/brand/og-image.png"
+  faviconIco: "/favicon.ico",
+  appleIcon: "/brand/apple-icon.png",
+  icon32: "/brand/icon-32.png",
+  icon192: "/brand/icon-192.png",
+  icon512: "/brand/icon-512.png",
+  ogImage: "/brand/og-image.png",
+  ogImageSource: "/brand/og-image.svg"
 } as const;
 
 export const OG_IMAGE_SIZE = {width: 1200, height: 630} as const;

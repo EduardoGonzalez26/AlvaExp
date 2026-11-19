@@ -7,10 +7,23 @@ export const routing = defineRouting({
   localePrefix: "as-needed",
   // Preference cookie. The middleware reads it (then Accept-Language) to pick
   // a language on the first visit, and the language switcher updates it.
+  //
+  // Hardening: path "/" so every page can read the same preference, SameSite
+  // Lax (sent on top-level navigation, not on cross-site subrequests) and
+  // Secure in production (HTTPS). `HttpOnly` is not exposed by next-intl's
+  // `localeCookie` API and the switcher writes this cookie from the browser,
+  // so forcing it would be inconsistent. The cookie contains only "en"/"es":
+  // no personal data. Document it in the Cookie Policy.
   localeCookie: {
     name: "NEXT_LOCALE",
+    path: "/",
     maxAge: 60 * 60 * 24 * 365,
-    sameSite: "lax"
+    sameSite: "lax",
+    // The key is omitted outside production (instead of set to false):
+    // next-intl's client-side switcher serializes any boolean `secure` as a
+    // bare `secure` attribute, which would break the cookie on plain HTTP
+    // development hosts.
+    ...(process.env.NODE_ENV === "production" ? {secure: true} : {})
   },
   // hreflang is emitted once, through the Metadata API, so that every URL is
   // built from NEXT_PUBLIC_SITE_URL. The middleware's request-origin Link

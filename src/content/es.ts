@@ -230,5 +230,235 @@ export const es: SiteContent = {
       ]
     },
     finalCta: {label: "Hablemos de tu expansión", href: "/start-a-conversation"}
+  },
+  whyLatinAmerica: {
+    meta: {
+      title: "Por qué América Latina · Alva",
+      description:
+        "Una visión regional y una estrategia para cada mercado: qué puede significar América Latina para tu negocio y cómo convertimos la escala regional en una oportunidad comercial."
+    },
+    hero: {
+      title: "Una visión regional. Una estrategia para cada mercado.",
+      paragraphs: [
+        "América Latina ofrece a las empresas la oportunidad de llegar a nuevos clientes, desarrollar relaciones estratégicas y construir nuevas fuentes de crecimiento.",
+        "Cada mercado tiene sus propios clientes, canales, prácticas de negocio y condiciones operativas. Esa diversidad pide una estrategia que conecte tu ambición regional con las oportunidades específicas que tu negocio puede atender, ya sea que empieces por un país o mires varios."
+      ]
+    },
+    scale: {
+      heading: "Una región con escala",
+      paragraphs: [
+        "América Latina y el Caribe reunía aproximadamente 667 millones de habitantes y representaba una economía de US$7.4 billones en 2025.",
+        "Las cifras muestran la escala de la región. La oportunidad para tu negocio depende de identificar los clientes, las aplicaciones y los modelos comerciales que tienen sentido para tu oferta."
+      ],
+      sourceIds: ["D1", "D2"],
+      sourceNote: "Banco Mundial, 2025. Las cifras regionales incluyen el Caribe."
+    },
+    marketMeaning: {
+      heading: "Qué podría significar la región para tu negocio",
+      items: [
+        {
+          title: "Nuevos clientes.",
+          body: "Empresas o consumidores que enfrentan un problema que tu producto o servicio puede resolver, y una comprensión de cómo toman sus decisiones de compra."
+        },
+        {
+          title: "Cadenas de valor existentes.",
+          body: "Oportunidades con compradores, proveedores y aliados que ya operan e invierten en la región, que desarrollan sus propias capacidades y necesitan soluciones para hacerlo."
+        },
+        {
+          title: "Nuevos canales y alianzas.",
+          body: "La combinación de relaciones directas, socios comerciales, distribuidores o canales digitales que se ajusta a tu negocio."
+        },
+        {
+          title: "Capacidades locales.",
+          body: "El apoyo comercial, operativo y especializado necesario para atender a los clientes y crecer con confianza."
+        }
+      ]
+    },
+    investment: {
+      heading: "De la actividad regional a una oportunidad comercial",
+      paragraphs: [
+        "América Latina y el Caribe recibió aproximadamente US$194 mil millones de inversión extranjera directa en 2025, cifra que incluye la reinversión de empresas ya presentes en la región.",
+        "Para una empresa que busca expandirse, la pregunta importante es dónde se traduce esa actividad en clientes, proyectos o aliados relevantes, y si tu solución responde a sus necesidades."
+      ],
+      sourceIds: ["D3"],
+      sourceNote:
+        "CEPAL, informe de 2026 sobre la inversión de 2025. Las cifras regionales incluyen el Caribe."
+    },
+    connectivity: {
+      heading: "Mercados conectados",
+      stat: "En 2025, 84% de la población de América Latina y el Caribe usó internet.",
+      body: "Los canales digitales pueden sostener el descubrimiento de clientes, la venta y el servicio antes de que exista una presencia física. Las expectativas de los clientes, las prácticas de pago y el papel de los aliados locales siguen variando por país, y forman parte de lo que validamos.",
+      sourceIds: ["D11"],
+      sourceNote: "Banco Mundial, 2025. Las cifras regionales incluyen el Caribe."
+    },
+    examples: {
+      heading: "Cómo podría verse",
+      label: "Ejemplos ilustrativos. No son clientes ni proyectos realizados.",
+      items: [
+        {
+          title: "Una empresa industrial.",
+          body: "La pregunta es qué compradores necesitan su producto, cómo lo adquieren hoy y qué entrega o servicio esperan. Lo evaluaríamos con compradores potenciales y con los canales que los atienden. Si la oportunidad lo justifica, Alva desarrollaría las relaciones comerciales, construiría la ruta de entrada y lideraría el lanzamiento."
+        },
+        {
+          title: "Una startup de software.",
+          body: "La pregunta es quién enfrenta el problema que resuelve el producto, cómo compra, si el precio se sostiene y qué implementación y soporte necesita. Lo exploraríamos en uno o varios mercados. Si la evidencia lo respalda, Alva construiría la presencia comercial que requiera la oportunidad y desarrollaría los primeros clientes y aliados."
+        },
+        {
+          title: "Una firma de servicios especializados.",
+          body: "La pregunta es quién le confiaría su servicio localmente, cómo se entregaría y con quién. Identificaríamos clientes potenciales y aliados de prestación y evaluaríamos los requisitos locales. Si el caso se sostiene, Alva desarrollaría las primeras relaciones con clientes y pondría en marcha el modelo comercial y operativo para atender el mercado."
+        }
+      ]
+    },
+    finalCta: {
+      heading: "Empecemos por la oportunidad.",
+      body: "Tal vez ya tienes un mercado en mente, o estás decidiendo si América Latina debe formar parte de tus planes de crecimiento. Podemos empezar por identificar las preguntas que importan.",
+      cta: {label: "Hablemos de tu expansión", href: "/start-a-conversation"}
+    }
+  },
+  about: {
+    meta: {
+      title: "Nosotros · Construidos para desarrollar negocios juntos · Alva",
+      description:
+        "Conoce a las personas detrás de Alva y qué significa aliarse con nosotros: decisiones compartidas, liderazgo local y una relación construida para durar."
+    },
+    hero: {
+      title: "Construidos para desarrollar negocios juntos.",
+      paragraphs: [
+        "Alva reúne criterio de negocio, perspectiva internacional y ejecución local para ayudar a las empresas a construir y crecer en América Latina.",
+        "Creemos que una expansión es más sólida cuando las personas detrás del negocio y quienes lideran el trabajo en el mercado comparten una visión, intercambian perspectivas y toman juntas las decisiones importantes. Así trabajamos."
+      ]
+    },
+    together: {
+      heading: "Lo que reunimos",
+      items: [
+        {
+          title: "Desarrollo de negocio.",
+          body: "Entender la oportunidad, abrir las conversaciones correctas y construir relaciones alrededor de un propósito comercial claro."
+        },
+        {
+          title: "Criterio comercial y financiero.",
+          body: "Probar la demanda, los precios, los canales y la economía del negocio para que las decisiones de crecimiento tengan una base sólida."
+        },
+        {
+          title: "Ejecución local.",
+          body: "Convertir la estrategia en un plan operativo, desarrollar las capacidades necesarias y liderar el trabajo conforme el negocio toma forma."
+        },
+        {
+          title: "Experiencia especializada.",
+          body: "Integrar a los especialistas comerciales, legales, fiscales, regulatorios y operativos que requiere cada oportunidad, bajo la coordinación de Alva."
+        }
+      ]
+    },
+    partnership: {
+      heading: "Qué significa aliarse con Alva",
+      body: "Aliarse con Alva significa desarrollar el negocio juntos. Evaluamos la oportunidad contigo, decidimos los compromisos contigo y después lideramos el lanzamiento local, incorporando y coordinando a las personas y los especialistas que requiere, y seguimos construyendo conforme el negocio evoluciona. Nos comprometemos con el negocio, no solo con un alcance de trabajo. La forma de cada alianza la define la oportunidad y la acordamos juntos antes de que empiece cada paso."
+    },
+    team: {
+      heading: "Conoce al equipo",
+      profiles: [
+        {
+          id: "emilio",
+          name: "Emilio Rivas Garin",
+          bio: [
+            "Emilio cuenta con más de una década de experiencia en desarrollo comercial, finanzas y operaciones en Estados Unidos y México. Su trayectoria incluye la creación de equipos regionales y capacidades operativas con base en México dentro de una multinacional del sector de salud visual, así como la dirección de una organización multidisciplinaria de más de 30 profesionales que daba apoyo a Norteamérica y las Américas.",
+            "Su experiencia abarca planeación de negocio, precios, gestión de ingresos, análisis de datos y operaciones comerciales. Antes, dirigió ventas, desarrollo de negocio y relaciones con clientes en una agencia de servicios de marketing en Miami.",
+            "Tiene su base en Ciudad de México, cuenta con un Executive MBA del IPADE Business School y trabaja en inglés y español."
+          ]
+        },
+        {
+          id: "edgar",
+          name: "Edgar Hintze",
+          bio: [
+            "Edgar tiene experiencia en crecimiento comercial, retail y comercio electrónico en canales de venta de México y Estados Unidos. Actualmente es General Manager para México de Amplified Industries, donde trabaja en la apertura del mercado mexicano.",
+            "Antes fue Direct to Consumer Manager en Logitech México y gestionó cuentas de comercio electrónico en Estados Unidos con Amazon y Walmart para Mobi Muebles. En Amazon México trabajó en reclutamiento y gestión de proveedores, incluida la categoría de monitores. Anteriormente, en Kellogg’s, manejó cuentas clave de retail con presupuestos anuales de ventas de hasta MXN 320 millones.",
+            "Estudió Negocios Internacionales en la Universidad Anáhuac, cuenta con un Executive MBA del IPADE Business School y trabaja en inglés y español."
+          ]
+        }
+      ]
+    },
+    working: {
+      heading: "Cómo trabajamos contigo",
+      body: "Definimos juntos el trabajo y las responsabilidades antes de comprometer recursos. Distinguimos la evidencia de los supuestos, y decimos cuándo la evidencia apunta a detenerse. Manejamos la información sensible bajo términos de confidencialidad. Mantenemos el contexto, la coordinación y la continuidad de la validación a la construcción y más allá. Y recomendamos el siguiente compromiso solo cuando la evidencia lo respalda.",
+      cta: {label: "Hablemos de tu expansión", href: "/start-a-conversation"}
+    }
+  },
+  startAConversation: {
+    meta: {
+      title: "Conversemos · Alva",
+      description:
+        "Cuéntale a Alva de tu negocio y del crecimiento que quieres explorar en América Latina. Una descripción breve y no confidencial es suficiente para empezar."
+    },
+    hero: {
+      title: "Exploremos lo que podemos construir juntos.",
+      paragraphs: [
+        "Cuéntanos de tu negocio y del crecimiento que quieres explorar en América Latina. Ya sea que tengas un mercado en mente o que consideres la región por primera vez, podemos empezar con una conversación sobre la oportunidad.",
+        "No necesitas un plan terminado ni un equipo local. Una descripción breve y no confidencial es suficiente para empezar."
+      ]
+    },
+    form: {
+      heading: "Cuéntanos de tu negocio",
+      introduction:
+        "Comparte una descripción no confidencial. Fijaremos términos de confidencialidad antes de hablar de cualquier tema sensible.",
+      submit: "Enviar mensaje",
+      success:
+        "Gracias. Recibimos tu mensaje y te contactaremos sobre el siguiente paso.",
+      error:
+        "No pudimos enviar tu mensaje. Inténtalo de nuevo. Tus respuestas se conservaron en esta página.",
+      privacyAcknowledgement: {
+        before: "He leído el ",
+        linkLabel: "Aviso de Privacidad",
+        after: "."
+      },
+      fields: {
+        inquiryType: {
+          label: "Tipo de consulta",
+          options: {
+            expansion: "Quiero explorar una expansión",
+            referral: "Quiero referir una empresa",
+            collaboration: "Quiero proponer una colaboración",
+            other: "Otro"
+          }
+        },
+        fullName: "Nombre completo",
+        email: "Correo electrónico",
+        company: "Empresa o proyecto",
+        markets: {
+          label: "Mercado o mercados que consideras",
+          hint: "Un país, varios, o por definir"
+        },
+        description: {
+          label: "¿Qué te gustaría explorar?",
+          hints: {
+            expansion:
+              "Describe tu empresa o proyecto, en qué etapa se encuentra y qué te gustaría explorar en América Latina.",
+            referral:
+              "Describe la empresa y por qué crees que vale la pena explorar el encaje. No hace falta nombrar personas.",
+            collaboration:
+              "Cuéntanos qué capacidades aportas y en qué tipo de proyecto aplicarían.",
+            other: "Cuéntanos brevemente qué te gustaría conversar."
+          }
+        },
+        website: "Sitio web, si existe",
+        role: "Tu rol",
+        country: "País donde tienes tu base",
+        stage: {
+          label: "Etapa del negocio",
+          options: {
+            early: "Startup en etapa temprana",
+            growth: "Empresa en crecimiento",
+            established: "Empresa consolidada"
+          }
+        },
+        referralSource: "¿Cómo supiste de nosotros?"
+      }
+    },
+    next: {
+      heading: "¿Qué sigue?",
+      body: "Revisaremos tu mensaje y definiremos un siguiente paso útil, normalmente una conversación introductoria o una solicitud de un poco más de contexto. Ningún trabajo de proyecto empieza hasta que hayamos definido juntos la pregunta, el alcance y las condiciones."
+    },
+    referral: {
+      heading: "¿Quieres referir una empresa o proponer una colaboración?",
+      body: "Usa el mismo formulario y selecciona el tipo de consulta. Para una referencia, cuéntanos de la empresa y por qué crees que vale la pena explorar el encaje. Para una colaboración, dinos qué aportas y en qué tipo de proyecto aplicaría."
+    }
   }
 };

@@ -38,11 +38,12 @@ export default async function HomePage({params}: Props) {
       <Region content={content.region} locale={locale} />
       <Approach content={content.approach} locale={locale} />
       <Relationships content={content.relationships} />
-      <Team content={content.team} />
+      <Team content={content.team} locale={locale} />
       <CtaPanel
         body={content.finalCta.body}
         cta={content.finalCta.cta}
         heading={content.finalCta.heading}
+        locale={locale}
       />
     </>
   );

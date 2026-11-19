@@ -15,7 +15,14 @@ type Props = {
 
 const tones = {
   light: "text-alva-blue hover:text-alva-green",
-  dark: "text-alva-paper hover:text-alva-stone"
+  dark: "text-alva-paper"
+} as const;
+
+/** Gradient hairline under the label that thickens on hover (light surfaces). */
+const underlines = {
+  light:
+    "bg-brand-gradient-x bg-[length:100%_1px] bg-bottom bg-no-repeat pb-1 transition-[background-size] duration-300 ease-(--ease-brand) group-hover:bg-[length:100%_2px]",
+  dark: "underline decoration-1 underline-offset-[0.35em] transition-[text-decoration-thickness] duration-300 group-hover:decoration-2"
 } as const;
 
 export function TextLink({href, children, tone = "light", className}: Props) {
@@ -28,9 +35,7 @@ export function TextLink({href, children, tone = "light", className}: Props) {
       )}
       href={href}
     >
-      <span className="underline decoration-1 underline-offset-[0.35em]">
-        {children}
-      </span>
+      <span className={underlines[tone]}>{children}</span>
       <ArrowIcon />
     </Link>
   );

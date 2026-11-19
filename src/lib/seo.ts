@@ -7,6 +7,7 @@ import {
   OG_LOCALES
 } from "@/content/brand";
 import type {Locale, RouteHref} from "@/content/types";
+import {buildRobots} from "./indexing";
 import {absoluteUrl, SITE_URL} from "./site";
 
 type PageMetadataInput = {
@@ -17,9 +18,18 @@ type PageMetadataInput = {
   noindex?: boolean;
 };
 
-/** Absolute URL of a page in a given locale, built from NEXT_PUBLIC_SITE_URL. */
+/**
+ * Absolute URL of a page in a given locale, built from NEXT_PUBLIC_SITE_URL.
+ *
+ * Every page uses the trailing-slash form (next.config `trailingSlash: true`),
+ * including Home: https://alvaexpansion.com/. Canonical, hreflang and the
+ * sitemap all go through this helper, so they cannot drift apart. Next.js
+ * would otherwise drop the trailing slash from the root canonical.
+ */
 export function pageUrl(locale: Locale, href: RouteHref): string {
-  return absoluteUrl(getPathname({locale, href}));
+  const pathname = getPathname({locale, href});
+
+  return absoluteUrl(pathname.endsWith("/") ? pathname : `${pathname}/`);
 }
 
 /**
@@ -73,6 +83,6 @@ export function buildPageMetadata({
       description: meta.description,
       images: [ogImage]
     },
-    robots: noindex ? {index: false, follow: true} : undefined
+    robots: buildRobots(noindex)
   };
 }

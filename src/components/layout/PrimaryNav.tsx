@@ -6,15 +6,15 @@ type Props = {
   label: string;
 };
 
-/** Desktop primary navigation: Home, How We Work, Why Latin America, About. */
+/** Desktop primary navigation: How We Work, Why Latin America, About. The logo links home. */
 export function PrimaryNav({items, label}: Props) {
   return (
     <nav aria-label={label}>
-      <ul className="flex items-center gap-7">
+      <ul className="flex items-center gap-1">
         {items.map((item) => (
           <li key={item.key}>
             <NavLink
-              className="relative inline-flex min-h-11 items-center text-ui-sm no-underline transition-colors duration-150 after:absolute after:inset-x-0 after:bottom-2 after:h-px after:origin-left after:scale-x-0 after:bg-alva-green after:transition-transform after:duration-150 hover:text-alva-green hover:after:scale-x-100 aria-[current=page]:after:scale-x-100"
+              className="fill-down relative inline-flex min-h-11 items-center rounded-lg px-3.5 text-ui-sm no-underline transition-colors duration-(--duration-fill) ease-(--ease-brand) after:absolute after:inset-x-3.5 after:bottom-1.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-brand-gradient-x after:transition-transform after:duration-300 hover:text-alva-paper focus-visible:text-alva-paper aria-[current=page]:after:scale-x-100"
               href={item.href}
             >
               {item.label}

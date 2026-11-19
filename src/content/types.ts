@@ -1,3 +1,5 @@
+import type {BusinessStage, InquiryType} from "@/lib/contact/types";
+
 export type Locale = "en" | "es";
 
 /** Internal (locale independent) route keys. Localized slugs live in i18n/routing.ts. */
@@ -27,13 +29,14 @@ export type LinkContent = {
 export type Profile = {
   id: "emilio" | "edgar";
   name: string;
-  bio: string;
+  /** One paragraph on Home, several on About. */
+  bio: string | string[];
 };
 
 /** Source registry identifiers (section 9 of the brief). Never rendered as text. */
 export type SourceId = "D1" | "D2" | "D3" | "D11";
 
-type TitledItem = {title: string; body: string};
+export type TitledItem = {title: string; body: string};
 
 export type HomeContent = {
   meta: PageMeta;
@@ -122,7 +125,139 @@ export type HowWeWorkContent = {
   finalCta: LinkContent;
 };
 
+export type WhyLatinAmericaContent = {
+  meta: PageMeta;
+  hero: {
+    title: string;
+    paragraphs: string[];
+  };
+  scale: {
+    heading: string;
+    paragraphs: string[];
+    sourceIds: SourceId[];
+    sourceNote: string;
+  };
+  marketMeaning: {
+    heading: string;
+    items: TitledItem[];
+  };
+  investment: {
+    heading: string;
+    paragraphs: string[];
+    sourceIds: SourceId[];
+    sourceNote: string;
+  };
+  connectivity: {
+    heading: string;
+    /** The data sentence that carries the source marker. */
+    stat: string;
+    body: string;
+    sourceIds: SourceId[];
+    sourceNote: string;
+  };
+  examples: {
+    heading: string;
+    /** Editorial disclaimer published above the examples. */
+    label: string;
+    items: TitledItem[];
+  };
+  finalCta: {
+    heading: string;
+    body: string;
+    cta: LinkContent;
+  };
+};
+
+export type AboutContent = {
+  meta: PageMeta;
+  hero: {
+    title: string;
+    paragraphs: string[];
+  };
+  together: {
+    heading: string;
+    items: TitledItem[];
+  };
+  partnership: {
+    heading: string;
+    body: string;
+  };
+  team: {
+    heading: string;
+    profiles: Profile[];
+  };
+  working: {
+    heading: string;
+    body: string;
+    cta: LinkContent;
+  };
+};
+
+/**
+ * Published copy for the contact form. Field labels, options and hints are
+ * verbatim from section 7 of the brief; UI microcopy (field errors, loading
+ * labels, character counter) lives in messages/*.json instead.
+ */
+export type ContactFormContent = {
+  heading: string;
+  introduction: string;
+  submit: string;
+  success: string;
+  error: string;
+  /** The three parts render as one sentence with a localized Privacy Notice link. */
+  privacyAcknowledgement: {
+    before: string;
+    linkLabel: string;
+    after: string;
+  };
+  fields: {
+    inquiryType: {
+      label: string;
+      options: Record<InquiryType, string>;
+    };
+    fullName: string;
+    email: string;
+    company: string;
+    markets: {
+      label: string;
+      hint: string;
+    };
+    description: {
+      label: string;
+      hints: Record<InquiryType, string>;
+    };
+    website: string;
+    role: string;
+    country: string;
+    stage: {
+      label: string;
+      options: Record<BusinessStage, string>;
+    };
+    referralSource: string;
+  };
+};
+
+export type StartAConversationContent = {
+  meta: PageMeta;
+  hero: {
+    title: string;
+    paragraphs: string[];
+  };
+  form: ContactFormContent;
+  next: {
+    heading: string;
+    body: string;
+  };
+  referral: {
+    heading: string;
+    body: string;
+  };
+};
+
 export type SiteContent = {
   home: HomeContent;
   howWeWork: HowWeWorkContent;
+  whyLatinAmerica: WhyLatinAmericaContent;
+  about: AboutContent;
+  startAConversation: StartAConversationContent;
 };

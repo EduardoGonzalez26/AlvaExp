@@ -1,44 +1,51 @@
-import {existsSync} from "node:fs";
-import path from "node:path";
 import Image from "next/image";
 import {BRAND_ASSETS, BRAND_NAME} from "@/content/brand";
 import {cn} from "@/lib/cn";
 
 /**
- * Logo slot. If an approved logo exists at /public/brand/logo.svg it is used
- * automatically (rebuild after adding it); until then the component renders
- * the typographic wordmark "Alva". No symbol is invented.
+ * Approved wordmark. `light` is the blue/green logo for paper and stone
+ * surfaces; `dark` is the white logo for blue surfaces. Both assets are
+ * canonical files in /public/brand.
+ *
+ * The declared width/height match the real ~3.48:1 ratio. They let the browser
+ * reserve the correct space before the SVG loads, so the header, footer and CTA
+ * panel do not shift. Display height is set in CSS; width follows the ratio.
  */
-const hasLogoFile = existsSync(
-  path.join(process.cwd(), "public", BRAND_ASSETS.logo)
-);
+const LOGO_SOURCES = {
+  light: BRAND_ASSETS.logo,
+  dark: BRAND_ASSETS.logoDark
+} as const;
+
+const LOGO_SIZES = {
+  default: "h-7",
+  large: "h-8",
+  xl: "h-10 sm:h-12"
+} as const;
+
+const LOGO_WIDTH = 348;
+const LOGO_HEIGHT = 100;
 
 type Props = {
+  variant?: keyof typeof LOGO_SOURCES;
+  /** `default` for the header, `large` for the closing CTA panel, `xl` for the footer. */
+  size?: keyof typeof LOGO_SIZES;
   className?: string;
 };
 
-export function BrandLogo({className}: Props) {
-  if (hasLogoFile) {
-    return (
-      <Image
-        alt={BRAND_NAME}
-        className={cn("h-7 w-auto", className)}
-        height={32}
-        src={BRAND_ASSETS.logo}
-        unoptimized
-        width={120}
-      />
-    );
-  }
-
+export function BrandLogo({
+  variant = "light",
+  size = "default",
+  className
+}: Props) {
   return (
-    <span
-      className={cn(
-        "text-[1.75rem] leading-none font-medium tracking-[-0.045em]",
-        className
-      )}
-    >
-      {BRAND_NAME}
-    </span>
+    <Image
+      alt={BRAND_NAME}
+      className={cn("w-auto", LOGO_SIZES[size], className)}
+      height={LOGO_HEIGHT}
+      loading="eager"
+      src={LOGO_SOURCES[variant]}
+      unoptimized
+      width={LOGO_WIDTH}
+    />
   );
 }

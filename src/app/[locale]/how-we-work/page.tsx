@@ -29,11 +29,11 @@ export default async function HowWeWorkPage({params}: Props) {
 
   return (
     <>
-      <HowHero content={content.hero} />
+      <HowHero content={content.hero} locale={locale} />
       <Phases locale={locale} phases={content.phases} />
       <ConnectedTeam content={content.connected} />
-      <FaqSection content={content.faq} />
-      <CtaPanel cta={content.finalCta} />
+      <FaqSection content={content.faq} locale={locale} />
+      <CtaPanel cta={content.finalCta} locale={locale} />
     </>
   );
 }

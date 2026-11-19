@@ -28,11 +28,11 @@ export type NavItem = {
 };
 
 export type Navigation = {
-  /** Header navigation: Home, How We Work, Why Latin America, About Alva. */
+  /** Header navigation: How We Work, Why Latin America, About Alva. The logo links home. */
   primary: NavItem[];
   /** Header call to action: the "Start a Conversation" page. */
   cta: NavItem;
-  /** Footer navigation: primary items plus the call to action page. */
+  /** Footer navigation: Home, the primary items and the call to action page. */
   footer: NavItem[];
   /** Legal links shown in the footer. */
   legal: NavItem[];
@@ -48,10 +48,11 @@ export async function getNavigation(locale: Locale): Promise<Navigation> {
   });
 
   const primary = (
-    ["home", "howWeWork", "whyLatinAmerica", "about"] as const
+    ["howWeWork", "whyLatinAmerica", "about"] as const
   ).map(item);
   const cta = item("startAConversation");
   const legal = (["privacyNotice", "cookiePolicy"] as const).map(item);
+  const footer = [item("home"), ...primary, cta];
 
-  return {primary, cta, footer: [...primary, cta], legal};
+  return {primary, cta, footer, legal};
 }

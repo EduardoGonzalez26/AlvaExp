@@ -8,6 +8,7 @@ import {BrandLogo} from "./BrandLogo";
 import {LocaleSwitcher} from "./LocaleSwitcher";
 import {MobileNav} from "./MobileNav";
 import {PrimaryNav} from "./PrimaryNav";
+import {TopRibbon} from "./TopRibbon";
 
 type Props = {
   locale: Locale;
@@ -15,33 +16,38 @@ type Props = {
 
 /**
  * Site header. From 1024 px: logo, primary navigation, language selector and
- * the "Start a Conversation" call to action. Below that, a disclosure menu.
+ * the "Talk to Alva" call to action. Below that, a disclosure menu. The header
+ * CTA uses the editorial CTA label; the page itself stays "Start a
+ * Conversation" in the navigation and footer.
  */
 export async function SiteHeader({locale}: Props) {
   const navigation = await getNavigation(locale);
   const t = await getTranslations({locale, namespace: "Ui"});
 
   return (
-    <header className="relative z-50 border-b border-alva-stone bg-alva-paper">
-      <Container className="flex min-h-[4.5rem] items-center justify-between gap-6 lg:min-h-20">
-        <Link
-          aria-label={t("homeLink")}
-          className="inline-flex min-h-11 items-center no-underline"
-          href="/"
-        >
-          <BrandLogo />
-        </Link>
+    <>
+      <TopRibbon />
+      <header className="sticky top-0 z-50 border-b border-alva-stone bg-alva-paper">
+        <Container className="flex min-h-[4.5rem] items-center justify-between gap-6 lg:min-h-20">
+          <Link
+            aria-label={t("homeLink")}
+            className="inline-flex min-h-11 items-center no-underline"
+            href="/"
+          >
+            <BrandLogo variant="light" />
+          </Link>
 
-        <div className="hidden flex-1 items-center justify-end gap-7 lg:flex">
-          <PrimaryNav items={navigation.primary} label={t("primaryNavigation")} />
-          <LocaleSwitcher />
-          <ButtonLink href={navigation.cta.href} size="small">
-            {navigation.cta.label}
-          </ButtonLink>
-        </div>
+          <div className="hidden flex-1 items-center justify-end gap-7 lg:flex">
+            <PrimaryNav items={navigation.primary} label={t("primaryNavigation")} />
+            <LocaleSwitcher />
+            <ButtonLink href={navigation.cta.href} size="small">
+              {t("headerCta")}
+            </ButtonLink>
+          </div>
 
-        <MobileNav cta={navigation.cta} items={navigation.primary} />
-      </Container>
-    </header>
+          <MobileNav cta={navigation.cta} items={navigation.primary} />
+        </Container>
+      </header>
+    </>
   );
 }

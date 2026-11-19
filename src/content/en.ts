@@ -230,5 +230,236 @@ export const en: SiteContent = {
       ]
     },
     finalCta: {label: "Talk to Alva", href: "/start-a-conversation"}
+  },
+  whyLatinAmerica: {
+    meta: {
+      title: "Why Latin America · Alva",
+      description:
+        "One regional vision and a strategy built for each market: what Latin America can mean for your business and how we turn regional scale into a commercial opportunity."
+    },
+    hero: {
+      title: "One regional vision. A strategy built for each market.",
+      paragraphs: [
+        "Latin America offers companies the opportunity to reach new customers, develop strategic relationships and build new sources of growth.",
+        "Each market has its own customers, channels, business practices and operating conditions. That diversity calls for a strategy that connects your regional ambition to the specific opportunities your business can serve, whether you begin with one country or look at several."
+      ]
+    },
+    scale: {
+      heading: "A region with scale",
+      paragraphs: [
+        "Latin America and the Caribbean was home to approximately 667 million people and represented a US$7.4 trillion economy in 2025.",
+        "The numbers show the region’s scale. The opportunity for your business depends on identifying the customers, applications and commercial models that make sense for your offering."
+      ],
+      sourceIds: ["D1", "D2"],
+      sourceNote: "World Bank, 2025. Regional figures include the Caribbean."
+    },
+    marketMeaning: {
+      heading: "What the region could mean for your business",
+      items: [
+        {
+          title: "New customers.",
+          body: "Businesses or consumers facing a problem your product or service can solve, and an understanding of how they make purchasing decisions."
+        },
+        {
+          title: "Existing value chains.",
+          body: "Opportunities with buyers, suppliers and partners already operating and investing in the region, who are developing their own capabilities and need solutions to do it."
+        },
+        {
+          title: "New channels and partnerships.",
+          body: "The mix of direct relationships, commercial partners, distributors or digital channels that fits your business."
+        },
+        {
+          title: "Local capabilities.",
+          body: "The commercial, operational and specialist support needed to serve customers and grow with confidence."
+        }
+      ]
+    },
+    investment: {
+      heading: "From regional activity to a commercial opportunity",
+      paragraphs: [
+        "Latin America and the Caribbean received approximately US$194 billion in foreign direct investment in 2025, including reinvestment by companies already present in the region.",
+        "For an expanding business, the important question is where that activity translates into relevant customers, projects or partners, and whether your solution fits their needs."
+      ],
+      sourceIds: ["D3"],
+      sourceNote:
+        "ECLAC, 2026 report on 2025 investment. Regional figures include the Caribbean."
+    },
+    connectivity: {
+      heading: "Connected markets",
+      stat: "In 2025, 84% of the population of Latin America and the Caribbean used the internet.",
+      body: "Digital channels can support customer discovery, sales and service before a physical presence exists. Customer expectations, payment practices and the role of local partners still vary by country, and they are part of what we validate.",
+      sourceIds: ["D11"],
+      sourceNote: "World Bank, 2025. Regional figures include the Caribbean."
+    },
+    examples: {
+      heading: "What this could look like",
+      label:
+        "Illustrative examples. These are not clients or completed projects.",
+      items: [
+        {
+          title: "An industrial company.",
+          body: "The question is which buyers need its product, how they purchase it today and what delivery or service they expect. We would assess that with prospective buyers and the channels that serve them. If the opportunity supports it, Alva would develop the commercial relationships, build the route to market and lead the launch."
+        },
+        {
+          title: "A software venture.",
+          body: "The question is who faces the problem the product solves, how they buy, whether pricing holds and what implementation and support they need. We would explore that across one or more markets. If the evidence supports it, Alva would build the commercial presence the opportunity requires and develop the first customers and partners."
+        },
+        {
+          title: "A specialist services firm.",
+          body: "The question is who would trust the firm with its service locally, how it would be delivered and with whom. We would identify potential clients and delivery partners and assess local requirements. If the case holds, Alva would develop the first client relationships and set up the commercial and operating model for serving the market."
+        }
+      ]
+    },
+    finalCta: {
+      heading: "Start with the opportunity.",
+      body: "You may already have a market in mind, or you may be deciding whether Latin America belongs in your growth plans. We can begin by identifying the questions that matter.",
+      cta: {label: "Talk to Alva", href: "/start-a-conversation"}
+    }
+  },
+  about: {
+    meta: {
+      title: "About Alva · Built to Develop Business Together",
+      description:
+        "Meet the people behind Alva and what partnering with us means: shared decisions, local leadership and a relationship built to last."
+    },
+    hero: {
+      title: "Built to develop business together.",
+      paragraphs: [
+        "Alva brings together business judgment, international perspective and local execution to help companies build and grow in Latin America.",
+        "We believe an expansion is stronger when the people behind the business and the people leading the work in the market share a vision, exchange perspectives and make the important decisions together. That is how we work."
+      ]
+    },
+    together: {
+      heading: "What we bring together",
+      items: [
+        {
+          title: "Business development.",
+          body: "Understanding the opportunity, opening the right conversations and building relationships around a clear commercial purpose."
+        },
+        {
+          title: "Commercial and financial judgment.",
+          body: "Testing demand, pricing, channels and the economics of the business so that growth decisions have a strong foundation."
+        },
+        {
+          title: "Local execution.",
+          body: "Turning the strategy into an operating plan, developing the required capabilities and leading the work as the business takes shape."
+        },
+        {
+          title: "Specialized expertise.",
+          body: "Bringing in the commercial, legal, tax, regulatory and operating specialists each opportunity requires, integrated into the work under Alva’s coordination."
+        }
+      ]
+    },
+    partnership: {
+      heading: "What partnering with Alva means",
+      body: "Partnering with Alva means developing the business together. We evaluate the opportunity with you, decide the commitments with you and then lead the local launch, bringing in and coordinating the people and specialists it requires, and keep building as the business evolves. We commit to the business, not just to a scope of work. The form of each partnership is shaped by the opportunity and defined together before each step begins."
+    },
+    team: {
+      heading: "Meet the team",
+      profiles: [
+        {
+          id: "emilio",
+          name: "Emilio Rivas Garin",
+          bio: [
+            "Emilio brings more than a decade of experience in commercial development, finance and operations in the United States and Mexico. His experience includes building regional teams and operating capabilities based in Mexico within a global eye care company, and leading a multidisciplinary organization of more than 30 professionals supporting North America and the Americas.",
+            "His background spans business planning, pricing, revenue management, data analysis and commercial operations. Earlier, he led sales, business development and client relationships at a marketing services agency in Miami.",
+            "Based in Mexico City, he holds an Executive MBA from IPADE Business School and works in English and Spanish."
+          ]
+        },
+        {
+          id: "edgar",
+          name: "Edgar Hintze",
+          bio: [
+            "Edgar brings experience in commercial growth, retail and ecommerce across Mexico and U.S. sales channels. He serves as General Manager for Mexico at Amplified Industries, working to open the Mexican market.",
+            "He previously served as Direct to Consumer Manager at Logitech Mexico and managed U.S. ecommerce accounts with Amazon and Walmart at Mobi Muebles. At Amazon Mexico, he worked in vendor recruitment and management, including the monitors category. Earlier at Kellogg’s, he managed key retail accounts with annual sales budgets of up to MXN 320 million.",
+            "He studied International Business at Universidad Anáhuac, holds an Executive MBA from IPADE Business School and works in English and Spanish."
+          ]
+        }
+      ]
+    },
+    working: {
+      heading: "How we work with you",
+      body: "We define the work and the responsibilities together before committing resources. We distinguish evidence from assumptions, and we say when the evidence points to stopping. We handle sensitive information under confidentiality terms. We keep context, coordination and continuity from validation through build and beyond. And we recommend the next commitment only when the evidence supports it.",
+      cta: {label: "Talk to Alva", href: "/start-a-conversation"}
+    }
+  },
+  startAConversation: {
+    meta: {
+      title: "Start a Conversation · Alva",
+      description:
+        "Tell Alva about your business and the growth you want to explore in Latin America. A short, nonconfidential overview is enough to begin."
+    },
+    hero: {
+      title: "Let’s explore what we can build together.",
+      paragraphs: [
+        "Tell us about your business and the growth you want to explore in Latin America. Whether you already have a market in mind or are considering the region for the first time, we can start with a conversation about the opportunity.",
+        "You do not need a finished plan or a local team. A short, nonconfidential overview is enough to begin."
+      ]
+    },
+    form: {
+      heading: "Tell us about your business",
+      introduction:
+        "Share a nonconfidential overview. We will set confidentiality terms before discussing anything sensitive.",
+      submit: "Send your message",
+      success:
+        "Thank you. We have received your message and will contact you about the next step.",
+      error:
+        "We could not send your message. Please try again. Your entries have been kept on this page.",
+      privacyAcknowledgement: {
+        before: "I have read the ",
+        linkLabel: "Privacy Notice",
+        after: "."
+      },
+      fields: {
+        inquiryType: {
+          label: "Inquiry type",
+          options: {
+            expansion: "I want to explore an expansion",
+            referral: "I want to refer a company",
+            collaboration: "I want to propose a collaboration",
+            other: "Other"
+          }
+        },
+        fullName: "Full name",
+        email: "Email",
+        company: "Company or project",
+        markets: {
+          label: "Market or markets you are considering",
+          hint: "One country, several, or not sure yet"
+        },
+        description: {
+          label: "What would you like to explore?",
+          hints: {
+            expansion:
+              "Describe your company or project, its stage, and what you would like to explore in Latin America.",
+            referral:
+              "Describe the company and why the fit seems worth exploring. No need to name individuals.",
+            collaboration:
+              "Tell us about the capabilities you bring and the kind of project where they would apply.",
+            other: "Tell us briefly what you would like to discuss."
+          }
+        },
+        website: "Website, if any",
+        role: "Your role",
+        country: "Country where you are based",
+        stage: {
+          label: "Business stage",
+          options: {
+            early: "Early stage startup",
+            growth: "Growth stage company",
+            established: "Established company"
+          }
+        },
+        referralSource: "How did you hear about us?"
+      }
+    },
+    next: {
+      heading: "What happens next?",
+      body: "We will review your message and identify a useful next step, usually an introductory conversation or a request for a little more context. No project work begins until we have defined the question, the scope and the terms together."
+    },
+    referral: {
+      heading: "Referring a company or proposing a collaboration?",
+      body: "Use the same form and select the type of inquiry. For a referral, tell us about the company and why the fit seems worth exploring. For a collaboration, tell us what you bring and the kind of project where it applies."
+    }
   }
 };

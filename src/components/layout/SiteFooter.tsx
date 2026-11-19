@@ -5,15 +5,20 @@ import {BRAND_DESCRIPTOR, COPYRIGHT} from "@/content/brand";
 import {getNavigation, type NavItem} from "@/lib/nav";
 import {contact} from "@/lib/site";
 import {cn} from "@/lib/cn";
+import {GradientCover, Lattice} from "@/components/ui/Backdrop";
 import {Container} from "@/components/ui/Container";
+import {EnglishTerm} from "@/components/ui/EnglishTerm";
 import {BrandLogo} from "./BrandLogo";
 
 type Props = {
   locale: Locale;
 };
 
+/** Paper links with a rule that draws in from the left on hover. */
 const linkClass =
-  "inline-block py-1.5 text-ui no-underline transition-colors duration-150 hover:text-alva-green hover:underline hover:underline-offset-[0.3em]";
+  "relative inline-block py-1.5 text-ui no-underline after:absolute after:inset-x-0 after:bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-alva-paper after:transition-transform after:duration-300 after:ease-(--ease-brand) hover:after:scale-x-100 focus-visible:after:scale-x-100";
+
+const labelClass = "mb-4 font-mono text-eyebrow uppercase";
 
 function FooterColumn({
   id,
@@ -25,11 +30,8 @@ function FooterColumn({
   items: NavItem[];
 }) {
   return (
-    <nav aria-labelledby={id}>
-      <p
-        className="mb-4 text-ui-sm tracking-[0.16em] uppercase"
-        id={id}
-      >
+    <nav aria-labelledby={id} data-m="footer-item">
+      <p className={labelClass} id={id}>
         {title}
       </p>
       <ul>
@@ -48,6 +50,12 @@ function FooterColumn({
 /**
  * Footer: brand, site navigation, legal links, optional contact details and
  * the minimal copyright. Empty contact fields are not rendered.
+ *
+ * It is where the page lands on the brand transition: blue at the top (so it
+ * joins the blue closing panel without a seam) fading to green at the bottom.
+ * Every text is paper, which keeps 6:1 or better over the whole gradient.
+ * When it enters, the gradient is uncovered from top to bottom and the logo
+ * and columns settle in (see PageMotion).
  */
 export async function SiteFooter({locale}: Props) {
   const t = await getTranslations({locale, namespace: "Ui"});
@@ -55,20 +63,26 @@ export async function SiteFooter({locale}: Props) {
   const hasContact = Boolean(contact.email || contact.phone);
 
   return (
-    <footer className="border-t border-alva-stone bg-alva-paper text-alva-blue">
+    <footer
+      className="relative isolate overflow-x-clip bg-brand-gradient text-alva-paper"
+      data-m="footer"
+      data-surface="dark"
+    >
+      <GradientCover />
+      <Lattice />
       <Container>
         <div
           className={cn(
-            "grid gap-10 py-[clamp(3rem,6vw,5rem)] sm:grid-cols-2",
+            "grid gap-10 pt-[clamp(3.5rem,7vw,6rem)] pb-[clamp(3rem,6vw,5rem)] sm:grid-cols-2",
             hasContact
               ? "lg:grid-cols-[2fr_1fr_1fr_1fr]"
               : "lg:grid-cols-[2.5fr_1fr_1fr]"
           )}
         >
-          <div className="sm:col-span-2 lg:col-span-1">
-            <BrandLogo />
-            <p className="mt-3.5 text-ui-sm tracking-[0.08em]">
-              {BRAND_DESCRIPTOR}
+          <div className="sm:col-span-2 lg:col-span-1" data-m="footer-item">
+            <BrandLogo size="xl" variant="dark" />
+            <p className="mt-5 font-mono text-eyebrow">
+              <EnglishTerm locale={locale}>{BRAND_DESCRIPTOR}</EnglishTerm>
             </p>
           </div>
 
@@ -84,10 +98,8 @@ export async function SiteFooter({locale}: Props) {
           />
 
           {hasContact ? (
-            <div>
-              <p className="mb-4 text-ui-sm tracking-[0.16em] uppercase">
-                {t("contact")}
-              </p>
+            <div data-m="footer-item">
+              <p className={labelClass}>{t("contact")}</p>
               <ul>
                 {contact.email ? (
                   <li>
@@ -108,7 +120,7 @@ export async function SiteFooter({locale}: Props) {
           ) : null}
         </div>
 
-        <p className="border-t border-alva-stone py-6 text-caption">
+        <p className="border-t border-alva-paper/40 py-6 font-mono text-caption">
           {COPYRIGHT}
         </p>
       </Container>

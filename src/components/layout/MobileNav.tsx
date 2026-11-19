@@ -52,7 +52,7 @@ export function MobileNav({items, cta}: Props) {
       <button
         aria-controls="mobile-navigation"
         aria-expanded={open}
-        className="group inline-flex min-h-11 items-center gap-3 text-ui-sm tracking-[0.08em]"
+        className="group inline-flex min-h-11 items-center gap-3 font-mono text-eyebrow uppercase"
         onClick={() => setOpenedOn(open ? null : viewKey)}
         ref={buttonRef}
         type="button"
@@ -65,7 +65,7 @@ export function MobileNav({items, cta}: Props) {
       </button>
 
       <div
-        className="absolute inset-x-0 top-full z-60 border-y border-alva-stone bg-alva-paper px-gutter pt-4 pb-8"
+        className="absolute inset-x-0 top-full z-60 border-b-2 border-alva-green bg-alva-paper px-gutter pt-4 pb-8"
         hidden={!open}
         id="mobile-navigation"
       >
@@ -74,7 +74,7 @@ export function MobileNav({items, cta}: Props) {
             {items.map((item) => (
               <li className="border-b border-alva-stone" key={item.key}>
                 <NavLink
-                  className="flex min-h-14 items-center text-lg no-underline aria-[current=page]:text-alva-green"
+                  className="flex min-h-14 items-center font-serif text-2xl no-underline transition-colors duration-300 hover:text-alva-green aria-[current=page]:text-alva-green"
                   href={item.href}
                   onClick={() => setOpenedOn(null)}
                 >
@@ -88,7 +88,7 @@ export function MobileNav({items, cta}: Props) {
         <div className="mt-6 flex flex-col items-stretch gap-5 sm:items-start">
           <LocaleSwitcher />
           <ButtonLink href={cta.href} size="small">
-            {cta.label}
+            {t("headerCta")}
           </ButtonLink>
         </div>
       </div>

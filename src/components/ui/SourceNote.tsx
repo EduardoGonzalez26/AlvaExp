@@ -15,7 +15,7 @@ export function SourceNote({children, tone = "light", className}: Props) {
     <p
       className={cn(
         "text-caption",
-        tone === "dark" ? "text-alva-stone" : "text-alva-blue",
+        tone === "dark" ? "text-alva-paper" : "text-alva-blue",
         className
       )}
     >

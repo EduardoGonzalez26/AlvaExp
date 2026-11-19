@@ -5,7 +5,9 @@ import {NAV_ROUTES, type NavKey} from "@/lib/nav";
 import {resolveLocale} from "@/lib/locale";
 import {buildPageMetadata} from "@/lib/seo";
 import {Container} from "./Container";
+import {Emphasis} from "./Emphasis";
 import {Section} from "./Section";
+import {TextLink} from "./TextLink";
 
 /**
  * TEMPORARY (Phase 1). Minimal stand-in for pages that belong to Phase 2.
@@ -57,10 +59,14 @@ export async function PlaceholderPage({
   const ui = await getTranslations({locale, namespace: "Ui"});
 
   return (
-    <Section className="min-h-[58vh]">
+    <Section className="min-h-[58vh]" index={false} wave>
       <Container>
-        <h1 className="max-w-[20ch] text-display-2 text-balance">{nav(name)}</h1>
-        <p className="mt-6 max-w-xl text-body">{ui("placeholderNotice")}</p>
+        <h1 className="max-w-[20ch] text-display-2 text-balance"><Emphasis text={nav(name)} />
+        </h1>
+        <p className="mt-6 mb-9 max-w-xl text-body">
+          {ui("placeholderNotice")}
+        </p>
+        <TextLink href="/">{ui("backToHome")}</TextLink>
       </Container>
     </Section>
   );

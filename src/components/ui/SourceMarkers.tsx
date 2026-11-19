@@ -15,7 +15,7 @@ type Props = {
 
 const tones = {
   light: "text-alva-blue hover:text-alva-green",
-  dark: "text-alva-paper hover:text-alva-stone"
+  dark: "text-alva-paper hover:decoration-2"
 } as const;
 
 /**

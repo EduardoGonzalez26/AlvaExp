@@ -1,23 +1,37 @@
 @import "tailwindcss";
 
 /*
- * Alva design tokens.
+ * Alva design tokens (look and feel: ALVA lookandfeel / Paleta A).
  *
  * The palette is exclusive: Tailwind's default colors are removed, so a color
- * outside the four brand values cannot be used by accident. Opacity variants
- * (text-alva-blue/70) are not used either, because they would create tints.
+ * outside the brand values cannot be used by accident. The four core colors
+ * carry all text. The remaining tokens (mist, teal, sage) come from the brand
+ * artwork and are only used for surfaces, the blue to green gradient and
+ * decoration, never for body text.
+ *
+ * Signature concept: the blue to green transition always runs from top to
+ * bottom (blue on top, green below). It shapes gradient surfaces, hover and
+ * focus states (see .fill-down) and the footer.
  */
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-source-serif), "Source Serif 4", ui-serif, Georgia,
+    Cambria, "Times New Roman", serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, "SFMono-Regular", Menlo,
+    Consolas, monospace;
 }
 
-@theme {
+@theme static {
   --color-*: initial;
   --color-alva-blue: #0a3161;
   --color-alva-green: #006847;
   --color-alva-stone: #cfcac1;
   --color-alva-paper: #f4f2ee;
+  /* Brand artwork tones: surfaces and decoration only. */
+  --color-alva-mist: #e6e9e2;
+  --color-alva-teal: #054c55;
+  --color-alva-sage: #86b0a0;
 
   /* Layout */
   --container-page: 90rem;
@@ -28,25 +42,25 @@
    * Fluid type scale. Each token carries size, line height, tracking and
    * weight, so one utility (for example text-display-1) sets them all.
    */
-  --text-display-1: clamp(2.75rem, 7.2vw, 6.5rem);
-  --text-display-1--line-height: 1;
-  --text-display-1--letter-spacing: -0.045em;
-  --text-display-1--font-weight: 300;
+  --text-display-1: clamp(2.75rem, 6.8vw, 6.25rem);
+  --text-display-1--line-height: 1.02;
+  --text-display-1--letter-spacing: -0.03em;
+  --text-display-1--font-weight: 400;
 
   --text-display-2: clamp(2.125rem, 4.2vw, 3.75rem);
-  --text-display-2--line-height: 1.06;
-  --text-display-2--letter-spacing: -0.035em;
-  --text-display-2--font-weight: 300;
+  --text-display-2--line-height: 1.08;
+  --text-display-2--letter-spacing: -0.025em;
+  --text-display-2--font-weight: 400;
 
   --text-title: clamp(1.75rem, 3vw, 2.5rem);
-  --text-title--line-height: 1.12;
-  --text-title--letter-spacing: -0.025em;
+  --text-title--line-height: 1.14;
+  --text-title--letter-spacing: -0.02em;
   --text-title--font-weight: 400;
 
   --text-stat: clamp(1.875rem, 4.4vw, 4rem);
   --text-stat--line-height: 1.1;
-  --text-stat--letter-spacing: -0.035em;
-  --text-stat--font-weight: 300;
+  --text-stat--letter-spacing: -0.03em;
+  --text-stat--font-weight: 400;
 
   --text-hero-lead: clamp(1.25rem, 2.2vw, 1.75rem);
   --text-hero-lead--line-height: 1.35;
@@ -59,29 +73,31 @@
   --text-body: clamp(1rem, 0.9375rem + 0.2vw, 1.0625rem);
   --text-body--line-height: 1.74;
 
-  --text-card-title: clamp(1.125rem, 1.5vw, 1.3125rem);
-  --text-card-title--line-height: 1.35;
+  --text-card-title: clamp(1.3125rem, 1.9vw, 1.75rem);
+  --text-card-title--line-height: 1.2;
   --text-card-title--letter-spacing: -0.015em;
-  --text-card-title--font-weight: 500;
+  --text-card-title--font-weight: 400;
 
-  --text-profile-name: clamp(1.375rem, 2vw, 1.75rem);
-  --text-profile-name--line-height: 1.2;
-  --text-profile-name--letter-spacing: -0.025em;
-  --text-profile-name--font-weight: 500;
+  --text-profile-name: clamp(1.625rem, 2.4vw, 2.125rem);
+  --text-profile-name--line-height: 1.15;
+  --text-profile-name--letter-spacing: -0.02em;
+  --text-profile-name--font-weight: 400;
 
-  --text-step-title: clamp(1.25rem, 2vw, 1.5rem);
-  --text-step-title--line-height: 1.35;
+  --text-step-title: clamp(1.5rem, 2.4vw, 2rem);
+  --text-step-title--line-height: 1.2;
   --text-step-title--letter-spacing: -0.015em;
-  --text-step-title--font-weight: 500;
+  --text-step-title--font-weight: 400;
 
-  --text-question: clamp(1.0625rem, 1.5vw, 1.25rem);
-  --text-question--line-height: 1.45;
-  --text-question--font-weight: 500;
+  --text-question: clamp(1.1875rem, 1.7vw, 1.4375rem);
+  --text-question--line-height: 1.35;
+  --text-question--letter-spacing: -0.01em;
+  --text-question--font-weight: 400;
 
+  /* Mono label with wide tracking, as in the brand decks. */
   --text-eyebrow: 0.8125rem;
   --text-eyebrow--line-height: 1.5;
-  --text-eyebrow--letter-spacing: 0.12em;
-  --text-eyebrow--font-weight: 500;
+  --text-eyebrow--letter-spacing: 0.18em;
+  --text-eyebrow--font-weight: 400;
 
   --text-ui: 0.9375rem;
   --text-ui--line-height: 1.4;
@@ -95,22 +111,76 @@
   --text-caption--line-height: 1.55;
 }
 
+/*
+ * Brand gradient. Blue on top, green below: the direction never changes for
+ * surfaces and states. The horizontal variant exists only for hairline bars
+ * (page ribbon, underlines) that run across the page, as in the letterhead.
+ * Intermediate stops come from the approved logo gradient.
+ */
+@utility bg-brand-gradient {
+  background-image: linear-gradient(
+    180deg,
+    #0a3161 0%,
+    #083a5c 25%,
+    #054c55 50%,
+    #025f4b 78%,
+    #006847 100%
+  );
+}
+
+@utility bg-brand-gradient-x {
+  background-image: linear-gradient(
+    90deg,
+    #0a3161 0%,
+    #083a5c 25%,
+    #054c55 50%,
+    #025f4b 78%,
+    #006847 100%
+  );
+}
+
+/*
+ * Triangular lattice from the deck covers: hairlines on dark surfaces.
+ * Decorative only; always on an aria-hidden layer.
+ */
+@utility bg-lattice {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='216' viewBox='0 0 100 216' fill='none' stroke='%23F4F2EE' stroke-opacity='.08'%3E%3Cpath d='M0 0L50 108L0 216M100 0L50 108L100 216M0 .5H100M0 108H100'/%3E%3C/svg%3E");
+  background-size: 100px 216px;
+}
+
 @layer base {
+  :root {
+    --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+    --duration-fill: 520ms;
+  }
+
   html {
     color-scheme: light;
-    scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
 
+  /* Headings are set in the editorial serif; italics carry the emphasis. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif;
+  }
+
+  em {
+    font-style: italic;
+  }
+
   ::selection {
-    background-color: var(--color-alva-blue);
+    background-color: var(--color-alva-green);
     color: var(--color-alva-paper);
   }
 
   /*
-   * Keyboard focus. The ring color is a variable so dark (blue) surfaces can
-   * swap it to paper, keeping a 3:1 minimum against any background.
+   * Keyboard focus. The ring color is a variable so dark (blue and gradient)
+   * surfaces can swap it to paper, keeping a 3:1 minimum against any
+   * background.
    */
   :focus-visible {
     outline: 3px solid var(--focus-ring, var(--color-alva-blue));
@@ -126,6 +196,11 @@
     outline: none;
   }
 
+  /* Anchor targets focused by the smooth-scroll handler (tabindex="-1"). */
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
+
   /* Native <details> markers are replaced by a custom icon. */
   summary {
     list-style: none;
@@ -135,11 +210,38 @@
     display: none;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
+  /* Section numbering for the decorative index (see Section). */
+  main {
+    counter-reset: alva-section;
+  }
 
+  /*
+   * Native smooth scrolling is off on purpose: Lenis provides it (desktop with
+   * a fine pointer, no reduced motion). Without Lenis, anchors jump natively.
+   */
+
+  /*
+   * Motion layer. Elements visible on first paint (hero, ribbon) carry
+   * data-m-pre. With motion allowed, and only once the inline script has
+   * flagged <html>, they wait hidden for GSAP, which sets their start state
+   * and removes the attribute. The animation is a fail-safe: if GSAP has not
+   * taken over after 300 ms they are shown, so nothing stays invisible.
+   * Without JavaScript or with reduced motion the rule never applies.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    html.motion-ok [data-m-pre] {
+      opacity: 0;
+      animation: motion-failsafe 1ms linear 300ms forwards;
+    }
+  }
+
+  @keyframes motion-failsafe {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
@@ -148,5 +250,63 @@
       scroll-behavior: auto !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+@layer components {
+  /*
+   * Fill-down: the signature hover and focus state. A blue to green gradient
+   * wipes over the element from top to bottom. The element keeps its own
+   * background underneath, so it reads correctly before and after. Pair it
+   * with a text color change to paper (hover:text-alva-paper).
+   *
+   * Triggers: hover (pointer devices only), keyboard focus and the
+   * data-filled attribute. For a parent-driven trigger use the Tailwind
+   * variants on the pseudo-element, for example
+   * group-hover:before:[clip-path:inset(0_0_0_0)].
+   */
+  .fill-down {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .fill-down::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: linear-gradient(
+      180deg,
+      #0a3161 0%,
+      #083a5c 25%,
+      #054c55 50%,
+      #025f4b 78%,
+      #006847 100%
+    );
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path var(--duration-fill) var(--ease-brand);
+  }
+
+  .fill-down:focus-visible::before,
+  .fill-down[data-filled="true"]::before {
+    clip-path: inset(0 0 0 0);
+  }
+
+  @media (hover: hover) {
+    .fill-down:hover::before {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  /* Decorative section index: counter plus a gradient hairline. */
+  .section-index {
+    counter-increment: alva-section;
+  }
+
+  .section-index::before {
+    content: counter(alva-section, decimal-leading-zero);
+    content: counter(alva-section, decimal-leading-zero) / "";
   }
 }

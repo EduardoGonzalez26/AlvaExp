@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22]
+
+    env:
+      # Staging-safe defaults. Production overrides these in Vercel, never in
+      # the repository.
+      NEXT_TELEMETRY_DISABLED: "1"
+      SITE_INDEXABLE: "false"
+      CONTACT_EMAIL_MODE: console
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm run test
+
+      - name: Reject AI-generated asset metadata
+        run: |
+          matches="$(grep -Ral 'c2pa:manifest' public/ || true)"
+          if [ -n "$matches" ]; then
+            echo "::error::Found c2pa:manifest metadata in public/: $matches"
+            echo "Replace the asset or strip its provenance metadata before committing."
+            exit 1
+          fi
+
+      - name: Audit production dependencies (high/critical)
+        # Wraps `npm audit --omit=dev --audit-level=high` and only tolerates
+        # documented advisories with no available fix (see the script header).
+        run: node scripts/audit-prod.mjs
+
+      - name: Build
+        run: npm run build
