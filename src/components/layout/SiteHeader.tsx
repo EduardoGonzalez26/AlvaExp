@@ -34,7 +34,7 @@ export async function SiteHeader({locale}: Props) {
             className="inline-flex min-h-11 items-center no-underline"
             href="/"
           >
-            <BrandLogo variant="light" />
+            <BrandLogo priority variant="light" />
           </Link>
 
           <div className="hidden flex-1 items-center justify-end gap-7 lg:flex">
@@ -47,6 +47,10 @@ export async function SiteHeader({locale}: Props) {
 
           <MobileNav cta={navigation.cta} items={navigation.primary} />
         </Container>
+        <span
+          aria-hidden="true"
+          className="reading-progress pointer-events-none absolute inset-x-0 -bottom-px h-0.5 bg-brand-gradient-x"
+        />
       </header>
     </>
   );

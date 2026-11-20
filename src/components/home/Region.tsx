@@ -5,7 +5,7 @@ import {Emphasis} from "@/components/ui/Emphasis";
 import {Prose} from "@/components/ui/Prose";
 import {Section} from "@/components/ui/Section";
 import {SourceMarkers} from "@/components/ui/SourceMarkers";
-import {SourceNote} from "@/components/ui/SourceNote";
+import {SourceList} from "@/components/ui/SourceList";
 import {SplitLayout} from "@/components/ui/SplitLayout";
 import {TextLink} from "@/components/ui/TextLink";
 
@@ -31,6 +31,8 @@ function statGroups(stat: string): string[] {
  */
 export function Region({content, locale}: Props) {
   const groups = statGroups(content.stat);
+  // One source per figure (population, GDP): each badge sits on its figure.
+  const perFigure = content.sourceIds.length === groups.length;
 
   return (
     <Section shapes tone="gradient">
@@ -42,15 +44,15 @@ export function Region({content, locale}: Props) {
             </h2>
           }
         >
-          <Prose paragraphs={content.paragraphs} />
+          <Prose locale={locale} paragraphs={content.paragraphs} />
         </SplitLayout>
 
         <div className="mt-[clamp(3rem,6vw,5rem)]">
           {/*
             The figures are rendered verbatim. Each group sits under its own
             hairline and is an inline-block, so lines break between figures,
-            not inside one. The source markers take the place of the brief's
-            [D1, D2] identifiers.
+            not inside one. The source badges take the place of the brief's
+            [D1, D2] identifiers: one per figure, listed under them.
           */}
           <p
             className="grid gap-x-8 gap-y-6 font-serif text-stat sm:grid-cols-2"
@@ -62,12 +64,30 @@ export function Region({content, locale}: Props) {
                 <span className="relative pt-[clamp(1.25rem,2.5vw,2rem)]">
                   <span
                     aria-hidden="true"
-                    className="absolute inset-x-0 top-0 h-px bg-alva-paper"
+                    className="absolute inset-x-0 top-0 h-px bg-alva-paper/40"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-0 left-0 h-0.5 w-24 -translate-y-px bg-alva-paper"
                     data-m="stat-rule"
                   />
                   <span className="block" data-m="stat-text">
-                    {group}
-                    {index === groups.length - 1 ? (
+                    {group.endsWith(" ·") ? (
+                      <>
+                        {group.slice(0, -2)}{" "}
+                        <span className="text-alva-stone">·</span>
+                      </>
+                    ) : (
+                      group
+                    )}
+                    {perFigure ? (
+                      <SourceMarkers
+                        locale={locale}
+                        sourceIds={[content.sourceIds[index]!]}
+                        startAt={index + 1}
+                        tone="dark"
+                      />
+                    ) : index === groups.length - 1 ? (
                       <SourceMarkers
                         locale={locale}
                         sourceIds={content.sourceIds}
@@ -81,9 +101,13 @@ export function Region({content, locale}: Props) {
           </p>
 
           <div data-m="reveal">
-            <SourceNote className="mt-6" tone="dark">
-              {content.sourceNote}
-            </SourceNote>
+            <SourceList
+              className="mt-8"
+              locale={locale}
+              note={content.sourceNote}
+              sourceIds={content.sourceIds}
+              tone="dark"
+            />
 
             <TextLink className="mt-8" href={content.link.href} tone="dark">
               {content.link.label}

@@ -32,8 +32,10 @@ const sourceSerif = Source_Serif_4({
 // Mono for the small, widely tracked labels of the brand system.
 const dmMono = DM_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: "400",
   display: "swap",
+  // Secondary labels: do not compete with the headline fonts for the LCP.
+  preload: false,
   variable: "--font-dm-mono"
 });
 
@@ -77,13 +79,6 @@ export const metadata: Metadata = {
   twitter: {card: "summary_large_image", images: [BRAND_ASSETS.ogImage]}
 };
 
-/**
- * Runs before first paint. It flags <html> only when motion is allowed, so the
- * pre-hydration hide in globals.css (html.motion-ok [data-m-pre]) never applies
- * with reduced motion, and never without JavaScript.
- */
-const MOTION_FLAG_SCRIPT = `try{if(matchMedia("(prefers-reduced-motion: no-preference)").matches)document.documentElement.classList.add("motion-ok")}catch(e){}`;
-
 export const viewport: Viewport = {
   colorScheme: "light",
   themeColor: "#F4F2EE"
@@ -112,12 +107,9 @@ export default async function LocaleLayout({children, params}: Props) {
     <html
       className={`${inter.variable} ${sourceSerif.variable} ${dmMono.variable}`}
       lang={locale}
-      // The motion flag script adds a class to <html> before hydration.
+      // Browser extensions often add attributes to <html>; ignore those.
       suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{__html: MOTION_FLAG_SCRIPT}} />
-      </head>
       <body className="bg-alva-paper font-sans text-alva-blue antialiased">
         {/* Only the strings used by Client Components travel to the browser. */}
         <NextIntlClientProvider messages={{Ui}}>

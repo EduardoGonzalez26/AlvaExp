@@ -45,7 +45,7 @@ const securityHeaders: {key: string; value: string}[] = [
   {
     key: "Permissions-Policy",
     value:
-      "camera=(), microphone=(), geolocation=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=(), browsing-topics=()"
+      "camera=(), microphone=(), geolocation=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=()"
   },
   {key: "X-Frame-Options", value: "DENY"},
   {key: "Cross-Origin-Opener-Policy", value: "same-origin"}

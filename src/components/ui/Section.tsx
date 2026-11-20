@@ -87,6 +87,7 @@ export function Section({
                   "h-px w-12",
                   dark ? "bg-current" : "bg-brand-gradient-x"
                 )}
+                data-m="index-rule"
               />
             </span>
           </div>

@@ -1,4 +1,3 @@
-import ScrollReveal from "@/components/react-bits/ScrollReveal";
 import {Container} from "./Container";
 import {Emphasis} from "./Emphasis";
 import {Section} from "./Section";
@@ -32,7 +31,9 @@ export function ClosingStatement({heading, body, bordered = false}: Props) {
           }
           reveal={false}
         >
-          <ScrollReveal textClassName="text-lead text-pretty">{body}</ScrollReveal>
+          <p className="text-lead text-pretty" data-m="reveal">
+            {body}
+          </p>
         </SplitLayout>
       </Container>
     </Section>

@@ -35,7 +35,7 @@ export default async function WhyLatinAmericaPage({params}: Props) {
 
   return (
     <>
-      <PageHero paragraphs={content.hero.paragraphs} title={content.hero.title} />
+      <PageHero locale={locale} paragraphs={content.hero.paragraphs} title={content.hero.title} />
       <RegionScale content={content.scale} locale={locale} />
       <MarketMeaning content={content.marketMeaning} />
       <Investment content={content.investment} locale={locale} />

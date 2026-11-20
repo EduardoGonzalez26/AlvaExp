@@ -242,7 +242,7 @@ Esperado:
 - `Referrer-Policy: strict-origin-when-cross-origin`.
 - `X-Content-Type-Options: nosniff`.
 - `Permissions-Policy` restrictiva (sin cámara, micrófono, geolocalización,
-  pago, USB, sensores ni browsing-topics).
+  pago, USB ni sensores; browsing-topics se retiró: Chrome ya no lo reconoce).
 - `X-Frame-Options: DENY`.
 - `Cross-Origin-Opener-Policy: same-origin`.
 - En staging, además, `X-Robots-Tag: noindex, nofollow`.

@@ -32,11 +32,18 @@
   --color-alva-mist: #e6e9e2;
   --color-alva-teal: #054c55;
   --color-alva-sage: #86b0a0;
+  /* Intermediate stops of the approved logo gradient (blue -> green). */
+  --color-alva-g1: #083a5c;
+  --color-alva-g3: #025f4b;
+
+  /* Header height, shared by sticky offsets and scroll padding. */
+  --spacing-header: 4.5rem;
 
   /* Layout */
   --container-page: 90rem;
   --spacing-gutter: clamp(1.25rem, 5vw, 6rem);
   --spacing-section: clamp(4.5rem, 9vw, 8.5rem);
+  --spacing-heading: clamp(2.5rem, 5vw, 4.5rem);
 
   /*
    * Fluid type scale. Each token carries size, line height, tracking and
@@ -118,25 +125,25 @@
  * Intermediate stops come from the approved logo gradient.
  */
 @utility bg-brand-gradient {
+  background-image: var(--gradient-brand-y);
+}
+
+/*
+ * Footer surface: the lower half of the brand transition (teal to green), so
+ * it reads as its own block under the solid blue closing panel while keeping
+ * the top-to-bottom direction.
+ */
+@utility bg-brand-gradient-footer {
   background-image: linear-gradient(
     180deg,
-    #0a3161 0%,
-    #083a5c 25%,
-    #054c55 50%,
-    #025f4b 78%,
-    #006847 100%
+    var(--color-alva-teal) 0%,
+    var(--color-alva-g3) 60%,
+    var(--color-alva-green) 100%
   );
 }
 
 @utility bg-brand-gradient-x {
-  background-image: linear-gradient(
-    90deg,
-    #0a3161 0%,
-    #083a5c 25%,
-    #054c55 50%,
-    #025f4b 78%,
-    #006847 100%
-  );
+  background-image: var(--gradient-brand-x);
 }
 
 /*
@@ -152,12 +159,33 @@
   :root {
     --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
     --duration-fill: 520ms;
+    --gradient-stops:
+      var(--color-alva-blue) 0%, var(--color-alva-g1) 25%,
+      var(--color-alva-teal) 50%, var(--color-alva-g3) 78%,
+      var(--color-alva-green) 100%;
+    --gradient-brand-y: linear-gradient(180deg, var(--gradient-stops));
+    --gradient-brand-x: linear-gradient(90deg, var(--gradient-stops));
   }
 
   html {
     color-scheme: light;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* Keeps focused elements and anchor targets clear of the sticky header
+       (WCAG 2.4.11). */
+    scroll-padding-top: calc(var(--spacing-header) + 1.5rem);
+  }
+
+  @media (min-width: 64rem) {
+    html {
+      --spacing-header: 5rem;
+    }
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   /* Headings are set in the editorial serif; italics carry the emphasis. */
@@ -166,6 +194,15 @@
   h3,
   h4 {
     @apply font-serif;
+    /* Long Spanish words must wrap rather than be clipped at 320 px. */
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
   }
 
   em {
@@ -222,14 +259,15 @@
 
   /*
    * Motion layer. Elements visible on first paint (hero, ribbon) carry
-   * data-m-pre. With motion allowed, and only once the inline script has
-   * flagged <html>, they wait hidden for GSAP, which sets their start state
-   * and removes the attribute. The animation is a fail-safe: if GSAP has not
-   * taken over after 300 ms they are shown, so nothing stays invisible.
-   * Without JavaScript or with reduced motion the rule never applies.
+   * data-m-pre. With motion allowed and scripting enabled, they wait hidden
+   * for GSAP, which sets their start state and removes the attribute. The
+   * animation is a fail-safe: if GSAP has not taken over after 300 ms they are
+   * shown, so nothing stays invisible. Without JavaScript or with reduced
+   * motion the rule never applies. (scripting: enabled) replaces an inline
+   * <script> flag, which React 19 warns about in development.
    */
-  @media (prefers-reduced-motion: no-preference) {
-    html.motion-ok [data-m-pre] {
+  @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+    [data-m-pre] {
       opacity: 0;
       animation: motion-failsafe 1ms linear 300ms forwards;
     }
@@ -277,14 +315,7 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background-image: linear-gradient(
-      180deg,
-      #0a3161 0%,
-      #083a5c 25%,
-      #054c55 50%,
-      #025f4b 78%,
-      #006847 100%
-    );
+    background-image: var(--gradient-brand-y);
     clip-path: inset(0 0 100% 0);
     transition: clip-path var(--duration-fill) var(--ease-brand);
   }
@@ -297,6 +328,37 @@
   @media (hover: hover) {
     .fill-down:hover::before {
       clip-path: inset(0 0 0 0);
+    }
+  }
+
+  /*
+   * Reading progress: a blue to green hairline under the header that grows
+   * from the left with the page scroll. Pure CSS (scroll-driven animation);
+   * browsers without support simply do not show it.
+   */
+  .reading-progress {
+    display: none;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .reading-progress {
+      display: block;
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+      animation: reading-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reading-progress {
+        animation-duration: auto !important;
+      }
+    }
+  }
+
+  @keyframes reading-progress {
+    to {
+      transform: scaleX(1);
     }
   }
 

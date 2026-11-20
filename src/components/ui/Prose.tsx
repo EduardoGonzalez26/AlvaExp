@@ -1,6 +1,5 @@
 import type {Locale} from "@/content/types";
 import {cn} from "@/lib/cn";
-import ScrollReveal from "@/components/react-bits/ScrollReveal";
 import {LocalizedText} from "./LocalizedText";
 
 type Props = {
@@ -10,11 +9,7 @@ type Props = {
   className?: string;
   /** Tags English terms that stay in English inside Spanish copy. */
   locale?: Locale;
-  /**
-   * The lead paragraph (with leadFirst) is revealed word by word as it scrolls
-   * into view (React Bits ScrollReveal), and the rest rise in. Plain text only,
-   * so it is skipped when `locale` is given.
-   */
+  /** Each paragraph fades up as it scrolls into view. */
   scrollReveal?: boolean;
 };
 
@@ -31,14 +26,6 @@ export function Prose({
       {paragraphs.map((paragraph, index) => {
         const lead = leadFirst && index === 0;
         const textClass = lead ? "text-lead text-pretty" : "text-body text-pretty";
-
-        if (scrollReveal && lead && !locale) {
-          return (
-            <ScrollReveal as="p" key={paragraph} textClassName={textClass}>
-              {paragraph}
-            </ScrollReveal>
-          );
-        }
 
         return (
           <p

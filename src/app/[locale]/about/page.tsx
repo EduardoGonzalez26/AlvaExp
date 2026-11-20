@@ -30,7 +30,7 @@ export default async function AboutPage({params}: Props) {
 
   return (
     <>
-      <PageHero paragraphs={content.hero.paragraphs} title={content.hero.title} />
+      <PageHero locale={locale} paragraphs={content.hero.paragraphs} title={content.hero.title} />
       <WhatWeBring content={content.together} />
       <Partnership content={content.partnership} />
       <AboutTeam content={content.team} locale={locale} />

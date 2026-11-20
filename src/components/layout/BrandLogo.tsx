@@ -29,12 +29,15 @@ type Props = {
   variant?: keyof typeof LOGO_SOURCES;
   /** `default` for the header, `large` for the closing CTA panel, `xl` for the footer. */
   size?: keyof typeof LOGO_SIZES;
+  /** Above-the-fold logo (header): load eagerly with high priority. */
+  priority?: boolean;
   className?: string;
 };
 
 export function BrandLogo({
   variant = "light",
   size = "default",
+  priority = false,
   className
 }: Props) {
   return (
@@ -42,7 +45,8 @@ export function BrandLogo({
       alt={BRAND_NAME}
       className={cn("w-auto", LOGO_SIZES[size], className)}
       height={LOGO_HEIGHT}
-      loading="eager"
+      fetchPriority={priority ? "high" : "auto"}
+      loading={priority ? "eager" : "lazy"}
       src={LOGO_SOURCES[variant]}
       unoptimized
       width={LOGO_WIDTH}

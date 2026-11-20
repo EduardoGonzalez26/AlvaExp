@@ -3,7 +3,7 @@ import {Container} from "@/components/ui/Container";
 import {Emphasis} from "@/components/ui/Emphasis";
 import {Section} from "@/components/ui/Section";
 import {SourceMarkers} from "@/components/ui/SourceMarkers";
-import {SourceNote} from "@/components/ui/SourceNote";
+import {SourceList} from "@/components/ui/SourceList";
 import {SplitLayout} from "@/components/ui/SplitLayout";
 
 type Props = {
@@ -40,9 +40,14 @@ export function RegionScale({content, locale}: Props) {
               </p>
             ))}
 
-            <SourceNote className="mt-6" tone="dark">
-              {content.sourceNote}
-            </SourceNote>
+            <SourceList
+              className="mt-8"
+              locale={locale}
+              note={content.sourceNote}
+              sourceIds={content.sourceIds}
+              startAt={1}
+              tone="dark"
+            />
           </div>
         </SplitLayout>
       </Container>

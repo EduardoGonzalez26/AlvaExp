@@ -30,6 +30,7 @@ import {
 } from "@/lib/contact/form";
 import {cn} from "@/lib/cn";
 import {ArrowIcon} from "@/components/ui/ArrowIcon";
+import {buttonClasses} from "@/components/ui/ButtonLink";
 import {TurnstileWidget} from "./TurnstileWidget";
 
 type Props = {
@@ -64,9 +65,9 @@ const FIELD_IDS: Record<ContactErrorTarget, string> = {
  * field also gets aria-invalid, a ring, an icon and a text message.
  */
 const CONTROL_CLASS =
-  "mt-2 block w-full min-h-12 rounded-lg border bg-alva-paper px-3.5 py-2.5 text-body text-alva-blue transition-colors duration-150 hover:border-alva-green";
-const CONTROL_VALID_CLASS = "border-alva-blue";
-const CONTROL_INVALID_CLASS = "border-alva-blue ring-1 ring-alva-blue";
+  "mt-2 block w-full min-h-12 rounded-lg border px-3.5 py-2.5 text-body text-alva-blue transition-colors duration-150 hover:border-alva-green";
+const CONTROL_VALID_CLASS = "border-alva-blue bg-alva-paper";
+const CONTROL_INVALID_CLASS = "border-alva-blue bg-alva-mist ring-2 ring-alva-blue";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -462,7 +463,6 @@ export function ContactForm({
           submitFailure ? "block" : "sr-only"
         )}
         ref={alertRef}
-        role="alert"
         tabIndex={-1}
       >
         {submitFailure ? content.error : null}
@@ -474,7 +474,6 @@ export function ContactForm({
           success ? "block" : "sr-only"
         )}
         ref={successRef}
-        role="status"
         tabIndex={-1}
       >
         {success ? content.success : null}
@@ -660,11 +659,7 @@ export function ContactForm({
                   max: DESCRIPTION_MAX_LENGTH
                 })}
               </p>
-              <span
-                aria-live="polite"
-                className="sr-only"
-                role="status"
-              >
+              <span className="sr-only" role="status">
                 {characterNotice}
               </span>
             </div>
@@ -673,7 +668,7 @@ export function ContactForm({
 
         <div className="sm:col-span-2">
           <div className="flex items-start gap-3">
-            <span className="relative mt-1 size-5 shrink-0">
+            <span className="relative mt-0.5 size-6 shrink-0">
               <input
                 aria-describedby={
                   errors.privacyAccepted
@@ -681,7 +676,7 @@ export function ContactForm({
                     : undefined
                 }
                 aria-invalid={Boolean(errors.privacyAccepted)}
-                className="peer size-5 cursor-pointer appearance-none rounded border border-alva-blue bg-alva-paper checked:bg-alva-blue"
+                className="peer size-6 cursor-pointer appearance-none rounded-md border border-alva-blue bg-alva-paper transition-colors duration-150 checked:bg-alva-blue hover:border-alva-green aria-invalid:bg-alva-mist aria-invalid:ring-2 aria-invalid:ring-alva-blue"
                 id={FIELD_IDS.privacyAccepted}
                 name="privacyAccepted"
                 onChange={(event) =>
@@ -729,9 +724,9 @@ export function ContactForm({
               id={`${FIELD_IDS.privacyAccepted}-error`}
             />
           ) : null}
-          <p className="mt-2 pl-8 text-ui-sm">
+          <p className="mt-1 pl-9 text-ui-sm">
             <Link
-              className="underline decoration-1 underline-offset-4 hover:text-alva-green"
+              className="inline-flex min-h-6 items-center underline decoration-1 underline-offset-4 hover:text-alva-green"
               href="/cookie-policy"
             >
               {t("cookiePolicyLink")}
@@ -899,14 +894,28 @@ export function ContactForm({
         </div>
 
         <div className="sm:col-span-2">
+          {/*
+           * aria-disabled instead of disabled: the button keeps focus while
+           * sending (the submit handler already ignores repeat submits).
+           */}
           <button
-            aria-busy={isSubmitting}
-            className="group fill-down inline-flex min-h-12 w-full items-center justify-between gap-8 rounded-lg border border-alva-blue bg-alva-blue px-6 py-3 text-ui text-alva-paper disabled:cursor-not-allowed disabled:border-alva-stone disabled:bg-alva-stone disabled:text-alva-blue disabled:before:hidden sm:w-auto sm:min-w-56"
-            disabled={isSubmitting}
+            aria-disabled={isSubmitting || undefined}
+            className={buttonClasses(
+              "primary",
+              "default",
+              "w-full aria-disabled:cursor-progress aria-disabled:border-alva-stone aria-disabled:bg-alva-stone aria-disabled:text-alva-blue aria-disabled:before:hidden sm:w-auto sm:min-w-56"
+            )}
             type="submit"
           >
             <span>{isSubmitting ? t("sending") : content.submit}</span>
-            <ArrowIcon />
+            {isSubmitting ? (
+              <span
+                aria-hidden="true"
+                className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent motion-reduce:animate-none"
+              />
+            ) : (
+              <ArrowIcon />
+            )}
           </button>
         </div>
       </div>

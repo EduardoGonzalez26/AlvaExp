@@ -32,7 +32,7 @@ export function BrandShapes({className}: {className?: string}) {
         className
       )}
       data-m="shapes"
-      fill="#F4F2EE"
+      fill="var(--color-alva-paper)"
       fillOpacity="0.1"
       focusable="false"
       preserveAspectRatio="xMaxYMid slice"
@@ -73,7 +73,7 @@ export function BrandWave({className}: {className?: string}) {
         "pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[70%] w-full",
         className
       )}
-      fill="#E9ECE6"
+      fill="var(--color-alva-mist)"
       focusable="false"
       preserveAspectRatio="none"
       viewBox="0 0 1440 600"

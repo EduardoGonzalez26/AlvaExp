@@ -18,7 +18,7 @@ export function Team({content, locale}: Props) {
   return (
     <Section wave>
       <Container>
-        <h2 className="mb-[clamp(2.5rem,5vw,4.5rem)] max-w-[20ch] text-display-2 text-balance">
+        <h2 className="mb-heading max-w-[20ch] text-display-2 text-balance">
           <Emphasis text={content.heading} />
         </h2>
 

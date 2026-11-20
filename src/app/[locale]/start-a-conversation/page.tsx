@@ -41,6 +41,7 @@ export default async function StartAConversationPage({params}: Props) {
   return (
     <>
       <PageHero
+        locale={locale}
         paragraphs={content.hero.paragraphs}
         title={content.hero.title}
       />

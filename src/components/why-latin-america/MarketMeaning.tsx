@@ -13,7 +13,7 @@ export function MarketMeaning({content}: Props) {
   return (
     <Section>
       <Container>
-        <h2 className="mb-[clamp(2.5rem,5vw,4.5rem)] max-w-[22ch] text-display-2 text-balance">
+        <h2 className="mb-heading max-w-[22ch] text-display-2 text-balance">
           <Emphasis text={content.heading} />
         </h2>
 

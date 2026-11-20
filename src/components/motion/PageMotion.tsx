@@ -7,7 +7,7 @@ import {
   gradients,
   headings,
   hero,
-  parallax,
+  indexRules,
   phases,
   releaseAll,
   reveals,
@@ -58,7 +58,7 @@ function whenMotionAllowed(setup: Setup) {
  *
  * The initial states are set inside useGSAP (a layout effect), before the
  * browser paints the hydrated tree. Elements that are visible on first paint
- * are held back by `html.motion-ok [data-m-pre]` (see globals.css), which has
+ * are held back by `[data-m-pre]` (see globals.css), which has
  * a short CSS fail-safe, and released here once GSAP owns them.
  */
 export function PageMotion() {
@@ -84,8 +84,8 @@ export function PageMotion() {
       try {
         media = whenMotionAllowed(({desktop}) => {
           hero();
-          parallax();
           headings();
+          indexRules();
           reveals();
           approach(desktop);
           staggers();

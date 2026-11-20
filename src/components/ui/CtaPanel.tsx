@@ -1,8 +1,6 @@
 import type {LinkContent, Locale} from "@/content/types";
 import {BRAND_DESCRIPTOR} from "@/content/brand";
 import {BrandLogo} from "@/components/layout/BrandLogo";
-import Magnet from "@/components/react-bits/Magnet";
-import ScrollReveal from "@/components/react-bits/ScrollReveal";
 import {ButtonLink} from "./ButtonLink";
 import {Container} from "./Container";
 import {Emphasis} from "./Emphasis";
@@ -38,20 +36,18 @@ export function CtaPanel({cta, locale, heading, body}: Props) {
                 <Emphasis text={heading} />
               </h2>
               {body ? (
-                <ScrollReveal
-                  containerClassName="mt-8 max-w-[48ch]"
-                  textClassName="text-lead text-pretty text-alva-stone"
+                <p
+                  className="mt-8 max-w-[48ch] text-lead text-pretty text-alva-stone"
+                  data-m="reveal"
                 >
                   {body}
-                </ScrollReveal>
+                </p>
               ) : null}
             </div>
             <div className="flex lg:justify-end" data-m="reveal">
-              <Magnet magnetStrength={5} maxOffset={10}>
-                <ButtonLink href={cta.href} variant="inverse">
-                  {cta.label}
-                </ButtonLink>
-              </Magnet>
+              <ButtonLink href={cta.href} variant="inverse">
+                {cta.label}
+              </ButtonLink>
             </div>
           </div>
         </Container>
@@ -70,11 +66,9 @@ export function CtaPanel({cta, locale, heading, body}: Props) {
             </p>
           </div>
           <div data-m="reveal">
-            <Magnet magnetStrength={5} maxOffset={10}>
-              <ButtonLink href={cta.href} variant="inverse">
-                {cta.label}
-              </ButtonLink>
-            </Magnet>
+            <ButtonLink href={cta.href} variant="inverse">
+              {cta.label}
+            </ButtonLink>
           </div>
         </div>
       </Container>

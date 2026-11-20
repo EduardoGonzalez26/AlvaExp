@@ -21,6 +21,8 @@
     "menu": "Menú",
     "headerCta": "Hablemos de tu expansión",
     "sourceLink": "Fuente {number}: {source} (se abre en una pestaña nueva)",
+    "sourcesTitle": "Fuentes",
+    "opensInNewTab": "(se abre en una pestaña nueva)",
     "placeholderNotice": "Esta página estará disponible pronto.",
     "notFoundTitle": "Página no encontrada",
     "notFoundDescription": "La página que buscas no existe o cambió de dirección.",

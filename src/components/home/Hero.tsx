@@ -4,8 +4,8 @@ import {ButtonLink} from "@/components/ui/ButtonLink";
 import {Container} from "@/components/ui/Container";
 import {Emphasis} from "@/components/ui/Emphasis";
 import {EnglishTerm} from "@/components/ui/EnglishTerm";
+import {LocalizedText} from "@/components/ui/LocalizedText";
 import {Prose} from "@/components/ui/Prose";
-import Magnet from "@/components/react-bits/Magnet";
 
 type Props = {
   content: HomeContent["hero"];
@@ -41,7 +41,9 @@ export function Hero({content, locale}: Props) {
                 className="h-px w-10 shrink-0 bg-alva-stone"
                 data-m="rule"
               />
-              {content.eyebrow}
+              <span>
+                <LocalizedText locale={locale} text={content.eyebrow} />
+              </span>
             </p>
             <h1
               className="text-display-1 text-balance"
@@ -66,7 +68,7 @@ export function Hero({content, locale}: Props) {
               data-m="rule"
             />
             <div data-m-i="text" data-m-pre="">
-              <Prose paragraphs={content.paragraphs} />
+              <Prose locale={locale} paragraphs={content.paragraphs} />
             </div>
 
             <p
@@ -78,13 +80,7 @@ export function Hero({content, locale}: Props) {
             </p>
 
             <div className="mt-7 flex flex-col gap-3">
-              <Magnet
-                data-m-i="cta"
-                data-m-pre=""
-                magnetStrength={5}
-                maxOffset={10}
-                style={{display: "block"}}
-              >
+              <div data-m-i="cta" data-m-pre="">
                 <ButtonLink
                   className="w-full"
                   href={content.primaryCta.href}
@@ -92,7 +88,7 @@ export function Hero({content, locale}: Props) {
                 >
                   {content.primaryCta.label}
                 </ButtonLink>
-              </Magnet>
+              </div>
               <div data-m-i="cta" data-m-pre="">
                 <ButtonLink
                   className="w-full"

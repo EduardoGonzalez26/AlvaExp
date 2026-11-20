@@ -17,11 +17,11 @@ export function TopRibbon() {
       >
         <defs>
           <linearGradient id="alva-ribbon" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stopColor="#0A3161" />
-            <stop offset=".25" stopColor="#083A5C" />
-            <stop offset=".5" stopColor="#054C55" />
-            <stop offset=".78" stopColor="#025F4B" />
-            <stop offset="1" stopColor="#006847" />
+            <stop offset="0" stopColor="var(--color-alva-blue)" />
+            <stop offset=".25" stopColor="var(--color-alva-g1)" />
+            <stop offset=".5" stopColor="var(--color-alva-teal)" />
+            <stop offset=".78" stopColor="var(--color-alva-g3)" />
+            <stop offset="1" stopColor="var(--color-alva-green)" />
           </linearGradient>
         </defs>
         <path

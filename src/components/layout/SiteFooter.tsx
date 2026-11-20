@@ -5,7 +5,7 @@ import {BRAND_DESCRIPTOR, COPYRIGHT} from "@/content/brand";
 import {getNavigation, type NavItem} from "@/lib/nav";
 import {contact} from "@/lib/site";
 import {cn} from "@/lib/cn";
-import {GradientCover, Lattice} from "@/components/ui/Backdrop";
+import {GradientCover} from "@/components/ui/Backdrop";
 import {Container} from "@/components/ui/Container";
 import {EnglishTerm} from "@/components/ui/EnglishTerm";
 import {BrandLogo} from "./BrandLogo";
@@ -16,9 +16,9 @@ type Props = {
 
 /** Paper links with a rule that draws in from the left on hover. */
 const linkClass =
-  "relative inline-block py-1.5 text-ui no-underline after:absolute after:inset-x-0 after:bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-alva-paper after:transition-transform after:duration-300 after:ease-(--ease-brand) hover:after:scale-x-100 focus-visible:after:scale-x-100";
+  "relative inline-flex min-h-11 items-center text-ui no-underline after:absolute after:inset-x-0 after:bottom-2.5 after:h-px after:origin-left after:scale-x-0 after:bg-alva-paper after:transition-transform after:duration-300 after:ease-(--ease-brand) hover:after:scale-x-100 focus-visible:after:scale-x-100";
 
-const labelClass = "mb-4 font-mono text-eyebrow uppercase";
+const labelClass = "mb-2 font-mono text-eyebrow uppercase";
 
 function FooterColumn({
   id,
@@ -64,22 +64,30 @@ export async function SiteFooter({locale}: Props) {
 
   return (
     <footer
-      className="relative isolate overflow-x-clip bg-brand-gradient text-alva-paper"
+      className="relative isolate overflow-x-clip bg-brand-gradient-footer text-alva-paper"
       data-m="footer"
       data-surface="dark"
     >
+      {/*
+       * Brand strip on the top edge, as at the foot of the heroes: it closes
+       * the blue CTA panel above and opens the footer, so the two never read
+       * as one surface.
+       */}
+      <div
+        aria-hidden="true"
+        className="relative h-2 bg-brand-gradient-x"
+      />
       <GradientCover />
-      <Lattice />
       <Container>
         <div
           className={cn(
-            "grid gap-10 pt-[clamp(3.5rem,7vw,6rem)] pb-[clamp(3rem,6vw,5rem)] sm:grid-cols-2",
+            "grid grid-cols-2 gap-x-6 gap-y-10 pt-[clamp(3.5rem,7vw,6rem)] pb-[clamp(3rem,6vw,5rem)] sm:gap-x-10",
             hasContact
               ? "lg:grid-cols-[2fr_1fr_1fr_1fr]"
               : "lg:grid-cols-[2.5fr_1fr_1fr]"
           )}
         >
-          <div className="sm:col-span-2 lg:col-span-1" data-m="footer-item">
+          <div className="col-span-2 lg:col-span-1" data-m="footer-item">
             <BrandLogo size="xl" variant="dark" />
             <p className="mt-5 font-mono text-eyebrow">
               <EnglishTerm locale={locale}>{BRAND_DESCRIPTOR}</EnglishTerm>

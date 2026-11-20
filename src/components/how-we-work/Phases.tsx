@@ -35,7 +35,8 @@ const PHASE_TONES: SectionTone[] = ["paper", "stone", "paper"];
  *
  * The steps of a stage hang on a vertical rail that goes from blue (top) to
  * green (bottom): the brand transition read as progress. Scrolling draws the
- * rail downwards and each step enters as it crosses its dot (see PageMotion).
+ * rail downwards over a quiet track, each step enters as it crosses its dot,
+ * and the dot of the step being read gets an outline ring (see PageMotion).
  */
 export function Phases({phases, locale}: Props) {
   return (
@@ -83,18 +84,26 @@ export function Phases({phases, locale}: Props) {
                 >
                   <span
                     aria-hidden="true"
+                    className={`absolute top-2 bottom-2 left-1 w-0.5 rounded-full ${
+                      onStone ? "bg-alva-paper" : "bg-alva-stone"
+                    }`}
+                  />
+                  <span
+                    aria-hidden="true"
                     className="absolute top-2 bottom-2 left-1 w-0.5 rounded-full bg-brand-gradient"
                     data-m="rail"
                   />
                   {phase.steps.map((step) => (
                     <article
-                      className="relative"
+                      className="group/step relative"
                       data-m="step"
                       key={step.name}
                     >
                       <span
                         aria-hidden="true"
-                        className="absolute top-[0.7rem] -left-[2.0625rem] size-3 rounded-full bg-alva-green sm:-left-[3.0625rem]"
+                        className={`absolute top-[0.7rem] -left-[2.0625rem] size-3 rounded-full bg-alva-green ring-4 outline-0 outline-offset-0 outline-alva-green transition-[outline-offset,outline-width] duration-(--duration-fill) ease-(--ease-brand) group-data-active/step:outline group-data-active/step:outline-offset-4 sm:-left-[3.0625rem] ${
+                          onStone ? "ring-alva-stone" : "ring-alva-paper"
+                        }`}
                         data-m="step-dot"
                       />
                       <h3 className="text-step-title">

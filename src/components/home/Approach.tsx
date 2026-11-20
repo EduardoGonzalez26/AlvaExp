@@ -23,11 +23,15 @@ export function Approach({content, locale}: Props) {
   return (
     <Section>
       <Container>
-        <h2 className="mb-[clamp(2.5rem,5vw,4.5rem)] max-w-[22ch] text-display-2 text-balance">
+        <h2 className="mb-heading max-w-[22ch] text-display-2 text-balance">
           <Emphasis text={content.heading} />
         </h2>
 
         <div className="relative" data-m="approach">
+          <span
+            aria-hidden="true"
+            className="absolute top-2 bottom-2 left-[0.4375rem] w-px bg-alva-stone lg:inset-x-0 lg:top-[0.4375rem] lg:bottom-auto lg:left-0 lg:h-px lg:w-auto"
+          />
           <span
             aria-hidden="true"
             className="absolute top-2 bottom-2 left-[0.4375rem] w-px bg-brand-gradient lg:inset-x-0 lg:top-[0.4375rem] lg:bottom-auto lg:left-0 lg:h-px lg:w-auto lg:bg-brand-gradient-x"
@@ -45,8 +49,14 @@ export function Approach({content, locale}: Props) {
                 data-m="approach-dot"
               >
                 <span
-                  className={`block size-3.5 rounded-full transition-transform duration-300 ease-(--ease-brand) group-hover:scale-150 ${STAGE_DOTS[index] ?? "bg-alva-green"}`}
+                  className={`block size-3.5 rounded-full ring-4 ring-alva-paper transition-transform duration-300 ease-(--ease-brand) group-hover:scale-125 ${STAGE_DOTS[index] ?? "bg-alva-green"}`}
                 />
+              </span>
+              <span
+                aria-hidden="true"
+                className="mb-3 block font-mono text-eyebrow text-alva-green"
+              >
+                {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="text-title">
                 <EnglishTerm locale={locale}>{item.title}</EnglishTerm>

@@ -220,21 +220,23 @@ export function TurnstileWidget({
       aria-describedby={cn(showMessage && messageId, describedBy) || undefined}
       aria-labelledby="contact-turnstile-label"
       className={cn(
-        "border bg-alva-paper p-4",
-        invalid ? "border-alva-blue ring-1 ring-alva-blue" : "border-alva-blue"
+        "rounded-lg border p-4",
+        invalid
+          ? "border-alva-blue bg-alva-mist ring-2 ring-alva-blue"
+          : "border-alva-blue bg-alva-paper"
       )}
       id="contact-turnstile"
       role="group"
       tabIndex={-1}
     >
       <p
-        className="mb-3 text-ui-sm tracking-[0.08em] uppercase"
+        className="mb-3 font-mono text-eyebrow uppercase"
         id="contact-turnstile-label"
       >
         {t("verificationLabel")}
       </p>
 
-      <div className="min-h-[65px] w-full" ref={containerRef} />
+      <div className="min-h-[4.0625rem] w-full" ref={containerRef} />
 
       {effectiveStatus === "loading" ? (
         <p className="mt-2 text-caption">{t("verificationLoading")}</p>

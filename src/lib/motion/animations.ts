@@ -3,6 +3,7 @@ import {
   EASE,
   EASE_EXPO,
   gsap,
+  RISE,
   ScrollTrigger,
   SplitText
 } from "./gsap";
@@ -62,10 +63,10 @@ function riseByLines(
       );
 
       return gsap.from(self.lines, {
-        yPercent: 135,
+        yPercent: 100,
         duration: DURATION.slow,
         ease: EASE,
-        stagger: 0.1,
+        stagger: 0.08,
         delay,
         scrollTrigger: onScroll
           ? {trigger: element, start: "top 88%", once: true}
@@ -114,7 +115,7 @@ export function hero() {
         scaleX: 1,
         duration: DURATION.slow,
         ease: EASE_EXPO,
-        delay: 0.5,
+        delay: 0.4,
         clearProps: "opacity,transform,transformOrigin"
       }
     );
@@ -127,20 +128,20 @@ export function hero() {
       transformOrigin: "0% 50%",
       duration: DURATION.slow,
       ease: EASE_EXPO,
-      delay: 0.2 + index * 0.25,
+      delay: 0.2 + index * 0.15,
       clearProps: "transform,transformOrigin"
     });
   });
 
   all("[data-m-i]", section).forEach((item, index) => {
-    const delay = 0.05 + index * 0.12;
+    const delay = 0.05 + index * 0.08;
 
     if (item.dataset.mI === "title") {
       riseByLines(item, {delay});
     } else {
       gsap.fromTo(
         item,
-        {opacity: 0, y: 28},
+        {opacity: 0, y: RISE},
         {
           opacity: 1,
           y: 0,
@@ -153,32 +154,6 @@ export function hero() {
     }
 
     release(item);
-  });
-}
-
-/** Oversized "A" fragments drift very slightly against the scroll. */
-export function parallax() {
-  all('main [data-m="shapes"]').forEach((shape) => {
-    const host = shape.closest("section");
-
-    if (!host) {
-      return;
-    }
-
-    gsap.fromTo(
-      shape,
-      {yPercent: -4},
-      {
-        yPercent: 4,
-        ease: "none",
-        scrollTrigger: {
-          trigger: host,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true
-        }
-      }
-    );
   });
 }
 
@@ -210,7 +185,7 @@ export function reveals() {
     return;
   }
 
-  gsap.set(elements, {opacity: 0, y: 28});
+  gsap.set(elements, {opacity: 0, y: RISE});
   ScrollTrigger.batch(elements, {
     start: "top 90%",
     once: true,
@@ -221,14 +196,17 @@ export function reveals() {
         y: 0,
         duration: DURATION.base,
         ease: EASE,
-        stagger: 0.1,
+        stagger: 0.08,
         clearProps: CLEAR
       })
   });
   elements.forEach(release);
 }
 
-/** Card grids and lists: children enter row by row, top to bottom. */
+/**
+ * Card grids and lists: children enter row by row, top to bottom. A card's
+ * top hairline (data-m="card-rule") is drawn from the left once it is in.
+ */
 export function staggers() {
   all('main [data-m="stagger"]').forEach((group) => {
     const items = Array.from(group.children) as HTMLElement[];
@@ -237,20 +215,49 @@ export function staggers() {
       return;
     }
 
-    gsap.set(items, {opacity: 0, y: 36});
+    const rules = all('[data-m="card-rule"]', group);
+
+    gsap.set(items, {opacity: 0, y: RISE});
+    gsap.set(rules, {scaleX: 0, transformOrigin: "0% 50%"});
     ScrollTrigger.batch(items, {
       start: "top 90%",
       once: true,
-      interval: 0.12,
-      onEnter: (batch) =>
+      interval: 0.1,
+      onEnter: (batch) => {
         gsap.to(batch, {
           opacity: 1,
           y: 0,
-          duration: DURATION.slow,
+          duration: DURATION.base,
           ease: EASE,
-          stagger: 0.1,
+          stagger: 0.08,
           clearProps: CLEAR
-        })
+        });
+        gsap.to(
+          batch.flatMap((item) => all('[data-m="card-rule"]', item as HTMLElement)),
+          {
+            scaleX: 1,
+            duration: DURATION.slow,
+            ease: EASE_EXPO,
+            stagger: 0.08,
+            delay: 0.15,
+            clearProps: "transform,transformOrigin"
+          }
+        );
+      }
+    });
+  });
+}
+
+/** Section index: the hairline next to the number is drawn from the left. */
+export function indexRules() {
+  all('main [data-m="index-rule"]').forEach((rule) => {
+    gsap.from(rule, {
+      scaleX: 0,
+      transformOrigin: "0% 50%",
+      duration: DURATION.slow,
+      ease: EASE_EXPO,
+      clearProps: "transform,transformOrigin",
+      scrollTrigger: {trigger: rule, start: "top 92%", once: true}
     });
   });
 }
@@ -289,7 +296,7 @@ export function stats() {
     const texts = all('[data-m="stat-text"]', group);
 
     gsap.set(rules, {scaleX: 0, transformOrigin: "0% 50%"});
-    gsap.set(texts, {opacity: 0, y: 24});
+    gsap.set(texts, {opacity: 0, y: RISE});
 
     gsap
       .timeline({
@@ -297,7 +304,7 @@ export function stats() {
       })
       .to(
         rules,
-        {scaleX: 1, duration: DURATION.slow, ease: EASE_EXPO, stagger: 0.2},
+        {scaleX: 1, duration: DURATION.slow, ease: EASE_EXPO, stagger: 0.15},
         0
       )
       .to(
@@ -307,10 +314,10 @@ export function stats() {
           y: 0,
           duration: DURATION.base,
           ease: EASE,
-          stagger: 0.2,
+          stagger: 0.15,
           clearProps: CLEAR
         },
-        0.2
+        0.25
       );
   });
 }
@@ -368,7 +375,8 @@ export function approach(desktop: boolean) {
 
 /**
  * How We Work phases: the rail is drawn from top to bottom with the scroll
- * (blue to green) and every step enters as the rail reaches its dot.
+ * (blue to green), every step enters as the rail reaches its dot, and the
+ * step being read is marked with data-active (styled in Phases).
  */
 export function phases() {
   all('main [data-m="rail-group"]').forEach((group) => {
@@ -392,7 +400,20 @@ export function phases() {
       const dot = step.querySelector<HTMLElement>('[data-m="step-dot"]');
       const body = all(":scope > h3, :scope > div", step);
 
-      gsap.set(body, {opacity: 0, y: 28});
+      gsap.set(body, {opacity: 0, y: RISE});
+
+      ScrollTrigger.create({
+        trigger: step,
+        start: "top 60%",
+        end: "bottom 60%",
+        onToggle: (self) => {
+          if (self.isActive) {
+            step.setAttribute("data-active", "");
+          } else {
+            step.removeAttribute("data-active");
+          }
+        }
+      });
 
       if (dot) {
         gsap.set(dot, {scale: 0});
@@ -432,7 +453,7 @@ export function footer() {
 
   const items = all('[data-m="footer-item"]', element);
 
-  gsap.set(items, {opacity: 0, y: 24});
+  gsap.set(items, {opacity: 0, y: RISE});
   gsap.to(items, {
     opacity: 1,
     y: 0,

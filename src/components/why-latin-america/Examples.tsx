@@ -17,7 +17,7 @@ export function Examples({content, locale}: Props) {
   return (
     <Section tone="stone">
       <Container>
-        <div className="mb-[clamp(2.5rem,5vw,4.5rem)] grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-x-8">
+        <div className="mb-heading grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-x-8">
           <h2 className="text-display-2 text-balance lg:col-span-6">
             <Emphasis text={content.heading} />
           </h2>
