@@ -34,6 +34,8 @@
   --color-alva-mist: #e6e9e2;
   --color-alva-teal: #054c55;
   --color-alva-sage: #86b0a0;
+  /* Deep navy for the footer (paper on it is about 16:1). */
+  --color-alva-navy: #061a33;
   /* Intermediate stops of the approved logo gradient (blue -> green). */
   --color-alva-g1: #083a5c;
   --color-alva-g3: #025f4b;
@@ -130,20 +132,6 @@
   background-image: var(--gradient-brand-y);
 }
 
-/*
- * Footer surface: the lower half of the brand transition (teal to green), so
- * it reads as its own block under the solid blue closing panel while keeping
- * the top-to-bottom direction.
- */
-@utility bg-brand-gradient-footer {
-  background-image: linear-gradient(
-    180deg,
-    var(--color-alva-teal) 0%,
-    var(--color-alva-g3) 60%,
-    var(--color-alva-green) 100%
-  );
-}
-
 @utility bg-brand-gradient-x {
   background-image: var(--gradient-brand-x);
 }
@@ -155,6 +143,13 @@
 @utility bg-lattice {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='216' viewBox='0 0 100 216' fill='none' stroke='%23F4F2EE' stroke-opacity='.08'%3E%3Cpath d='M0 0L50 108L0 216M100 0L50 108L100 216M0 .5H100M0 108H100'/%3E%3C/svg%3E");
   background-size: 100px 216px;
+}
+
+/* Animatable length for the folder-card corner fold (see .folder). */
+@property --fold {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
 }
 
 @layer base {
@@ -340,24 +335,56 @@
   }
 
   /*
-   * Header: a full-width, square bar while the page is at the very top; once
-   * the page scrolls (html[data-scrolled], set by HeaderScrollState) it
-   * becomes a floating, rounded capsule. Both states keep the same total
-   * height, so nothing below moves.
+   * Header: a full-width, square bar at the very top that morphs into a
+   * floating, rounded capsule as the page scrolls. The morph follows the
+   * scroll itself: --hp (0 at the top, 1 after ~120 px, eased) is written by
+   * HeaderScrollState, and every dimension below interpolates with it, so
+   * scrolling back up unfolds the bar just as gradually. The total height
+   * never changes (the top padding grows as the bar shrinks), so nothing
+   * below moves. Without JavaScript --hp stays 0: the square bar.
    */
-  .header-bar {
-    max-width: 100%;
-    transition:
-      max-width var(--duration-fill) var(--ease-brand),
-      border-radius var(--duration-fill) var(--ease-brand),
-      border-color var(--duration-fill) var(--ease-brand),
-      padding var(--duration-fill) var(--ease-brand),
-      min-height var(--duration-fill) var(--ease-brand);
+  :root {
+    --hp: 0;
+    --header-h: 4.5rem;
+    --capsule-pl: 1.25rem;
   }
 
-  html[data-scrolled] .header-bar {
-    max-width: min(72rem, 100% - 2 * var(--spacing-gutter));
-    border-color: color-mix(in srgb, var(--color-alva-blue) 22%, transparent);
+  @media (min-width: 64rem) {
+    :root {
+      --header-h: 5rem;
+      --capsule-pl: 1.75rem;
+    }
+  }
+
+  .header-strip {
+    padding-top: calc(0.75rem * var(--hp));
+  }
+
+  .header-bar {
+    max-width: calc(
+      100% - (100% - min(72rem, 100% - 2 * var(--spacing-gutter))) * var(--hp)
+    );
+    border: 1px solid
+      color-mix(in srgb, var(--color-alva-stone) calc(var(--hp) * 100%), transparent);
+    border-bottom-color: var(--color-alva-stone);
+    border-radius: calc(2.25rem * var(--hp));
+  }
+
+  .header-inner {
+    min-height: calc(var(--header-h) - 0.75rem * var(--hp));
+    padding-block: calc(0.375rem * var(--hp));
+    padding-left: calc(
+      var(--spacing-gutter) + (var(--capsule-pl) - var(--spacing-gutter)) * var(--hp)
+    );
+    padding-right: calc(
+      var(--spacing-gutter) + (0.5rem - var(--spacing-gutter)) * var(--hp)
+    );
+  }
+
+  .header-progress {
+    left: calc(2rem * var(--hp));
+    right: calc(2rem * var(--hp));
+    border-radius: calc(9999px * var(--hp));
   }
 
   /*
@@ -388,6 +415,264 @@
   @keyframes reading-progress {
     to {
       transform: scaleX(1);
+    }
+  }
+
+  /*
+   * Folder card: the hover state plays with the shape of a document folder
+   * instead of filling it. On hover the card lifts a little, a tab rises from
+   * behind its top edge and the top-right corner folds over (the surface is
+   * masked along a 45° line and a flap fills the gap). Text never changes
+   * colour, so contrast is untouched.
+   *
+   * Markup: .folder > .folder-tab + .folder-surface + .folder-flap + content.
+   * The surface carries the background; the tab sits behind it.
+   */
+  .folder {
+    --fold: 0px;
+    position: relative;
+    isolation: isolate;
+    transition:
+      --fold 420ms var(--ease-brand),
+      translate 420ms var(--ease-brand);
+  }
+
+  @media (hover: hover) {
+    .folder:hover {
+      --fold: 2.5rem;
+      translate: 0 -0.25rem;
+    }
+  }
+
+  .folder:focus-within {
+    --fold: 2.5rem;
+  }
+
+  .folder-surface {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 0.75rem;
+    mask-image: linear-gradient(
+      225deg,
+      transparent calc(var(--fold) * 0.7071),
+      #000 calc(var(--fold) * 0.7071)
+    );
+  }
+
+  .folder-flap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--fold);
+    height: var(--fold);
+    border-bottom-left-radius: 0.375rem;
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
+    pointer-events: none;
+  }
+
+  .folder-tab {
+    position: absolute;
+    top: 0;
+    z-index: -2;
+    height: 0.75rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    transition: translate 420ms var(--ease-brand);
+    pointer-events: none;
+  }
+
+  @media (hover: hover) {
+    .folder:hover .folder-tab {
+      translate: 0 calc(-100% + 1px);
+    }
+  }
+
+  .folder:focus-within .folder-tab {
+    translate: 0 calc(-100% + 1px);
+  }
+
+  /*
+   * Closing panel photos (see TeamPhotos): three photos crossfade, each held
+   * about 6 s with a slow zoom. With reduced motion only the first one shows.
+   */
+  .team-photo {
+    opacity: 0;
+    animation: team-photo 21s linear infinite;
+  }
+
+  .team-photo:nth-child(2) {
+    animation-delay: 7s;
+  }
+
+  .team-photo:nth-child(3) {
+    animation-delay: 14s;
+  }
+
+  @keyframes team-photo {
+    0% {
+      opacity: 0;
+      scale: 1;
+    }
+
+    6% {
+      opacity: 1;
+    }
+
+    33% {
+      opacity: 1;
+    }
+
+    40% {
+      opacity: 0;
+      scale: 1.08;
+    }
+
+    100% {
+      opacity: 0;
+      scale: 1.08;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .team-photo {
+      animation: none !important;
+    }
+
+    .team-photo:first-child {
+      opacity: 1;
+    }
+  }
+
+  /*
+   * Route loader (see RouteLoader): a paper panel with the logo that covers
+   * the page from top to bottom on navigation and uncovers the new page from
+   * top to bottom. Hidden without JavaScript and with reduced motion; a CSS
+   * fail-safe hides the first-visit state if the script never takes over.
+   */
+  .route-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    background-color: var(--color-alva-paper);
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .route-loader[data-state="initial"],
+  .route-loader[data-state="enter"] {
+    clip-path: inset(0 0 0 0);
+    visibility: visible;
+    pointer-events: auto;
+    transition: clip-path 420ms var(--ease-brand);
+  }
+
+  .route-loader[data-state="initial"] {
+    transition: none;
+    animation: loader-failsafe 0s linear 4s forwards;
+  }
+
+  .route-loader[data-state="out"] {
+    clip-path: inset(100% 0 0 0);
+    visibility: visible;
+    transition: clip-path 560ms var(--ease-brand);
+  }
+
+  @keyframes loader-failsafe {
+    to {
+      visibility: hidden;
+    }
+  }
+
+  .route-loader-mark {
+    display: grid;
+    justify-items: center;
+    gap: 1.5rem;
+    opacity: 0;
+    translate: 0 0.5rem;
+    transition:
+      opacity 360ms var(--ease-brand) 120ms,
+      translate 360ms var(--ease-brand) 120ms;
+  }
+
+  .route-loader[data-state="initial"] .route-loader-mark,
+  .route-loader[data-state="enter"] .route-loader-mark {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .route-loader[data-state="out"] .route-loader-mark {
+    opacity: 0;
+    transition-delay: 0s;
+  }
+
+  /* Indeterminate line: a blue to green segment sweeping left to right. */
+  .route-loader-bar {
+    position: relative;
+    display: block;
+    width: 7.5rem;
+    height: 2px;
+    overflow: hidden;
+    border-radius: 9999px;
+    background-color: var(--color-alva-stone);
+  }
+
+  .route-loader-bar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 45%;
+    border-radius: inherit;
+    background-image: var(--gradient-brand-x);
+    animation: loader-sweep 1.1s var(--ease-brand) infinite;
+  }
+
+  @keyframes loader-sweep {
+    from {
+      translate: -100% 0;
+    }
+
+    to {
+      translate: 230% 0;
+    }
+  }
+
+  @media (scripting: none), (prefers-reduced-motion: reduce) {
+    .route-loader {
+      display: none;
+    }
+  }
+
+  /*
+   * Language switch (View Transitions, see LocaleSwitcher): the old page dims
+   * and settles slightly while the new language is revealed from top to
+   * bottom, following the brand direction. Only runs during a language switch
+   * (html[data-locale-switch]); reduced motion never starts it.
+   */
+  html[data-locale-switch]::view-transition-old(root) {
+    animation: locale-out 560ms var(--ease-brand) both;
+  }
+
+  html[data-locale-switch]::view-transition-new(root) {
+    animation: locale-in 640ms var(--ease-brand) both;
+  }
+
+  @keyframes locale-out {
+    to {
+      opacity: 0.35;
+      translate: 0 -0.75rem;
+    }
+  }
+
+  @keyframes locale-in {
+    from {
+      clip-path: inset(0 0 100% 0);
+    }
+
+    to {
+      clip-path: inset(0 0 0 0);
     }
   }
 

@@ -19,6 +19,11 @@ type Props = {
    */
   variant?: Variant;
   size?: Size;
+  /**
+   * Solid hover: instead of the gradient wipe, the button turns plain Alva
+   * green (used by the header call to action).
+   */
+  solidHover?: boolean;
   className?: string;
 };
 
@@ -41,10 +46,14 @@ const sizes: Record<Size, string> = {
 export function buttonClasses(
   variant: Variant = "primary",
   size: Size = "default",
-  className?: string
+  className?: string,
+  solidHover = false
 ) {
   return cn(
-    "group fill-down inline-flex items-center justify-between rounded-lg border no-underline transition-colors duration-(--duration-fill) ease-(--ease-brand)",
+    "group inline-flex items-center justify-between rounded-lg border no-underline transition-colors",
+    solidHover
+      ? "duration-200 ease-(--ease-brand) hover:border-alva-green hover:bg-alva-green hover:text-alva-paper focus-visible:border-alva-green focus-visible:bg-alva-green focus-visible:text-alva-paper"
+      : "fill-down duration-(--duration-fill) ease-(--ease-brand)",
     variants[variant],
     sizes[size],
     className
@@ -56,11 +65,12 @@ export function ButtonLink({
   children,
   variant = "primary",
   size = "default",
+  solidHover = false,
   className
 }: Props) {
   return (
     <Link
-      className={buttonClasses(variant, size, className)}
+      className={buttonClasses(variant, size, className, solidHover)}
       href={href}
     >
       <span>{children}</span>

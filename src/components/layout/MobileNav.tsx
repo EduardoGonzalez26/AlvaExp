@@ -127,7 +127,7 @@ export function MobileNav({items, cta}: Props) {
 
         <div className="mt-6 flex flex-col items-stretch gap-5 sm:flex-row sm:items-center sm:justify-between">
           <LocaleSwitcher />
-          <ButtonLink className="rounded-full!" href={cta.href} size="small">
+          <ButtonLink className="rounded-full!" href={cta.href} size="small" solidHover>
             {t("headerCta")}
           </ButtonLink>
         </div>

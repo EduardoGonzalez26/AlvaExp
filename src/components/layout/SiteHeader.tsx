@@ -29,14 +29,14 @@ export async function SiteHeader({locale}: Props) {
       <TopRibbon />
       <HeaderScrollState />
       {/*
-        At the very top: a full-width, square bar. Once the page scrolls it
-        turns into a floating capsule (see .header-bar in globals.css). Both
-        states have the same height. The reading progress line runs along its
-        bottom edge.
+        At the very top: a full-width, square bar. As the page scrolls it
+        morphs, with the scroll, into a floating capsule (see .header-bar in
+        globals.css); scrolling back up reverses it. The total height never
+        changes. The reading progress line runs along its bottom edge.
       */}
-      <header className="pointer-events-none sticky top-0 z-50 transition-[padding] duration-(--duration-fill) ease-(--ease-brand) scrolled:pt-3">
-        <div className="header-bar pointer-events-auto relative mx-auto border-b border-alva-stone bg-alva-paper scrolled:rounded-full scrolled:border">
-          <div className="mx-auto flex min-h-[4.5rem] max-w-page items-center justify-between gap-6 px-gutter transition-[min-height,padding] duration-(--duration-fill) ease-(--ease-brand) scrolled:min-h-[59px] scrolled:py-1.5 scrolled:pr-2 scrolled:pl-5 lg:min-h-20 lg:scrolled:min-h-[67px] lg:scrolled:pl-7">
+      <header className="header-strip pointer-events-none sticky top-0 z-50">
+        <div className="header-bar pointer-events-auto relative mx-auto bg-alva-paper">
+          <div className="header-inner mx-auto flex max-w-page items-center justify-between gap-6">
             <Link
               aria-label={t("homeLink")}
               className="inline-flex min-h-11 items-center rounded-full no-underline"
@@ -49,7 +49,7 @@ export async function SiteHeader({locale}: Props) {
               <PrimaryNav items={navigation.primary} label={t("primaryNavigation")} />
               <span aria-hidden="true" className="h-6 w-px bg-alva-stone" />
               <LocaleSwitcher />
-              <ButtonLink className="rounded-full!" href={navigation.cta.href} size="small">
+              <ButtonLink className="rounded-full!" href={navigation.cta.href} size="small" solidHover>
                 {t("headerCta")}
               </ButtonLink>
             </div>
@@ -59,7 +59,7 @@ export async function SiteHeader({locale}: Props) {
 
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 -bottom-px h-0.5 overflow-hidden transition-[left,right] duration-(--duration-fill) scrolled:inset-x-8 scrolled:rounded-full"
+            className="header-progress pointer-events-none absolute -bottom-px h-0.5 overflow-hidden"
           >
             <span className="reading-progress block h-full w-full bg-brand-gradient-x" />
           </span>

@@ -16,8 +16,9 @@ type Props = {
 /**
  * Card grid for titled items, after the deck's solution cards: flat stone
  * cards with an outline diamond, a mono index and a blue to green hairline on
- * the top edge (drawn from the left as the card enters). On hover the brand
- * gradient fills the card from top to bottom and the text turns paper.
+ * the top edge (drawn from the left as the card enters). On hover the card
+ * behaves like a folder (see .folder): it lifts, a green tab rises behind it,
+ * the top-right corner folds over and the diamond becomes a filled square.
  */
 export function ItemGrid({items, columns = 2, locale, tone = "paper"}: Props) {
   const onStone = tone === "stone";
@@ -32,28 +33,35 @@ export function ItemGrid({items, columns = 2, locale, tone = "paper"}: Props) {
     >
       {items.map((item, index) => (
         <li
-          className={cn(
-            "group fill-down relative flex flex-col rounded-xl p-[clamp(1.75rem,3vw,2.5rem)] transition-colors duration-(--duration-fill) ease-(--ease-brand) hover:text-alva-paper",
-            onStone ? "bg-alva-paper" : "bg-alva-stone"
-          )}
+          className="group folder flex flex-col p-[clamp(1.75rem,3vw,2.5rem)]"
           key={item.title}
         >
           <span
             aria-hidden="true"
-            className="absolute inset-x-[clamp(1.75rem,3vw,2.5rem)] top-0 h-0.5 bg-brand-gradient-x transition-opacity duration-(--duration-fill) group-hover:opacity-0"
+            className="folder-tab left-[clamp(1.75rem,3vw,2.5rem)] w-24 bg-alva-green"
+          />
+          <span
+            aria-hidden="true"
+            className={cn("folder-surface", onStone ? "bg-alva-paper" : "bg-alva-stone")}
+          />
+          <span aria-hidden="true" className="folder-flap bg-brand-gradient" />
+          <span
+            aria-hidden="true"
+            className="absolute inset-x-[clamp(1.75rem,3vw,2.5rem)] top-0 h-0.5 bg-brand-gradient-x"
             data-m="card-rule"
           />
           <div
             aria-hidden="true"
             className="mb-[clamp(1.75rem,3.5vw,2.75rem)] flex items-center justify-between"
           >
+            {/* The outline diamond turns into a filled green square. */}
             <DiamondIcon
               className={cn(
-                "transition-colors duration-(--duration-fill) ease-(--ease-brand) group-hover:text-alva-paper",
+                "transition-[rotate,scale,color] duration-[420ms] ease-(--ease-brand) group-hover:scale-75 group-hover:rotate-45 group-hover:text-alva-green [&_path]:transition-[fill] [&_path]:duration-[420ms] group-hover:[&_path]:fill-current",
                 onStone ? "text-alva-green" : "text-alva-blue"
               )}
             />
-            <span className="font-mono text-eyebrow transition-colors duration-(--duration-fill) group-hover:text-alva-paper">
+            <span className="font-mono text-eyebrow transition-colors duration-300 group-hover:text-alva-green">
               {String(index + 1).padStart(2, "0")}
             </span>
           </div>

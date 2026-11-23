@@ -69,7 +69,10 @@ export function SmoothScroll() {
 
       const instance = new Lenis({
         autoRaf: false,
-        lerp: 0.1,
+        // Snappier than Lenis' default (0.1): the page follows the wheel
+        // closely and settles fast, with just a touch of smoothing.
+        lerp: 0.18,
+        wheelMultiplier: 1.15,
         smoothWheel: true,
         syncTouch: false,
         // Textareas and selects that scroll on their own keep native wheel.
@@ -97,7 +100,7 @@ export function SmoothScroll() {
         const {hash, target} = anchor;
 
         instance.scrollTo(target, {
-          duration: 1.2,
+          duration: 0.8,
           onComplete: () => {
             window.history.pushState(window.history.state, "", hash);
           }

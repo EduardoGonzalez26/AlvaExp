@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {getTranslations} from "next-intl/server";
 import {getPathname, Link} from "@/i18n/navigation";
 import type {Locale} from "@/content/types";
@@ -7,7 +8,6 @@ import {contact} from "@/lib/site";
 import {cn} from "@/lib/cn";
 import {getSiteContent} from "@/content";
 import {ButtonLink} from "@/components/ui/ButtonLink";
-import {GradientCover} from "@/components/ui/Backdrop";
 import {Container} from "@/components/ui/Container";
 import {EnglishTerm} from "@/components/ui/EnglishTerm";
 import {BrandLogo} from "./BrandLogo";
@@ -86,7 +86,7 @@ export async function SiteFooter({locale}: Props) {
 
   return (
     <footer
-      className="relative isolate overflow-clip bg-brand-gradient-footer text-alva-paper"
+      className="relative isolate overflow-clip bg-alva-navy text-alva-paper"
       data-m="footer"
       data-surface="dark"
     >
@@ -96,7 +96,6 @@ export async function SiteFooter({locale}: Props) {
        * as one surface.
        */}
       <div aria-hidden="true" className="relative h-2 bg-brand-gradient-x" />
-      <GradientCover />
 
       {/* Oversized wordmark watermark along the bottom edge. */}
       <div
@@ -191,7 +190,7 @@ export async function SiteFooter({locale}: Props) {
 
           <div data-m="footer-item">
             <p className={labelClass}>{t("language")}</p>
-            <LocaleSwitcher className="-ml-2 [&_a[aria-current]]:after:bg-alva-paper" />
+            <LocaleSwitcher className="-ml-2" tone="dark" />
           </div>
 
           {hasContact ? (
@@ -219,10 +218,26 @@ export async function SiteFooter({locale}: Props) {
 
         <div className="flex flex-col gap-3 border-t border-alva-paper/25 py-6 font-mono text-caption sm:flex-row sm:items-center sm:justify-between">
           <p>{COPYRIGHT}</p>
-          <p aria-hidden="true" className="flex items-center gap-3">
-            <span className="h-px w-10 bg-alva-paper/60" />
-            <span className="size-1.5 rotate-45 bg-alva-paper" />
-          </p>
+          {/* Site credit: Webi, the studio that built the site. */}
+          <a
+            className="group inline-flex min-h-11 items-center gap-3 self-start rounded-full no-underline sm:self-auto"
+            href="https://webi.mx"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span className="flex items-center gap-3 transition-opacity duration-300 group-hover:opacity-100 sm:opacity-80">
+              <span aria-hidden="true" className="h-px w-6 bg-alva-paper/60 transition-[width] duration-300 group-hover:w-10" />
+              <span lang="en">Powered by</span>
+            </span>
+            <Image
+              alt="Webi"
+              className="h-5 w-auto transition-transform duration-300 ease-(--ease-brand) group-hover:-translate-y-0.5"
+              height={169}
+              src="/brand/webi-logo-light.png"
+              width={474}
+            />
+            <span className="sr-only"> {t("opensInNewTab")}</span>
+          </a>
         </div>
       </Container>
     </footer>

@@ -6,6 +6,7 @@ import {Container} from "./Container";
 import {Emphasis} from "./Emphasis";
 import {EnglishTerm} from "./EnglishTerm";
 import {Section} from "./Section";
+import {TeamPhotos} from "./TeamPhotos";
 
 type Props = {
   cta: LinkContent;
@@ -28,7 +29,8 @@ type Props = {
 export function CtaPanel({cta, locale, heading, body}: Props) {
   if (heading) {
     return (
-      <Section index={false} shapes tone="blue">
+      <Section index={false} tone="blue">
+      <TeamPhotos />
         <Container>
           <div className="grid gap-12 lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)] lg:items-end lg:gap-12">
             <div className="min-w-0">
@@ -56,7 +58,8 @@ export function CtaPanel({cta, locale, heading, body}: Props) {
   }
 
   return (
-    <Section index={false} shapes tone="blue">
+    <Section index={false} tone="blue">
+      <TeamPhotos />
       <Container>
         <div className="flex flex-wrap items-center justify-between gap-x-10 gap-y-8">
           <div className="min-w-0" data-m="reveal">

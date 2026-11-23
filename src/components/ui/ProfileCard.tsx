@@ -13,21 +13,24 @@ type Props = {
  * profile. About uses long bios, so the bio can hold several paragraphs.
  *
  * Visual: a blue card with the sage tab peeking behind it, as in the decks.
- * On hover the brand gradient fills it from top to bottom.
+ * On hover it behaves like a folder: the tab rises and turns green, the card
+ * lifts and its top-right corner folds over (see .folder).
  */
 export function ProfileCard({profile, locale}: Props) {
   const paragraphs = Array.isArray(profile.bio) ? profile.bio : [profile.bio];
 
   return (
-    <div className="relative h-full pt-3">
+    <div className="group relative h-full pt-3">
       <div
         aria-hidden="true"
-        className="absolute inset-x-4 top-0 h-8 rounded-t-xl bg-alva-sage md:right-1/3"
+        className="absolute inset-x-4 top-0 h-8 rounded-t-xl bg-alva-sage transition-[translate,background-color] duration-[420ms] ease-(--ease-brand) group-hover:-translate-y-1.5 group-hover:bg-alva-green md:right-1/3"
       />
       <article
         data-surface="dark"
-        className="group fill-down relative flex h-full flex-col rounded-xl bg-alva-blue p-[clamp(1.75rem,3.5vw,3rem)] text-alva-paper"
+        className="folder flex h-full flex-col p-[clamp(1.75rem,3.5vw,3rem)] text-alva-paper"
       >
+        <span aria-hidden="true" className="folder-surface bg-alva-blue" />
+        <span aria-hidden="true" className="folder-flap bg-alva-sage" />
         <h3 className="text-profile-name">{profile.name}</h3>
         <div
           aria-hidden="true"

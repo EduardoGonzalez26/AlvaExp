@@ -9,6 +9,7 @@ import {isSiteIndexable} from "@/lib/indexing";
 import {siteUrl} from "@/lib/site";
 import {SiteFooter} from "@/components/layout/SiteFooter";
 import {SiteHeader} from "@/components/layout/SiteHeader";
+import {RouteLoader} from "@/components/motion/RouteLoader";
 import {PageMotion} from "@/components/motion/PageMotion";
 import {SmoothScroll} from "@/components/motion/SmoothScroll";
 import "../globals.css";
@@ -32,7 +33,8 @@ const sourceSerif = Source_Serif_4({
 // Mono for the small, widely tracked labels of the brand system.
 const dmMono = DM_Mono({
   subsets: ["latin"],
-  weight: "400",
+  // 500 is the hover weight of the language selector.
+  weight: ["400", "500"],
   display: "swap",
   // Secondary labels: do not compete with the headline fonts for the LCP.
   preload: false,
@@ -115,6 +117,7 @@ export default async function LocaleLayout({children, params}: Props) {
         <NextIntlClientProvider messages={{Ui}}>
           <SmoothScroll />
           <PageMotion />
+          <RouteLoader />
           <a
             className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:bg-alva-blue focus:px-4 focus:py-3 focus:text-ui-sm focus:text-alva-paper"
             href="#main-content"
