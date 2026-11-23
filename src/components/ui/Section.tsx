@@ -54,6 +54,8 @@ export function Section({
     <section
       // Dark surfaces switch the focus ring to paper (see globals.css).
       data-surface={dark ? "dark" : undefined}
+      // Coloured surfaces open up as they scroll in (see PageMotion › surfaces).
+      data-m={tone === "paper" ? undefined : "surface"}
       className={cn(
         "relative isolate overflow-x-clip",
         tones[tone],

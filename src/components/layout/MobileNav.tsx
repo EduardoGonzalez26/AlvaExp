@@ -81,7 +81,7 @@ export function MobileNav({items, cta}: Props) {
       <button
         aria-controls="mobile-navigation"
         aria-expanded={open}
-        className="group -mr-2 inline-flex min-h-11 items-center gap-3 rounded-lg px-2 font-mono text-eyebrow uppercase"
+        className="group inline-flex min-h-11 items-center gap-3 rounded-full px-4 font-mono text-eyebrow uppercase"
         onClick={() => setOpenedOn(open ? null : viewKey)}
         ref={buttonRef}
         type="button"
@@ -94,7 +94,7 @@ export function MobileNav({items, cta}: Props) {
       </button>
 
       <div
-        className="absolute inset-x-0 top-full z-60 max-h-[calc(100dvh-var(--spacing-header)-1.25rem)] sm:max-h-[calc(100dvh-var(--spacing-header)-1.75rem)] overflow-y-auto overscroll-contain border-b-2 border-alva-green bg-alva-paper px-gutter pt-4 pb-[max(2rem,env(safe-area-inset-bottom))] [clip-path:inset(0_0_0_0)] transition-[clip-path] duration-(--duration-fill) ease-(--ease-brand) starting:[clip-path:inset(0_0_100%_0)]"
+        className="absolute inset-x-gutter top-full z-60 mt-2 scrolled:inset-x-0 max-h-[calc(100dvh-var(--spacing-header)-2rem)] overflow-y-auto overscroll-contain rounded-3xl border border-alva-stone bg-alva-paper px-5 pt-2 pb-5 [clip-path:inset(0_0_0_0_round_1.5rem)] transition-[clip-path] duration-(--duration-fill) ease-(--ease-brand) starting:[clip-path:inset(0_0_100%_0_round_1.5rem)]"
         data-lenis-prevent
         hidden={!open}
         id="mobile-navigation"
@@ -127,7 +127,7 @@ export function MobileNav({items, cta}: Props) {
 
         <div className="mt-6 flex flex-col items-stretch gap-5 sm:flex-row sm:items-center sm:justify-between">
           <LocaleSwitcher />
-          <ButtonLink href={cta.href} size="small">
+          <ButtonLink className="rounded-full!" href={cta.href} size="small">
             {t("headerCta")}
           </ButtonLink>
         </div>

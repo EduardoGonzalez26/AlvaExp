@@ -170,3 +170,12 @@ Capa de animación sobre el rediseño. El concepto no cambia: el azul pasa al ve
 - Comprobación de overflow horizontal: 360, 390, 768, 1024 y 1440 px sin desbordamiento.
 - Axe: 0 violaciones en Home y How We Work, EN y ES.
 - Capturas de gate en `preview/` a 1440 y 390 px.
+
+## Ajustes visuales (header cápsula, footer, mapa y diagramas)
+
+- Header: arriba del todo es una barra cuadrada a ancho completo; en cuanto la página se desplaza (>4 px) se convierte en una cápsula flotante redondeada (`HeaderScrollState` marca `html[data-scrolled]`; transición CSS de ancho, radio y padding, variante Tailwind `scrolled:`). Ambos estados miden lo mismo, así que el contenido no salta. La barra de lectura corre por su borde inferior. Sin JS queda la barra cuadrada.
+- Footer: banda superior (logo, descriptor, `Validate · Build · Scale` y CTA), columna del método con enlaces a `#validate`, `#build` y `#scale` (nombre de etapa + título de fase tomados del copy), navegación, legal, idioma y marca de agua del logo. Sin copy nuevo: todo sale del contenido y microcopy existentes.
+- Mapa de expansión (`ExpansionMap`, Home › Region y Why Latin America › Region scale): matriz de puntos de las Américas de EE. UU. a la Patagonia, calculada en el servidor (`src/lib/map/americas.ts`), con arcos de EE. UU. hacia ciudades de América Latina. Decorativo (`aria-hidden`); los rótulos `USA` y `LATAM` son marcas visuales. Interacción: foco de luz que sigue al ratón y hover por ruta. Los arcos se dibujan de norte a sur con el scroll.
+- Diagramas decorativos bajo los titulares (`components/visuals/Diagrams.tsx`): círculos que convergen (Shared Vision, Partnership), red (Relationships, Connected Team), flujos (Investment) y cuadrícula de 100 puntos con la cifra que el copy declara (Connectivity, 84 %). Ocultos en móvil (<640 px) para no alargar la lectura.
+- Scroll por contenedor: las superficies de color (piedra, azul, degradado) entran como panel redondeado con margen y se abren a ancho completo con el scroll (`surfaces()`, clip-path con scrub). Sin pin ni scroll-jacking; con movimiento reducido todo queda en su estado final.
+

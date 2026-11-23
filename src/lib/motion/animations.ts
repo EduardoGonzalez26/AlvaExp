@@ -443,6 +443,111 @@ export function phases() {
   });
 }
 
+/**
+ * Expansion map: the arcs are drawn from the United States southwards as the
+ * map scrolls through the viewport, one after another (north to south), and
+ * each destination appears when its arc arrives.
+ */
+export function expansionMap() {
+  all('main [data-m="map"]').forEach((map) => {
+    const routes = all<HTMLElement>('[data-m="route"]', map);
+    const hubs = all<HTMLElement>('[data-m="hub"]', map);
+
+    gsap.set(routes, {strokeDasharray: 1, strokeDashoffset: 1});
+    gsap.set(hubs, {scale: 0, transformOrigin: "50% 50%", transformBox: "fill-box"});
+
+    const timeline = gsap.timeline({
+      defaults: {ease: "none"},
+      scrollTrigger: {
+        trigger: map,
+        start: "clamp(top 85%)",
+        end: "clamp(center 45%)",
+        scrub: 0.6
+      }
+    });
+
+    routes.forEach((route, index) => {
+      const at = index * 0.35;
+      timeline.to(route, {strokeDashoffset: 0, duration: 1}, at);
+      timeline.to(
+        hubs.slice(index * 2, index * 2 + 2),
+        {scale: 1, duration: 0.25, ease: EASE},
+        at + 0.85
+      );
+    });
+  });
+}
+
+/**
+ * Decorative diagrams: lines are drawn and points appear, in document order
+ * (top to bottom), once the diagram scrolls into view. Converging circles
+ * slide together.
+ */
+export function diagrams() {
+  all('main [data-m="diagram"]').forEach((diagram) => {
+    const lines = all('[data-m="draw"]', diagram);
+    const points = all('[data-m="pop"]', diagram);
+    const a = diagram.querySelector('[data-m="converge-a"]');
+    const b = diagram.querySelector('[data-m="converge-b"]');
+
+    gsap.set(lines, {strokeDasharray: "1 1", strokeDashoffset: 1});
+    gsap.set(points, {opacity: 0, scale: 0.4, transformOrigin: "50% 50%", transformBox: "fill-box"});
+
+    const timeline = gsap.timeline({
+      scrollTrigger: {trigger: diagram, start: "top 85%", once: true}
+    });
+
+    if (a && b) {
+      timeline.from(a, {x: -36, duration: DURATION.slow, ease: EASE}, 0);
+      timeline.from(b, {x: 36, duration: DURATION.slow, ease: EASE}, 0);
+    }
+
+    timeline.to(
+      lines,
+      {strokeDashoffset: 0, duration: DURATION.slow, ease: EASE_EXPO, stagger: 0.06},
+      0.1
+    );
+    timeline.to(
+      points,
+      {
+        opacity: 1,
+        scale: 1,
+        duration: DURATION.fast,
+        ease: EASE,
+        stagger: {each: 0.012, from: "start"}
+      },
+      0.35
+    );
+  });
+}
+
+/**
+ * Coloured surfaces (stone, blue, gradient) arrive as an inset, rounded panel
+ * and open to full width while they scroll into view: each section reads as
+ * its own container. Scrubbed with the scroll; nothing is pinned.
+ */
+export function surfaces(desktop: boolean) {
+  const inset = desktop ? "3%" : "2.5%";
+  const radius = desktop ? "2rem" : "1.25rem";
+
+  all('main [data-m="surface"]').forEach((surface) => {
+    gsap.fromTo(
+      surface,
+      {clipPath: `inset(0% ${inset} 0% ${inset} round ${radius})`},
+      {
+        clipPath: "inset(0% 0% 0% 0% round 0rem)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: surface,
+          start: "top bottom",
+          end: "clamp(top 30%)",
+          scrub: 0.4
+        }
+      }
+    );
+  });
+}
+
 /** Footer: logo and columns settle in as the footer comes into view. */
 export function footer() {
   const element = all('footer[data-m="footer"]')[0];

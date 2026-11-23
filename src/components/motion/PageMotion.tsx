@@ -3,6 +3,9 @@
 import {usePathname} from "next/navigation";
 import {
   approach,
+  surfaces,
+  diagrams,
+  expansionMap,
   footer,
   gradients,
   headings,
@@ -91,6 +94,9 @@ export function PageMotion() {
           staggers();
           gradients("main");
           stats();
+          expansionMap();
+          diagrams();
+          surfaces(desktop);
           phases();
 
           // Opening or closing a FAQ item changes the page height.

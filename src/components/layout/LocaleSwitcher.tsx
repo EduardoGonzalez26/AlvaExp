@@ -45,7 +45,7 @@ export function LocaleSwitcher({className}: Props) {
                 aria-current={isCurrent ? "true" : undefined}
                 aria-label={`${locale.toUpperCase()} · ${names[locale]}`}
                 className={cn(
-                  "fill-down relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg px-2 font-mono text-eyebrow no-underline transition-colors duration-(--duration-fill) ease-(--ease-brand) hover:text-alva-paper focus-visible:text-alva-paper",
+                  "fill-down relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-2 font-mono text-eyebrow no-underline transition-colors duration-(--duration-fill) ease-(--ease-brand) hover:text-alva-paper focus-visible:text-alva-paper",
                   isCurrent &&
                     "after:absolute after:inset-x-2 after:bottom-1.5 after:h-0.5 after:bg-brand-gradient-x hover:after:opacity-0"
                 )}

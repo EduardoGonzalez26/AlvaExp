@@ -1,5 +1,6 @@
 import type {Locale, WhyLatinAmericaContent} from "@/content/types";
 import {Container} from "@/components/ui/Container";
+import {FlowDiagram} from "@/components/visuals/Diagrams";
 import {Emphasis} from "@/components/ui/Emphasis";
 import {Section} from "@/components/ui/Section";
 import {SourceMarkers} from "@/components/ui/SourceMarkers";
@@ -19,7 +20,14 @@ export function Investment({content, locale}: Props) {
     <Section tone="stone">
       <Container>
         <SplitLayout
-          lead={<h2 className="text-display-2 text-balance"><Emphasis text={content.heading} /></h2>}
+          lead={
+            <>
+              <h2 className="text-display-2 text-balance">
+                <Emphasis text={content.heading} />
+              </h2>
+              <FlowDiagram />
+            </>
+          }
         >
           <div>
             {lead ? (

@@ -1,5 +1,6 @@
 import {Fragment} from "react";
 import type {HomeContent, Locale} from "@/content/types";
+import {ExpansionMap} from "@/components/map/ExpansionMap";
 import {Container} from "@/components/ui/Container";
 import {Emphasis} from "@/components/ui/Emphasis";
 import {Prose} from "@/components/ui/Prose";
@@ -39,15 +40,20 @@ export function Region({content, locale}: Props) {
       <Container>
         <SplitLayout
           lead={
-            <h2 className="text-display-2 text-balance">
-              <Emphasis text={content.heading} />
-            </h2>
+            <>
+              <h2 className="text-display-2 text-balance">
+                <Emphasis text={content.heading} />
+              </h2>
+              <ExpansionMap className="mx-auto mt-[clamp(2rem,4vw,3.5rem)] max-w-[34rem] lg:mx-0" />
+            </>
           }
+          reveal={false}
         >
-          <Prose locale={locale} paragraphs={content.paragraphs} />
-        </SplitLayout>
+          <div data-m="reveal">
+            <Prose locale={locale} paragraphs={content.paragraphs} />
+          </div>
 
-        <div className="mt-[clamp(3rem,6vw,5rem)]">
+        <div className="mt-[clamp(2.5rem,5vw,4rem)]">
           {/*
             The figures are rendered verbatim. Each group sits under its own
             hairline and is an inline-block, so lines break between figures,
@@ -55,7 +61,7 @@ export function Region({content, locale}: Props) {
             [D1, D2] identifiers: one per figure, listed under them.
           */}
           <p
-            className="grid gap-x-8 gap-y-6 font-serif text-stat sm:grid-cols-2"
+            className="grid gap-x-8 gap-y-8 font-serif text-stat"
             data-m="stats"
           >
             {groups.map((group, index) => (
@@ -114,6 +120,7 @@ export function Region({content, locale}: Props) {
             </TextLink>
           </div>
         </div>
+        </SplitLayout>
       </Container>
     </Section>
   );

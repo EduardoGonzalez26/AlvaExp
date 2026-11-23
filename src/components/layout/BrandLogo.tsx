@@ -19,7 +19,8 @@ const LOGO_SOURCES = {
 const LOGO_SIZES = {
   default: "h-7",
   large: "h-8",
-  xl: "h-10 sm:h-12"
+  xl: "h-10 sm:h-12",
+  watermark: "h-[22vw] max-h-72"
 } as const;
 
 const LOGO_WIDTH = 348;

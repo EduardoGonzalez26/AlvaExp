@@ -13,6 +13,8 @@
  * bottom (blue on top, green below). It shapes gradient surfaces, hover and
  * focus states (see .fill-down) and the footer.
  */
+@custom-variant scrolled (html[data-scrolled] &);
+
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -174,6 +176,12 @@
     /* Keeps focused elements and anchor targets clear of the sticky header
        (WCAG 2.4.11). */
     scroll-padding-top: calc(var(--spacing-header) + 1.5rem);
+    /* Page scrollbar hidden (scrolling still works: wheel, touch, keys). */
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
   }
 
   @media (min-width: 64rem) {
@@ -329,6 +337,27 @@
     .fill-down:hover::before {
       clip-path: inset(0 0 0 0);
     }
+  }
+
+  /*
+   * Header: a full-width, square bar while the page is at the very top; once
+   * the page scrolls (html[data-scrolled], set by HeaderScrollState) it
+   * becomes a floating, rounded capsule. Both states keep the same total
+   * height, so nothing below moves.
+   */
+  .header-bar {
+    max-width: 100%;
+    transition:
+      max-width var(--duration-fill) var(--ease-brand),
+      border-radius var(--duration-fill) var(--ease-brand),
+      border-color var(--duration-fill) var(--ease-brand),
+      padding var(--duration-fill) var(--ease-brand),
+      min-height var(--duration-fill) var(--ease-brand);
+  }
+
+  html[data-scrolled] .header-bar {
+    max-width: min(72rem, 100% - 2 * var(--spacing-gutter));
+    border-color: color-mix(in srgb, var(--color-alva-blue) 22%, transparent);
   }
 
   /*

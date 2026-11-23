@@ -1,4 +1,5 @@
 import type {Locale, WhyLatinAmericaContent} from "@/content/types";
+import {ExpansionMap} from "@/components/map/ExpansionMap";
 import {Container} from "@/components/ui/Container";
 import {Emphasis} from "@/components/ui/Emphasis";
 import {Section} from "@/components/ui/Section";
@@ -19,7 +20,14 @@ export function RegionScale({content, locale}: Props) {
     <Section shapes tone="gradient">
       <Container>
         <SplitLayout
-          lead={<h2 className="text-display-2 text-balance"><Emphasis text={content.heading} /></h2>}
+          lead={
+            <>
+              <h2 className="text-display-2 text-balance">
+                <Emphasis text={content.heading} />
+              </h2>
+              <ExpansionMap className="mx-auto mt-[clamp(2rem,4vw,3.5rem)] max-w-[34rem] lg:mx-0" />
+            </>
+          }
         >
           <div>
             {lead ? (
