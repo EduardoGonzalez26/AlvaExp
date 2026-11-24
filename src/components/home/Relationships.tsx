@@ -20,7 +20,7 @@ export function Relationships({content}: Props) {
               <h2 className="text-display-2 text-balance">
                 <Emphasis text={content.heading} />
               </h2>
-              <NetworkDiagram />
+              <NetworkDiagram dense slow />
             </>
           }
           reveal={false}

@@ -452,9 +452,13 @@ export function expansionMap() {
   all('main [data-m="map"]').forEach((map) => {
     const routes = all<HTMLElement>('[data-m="route"]', map);
     const hubs = all<HTMLElement>('[data-m="hub"]', map);
+    const flows = all<HTMLElement>('[data-m="flow"]', map);
+    const pulses = all<HTMLElement>('[data-m="hub-pulse"]', map);
 
     gsap.set(routes, {strokeDasharray: 1, strokeDashoffset: 1});
     gsap.set(hubs, {scale: 0, transformOrigin: "50% 50%", transformBox: "fill-box"});
+    gsap.set(flows, {opacity: 0});
+    gsap.set(pulses, {opacity: 0});
 
     const timeline = gsap.timeline({
       defaults: {ease: "none"},
@@ -474,7 +478,15 @@ export function expansionMap() {
         {scale: 1, duration: 0.25, ease: EASE},
         at + 0.85
       );
+      timeline.to(
+        pulses.slice(index, index + 1),
+        {opacity: 1, duration: 0.3, ease: EASE},
+        at + 1
+      );
     });
+
+    // Once the arcs are drawn, the flow of dashes fades in.
+    timeline.to(flows, {opacity: 1, duration: 0.6, stagger: 0.05}, ">");
   });
 }
 
@@ -518,6 +530,11 @@ export function diagrams() {
       },
       0.35
     );
+
+    // A larger diagram takes its time: better seen, never slow to read past.
+    if (diagram.hasAttribute("data-m-slow")) {
+      timeline.timeScale(0.7);
+    }
   });
 }
 

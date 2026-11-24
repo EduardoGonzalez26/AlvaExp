@@ -83,5 +83,19 @@
     "D2": "Banco Mundial, PIB",
     "D3": "CEPAL, informe de inversión extranjera directa",
     "D11": "Banco Mundial, usuarios de internet"
+  },
+  "Map": {
+    "nyc": "Nueva York",
+    "mia": "Miami",
+    "lax": "Los Ángeles",
+    "hou": "Houston",
+    "cdmx": "Ciudad de México",
+    "bog": "Bogotá",
+    "lim": "Lima",
+    "sao": "São Paulo",
+    "scl": "Santiago",
+    "bue": "Buenos Aires",
+    "route": "{from} → {to}",
+    "hint": "Pasa el cursor sobre una ruta"
   }
 }

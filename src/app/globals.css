@@ -544,6 +544,54 @@
   }
 
   /*
+   * Expansion map (see MapCanvas): a slow flow of dashes travels along each
+   * route once it has been drawn, and destination hubs emit a quiet pulse.
+   * Both are decoration; with reduced motion they stay still (the flow is
+   * hidden, the pulse off).
+   */
+  .map-flow {
+    stroke-dasharray: 0.02 0.12;
+    opacity: 0;
+    animation: map-flow 3.4s linear infinite;
+  }
+
+  @keyframes map-flow {
+    to {
+      stroke-dashoffset: -1;
+    }
+  }
+
+  .map-pulse {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: map-pulse 4.2s ease-out infinite;
+  }
+
+  @keyframes map-pulse {
+    0% {
+      opacity: 0.55;
+      transform: scale(0.55);
+    }
+
+    70%,
+    100% {
+      opacity: 0;
+      transform: scale(2);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .map-flow {
+      display: none;
+    }
+
+    .map-pulse {
+      animation: none;
+    }
+  }
+
+  /*
    * Conversational contact dialog (see ConversationDialog). A native modal
    * <dialog>: paper panel, rounded on desktop and full screen on small
    * screens; the page behind does not scroll. Each question slides in from

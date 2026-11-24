@@ -25,7 +25,7 @@ export function RegionScale({content, locale}: Props) {
               <h2 className="text-display-2 text-balance">
                 <Emphasis text={content.heading} />
               </h2>
-              <ExpansionMap className="mx-auto mt-[clamp(2rem,4vw,3.5rem)] max-w-[34rem] lg:mx-0" />
+              <ExpansionMap locale={locale} className="mx-auto mt-[clamp(2rem,4vw,3.5rem)] max-w-[34rem] lg:mx-0" />
             </>
           }
         >

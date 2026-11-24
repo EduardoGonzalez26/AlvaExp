@@ -83,5 +83,19 @@
     "D2": "World Bank, GDP",
     "D3": "ECLAC, foreign direct investment report",
     "D11": "World Bank, internet users"
+  },
+  "Map": {
+    "nyc": "New York",
+    "mia": "Miami",
+    "lax": "Los Angeles",
+    "hou": "Houston",
+    "cdmx": "Mexico City",
+    "bog": "Bogotá",
+    "lim": "Lima",
+    "sao": "São Paulo",
+    "scl": "Santiago",
+    "bue": "Buenos Aires",
+    "route": "{from} → {to}",
+    "hint": "Hover a route"
   }
 }
