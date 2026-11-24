@@ -4,12 +4,17 @@ import {notFound} from "next/navigation";
 import {hasLocale, NextIntlClientProvider} from "next-intl";
 import {getMessages, getTranslations} from "next-intl/server";
 import {BRAND_ASSETS, BRAND_LOCKUP, OG_IMAGE_SIZE} from "@/content/brand";
+import {getPathname} from "@/i18n/navigation";
 import {routing} from "@/i18n/routing";
+import {getSiteContent} from "@/content";
+import {getCountryOptions} from "@/lib/countries";
+import {getTurnstileSiteKey} from "@/lib/contact/site-key";
 import {isSiteIndexable} from "@/lib/indexing";
 import {siteUrl} from "@/lib/site";
 import {SiteFooter} from "@/components/layout/SiteFooter";
 import {SiteHeader} from "@/components/layout/SiteHeader";
 import {RouteLoader} from "@/components/motion/RouteLoader";
+import {ConversationLauncher} from "@/components/conversation/ConversationLauncher";
 import {PageMotion} from "@/components/motion/PageMotion";
 import {SmoothScroll} from "@/components/motion/SmoothScroll";
 import "../globals.css";
@@ -103,7 +108,7 @@ export default async function LocaleLayout({children, params}: Props) {
   }
 
   const t = await getTranslations({locale, namespace: "Ui"});
-  const {Ui} = await getMessages();
+  const {Ui, ContactForm} = await getMessages();
 
   return (
     <html
@@ -114,10 +119,20 @@ export default async function LocaleLayout({children, params}: Props) {
     >
       <body className="bg-alva-paper font-sans text-alva-blue antialiased">
         {/* Only the strings used by Client Components travel to the browser. */}
-        <NextIntlClientProvider messages={{Ui}}>
+        <NextIntlClientProvider messages={{Ui, ContactForm}}>
           <SmoothScroll />
           <PageMotion />
           <RouteLoader />
+          {/* Links to Start a Conversation open the conversational dialog. */}
+          <ConversationLauncher
+            content={getSiteContent(locale).startAConversation.form}
+            countryOptions={getCountryOptions(locale)}
+            locale={locale}
+            paths={routing.locales.map((item) =>
+              getPathname({href: "/start-a-conversation", locale: item})
+            )}
+            turnstileSiteKey={getTurnstileSiteKey()}
+          />
           <a
             className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:bg-alva-blue focus:px-4 focus:py-3 focus:text-ui-sm focus:text-alva-paper"
             href="#main-content"

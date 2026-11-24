@@ -59,6 +59,23 @@
       "unknownField": "Este campo no se pudo procesar.",
       "verificationRequired": "Completa la verificación antes de enviar.",
       "verificationUnavailable": "La verificación no está disponible en este momento. Inténtalo de nuevo más tarde."
+    },
+    "conversation": {
+      "start": "Empezar",
+      "next": "Siguiente",
+      "back": "Atrás",
+      "skip": "Omitir",
+      "optional": "Opcional",
+      "close": "Cerrar",
+      "step": "Paso {current} de {total}",
+      "reviewTitle": "Revisa y envía",
+      "edit": "Editar",
+      "empty": "Sin respuesta",
+      "enterHint": "Pulsa Enter ↵ para continuar",
+      "dialogLabel": "Conversemos",
+      "placeholder": "Escribe tu respuesta",
+      "stepOnly": "Paso {current}",
+      "waiting": "Esperando la verificación…"
     }
   },
   "Sources": {

@@ -33,6 +33,27 @@ declare global {
 const SCRIPT_SRC =
   "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
+/**
+ * Starts loading the Turnstile script ahead of time (for example when a
+ * dialog opens) so the challenge is ready when the widget mounts. Safe to
+ * call repeatedly: it reuses the script already in the document.
+ */
+export function preloadTurnstile(): void {
+  if (typeof window === "undefined" || window.turnstile) {
+    return;
+  }
+
+  if (document.querySelector(`script[src="${SCRIPT_SRC}"]`)) {
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.src = SCRIPT_SRC;
+  script.async = true;
+  script.defer = true;
+  document.head.appendChild(script);
+}
+
 /** Never leave the form waiting forever if the widget script is blocked. */
 const LOAD_TIMEOUT_MS = 10_000;
 
@@ -47,6 +68,8 @@ type Props = {
   resetSignal: number;
   /** Id of the inline error paragraph shown by the form, when present. */
   describedBy?: string;
+  /** Wrapper id; change it when two widgets can coexist (page and dialog). */
+  id?: string;
   invalid?: boolean;
 };
 
@@ -68,6 +91,7 @@ export function TurnstileWidget({
   onTokenChange,
   resetSignal,
   describedBy,
+  id = "contact-turnstile",
   invalid = false
 }: Props) {
   const t = useTranslations("ContactForm");
@@ -211,27 +235,28 @@ export function TurnstileWidget({
       ? "loading"
       : status
     : "unavailable";
-  const messageId = "contact-turnstile-message";
+  const labelId = `${id}-label`;
+  const messageId = `${id}-message`;
   const showMessage =
     effectiveStatus === "unavailable" || effectiveStatus === "error";
 
   return (
     <div
       aria-describedby={cn(showMessage && messageId, describedBy) || undefined}
-      aria-labelledby="contact-turnstile-label"
+      aria-labelledby={labelId}
       className={cn(
         "rounded-lg border p-4",
         invalid
           ? "border-alva-blue bg-alva-mist ring-2 ring-alva-blue"
           : "border-alva-blue bg-alva-paper"
       )}
-      id="contact-turnstile"
+      id={id}
       role="group"
       tabIndex={-1}
     >
       <p
         className="mb-3 font-mono text-eyebrow uppercase"
-        id="contact-turnstile-label"
+        id={labelId}
       >
         {t("verificationLabel")}
       </p>

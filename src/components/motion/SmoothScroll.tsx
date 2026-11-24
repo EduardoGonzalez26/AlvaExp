@@ -119,9 +119,17 @@ export function SmoothScroll() {
       };
 
       document.addEventListener("click", onClick);
+      // A modal dialog scrolls on its own: stop Lenis while it is open.
+      const onDialog = (event: Event) => {
+        const open = (event as CustomEvent<{open: boolean}>).detail?.open;
+        if (open) instance.stop();
+        else instance.start();
+      };
+      window.addEventListener("alva:dialog", onDialog);
 
       cleanup = () => {
         document.removeEventListener("click", onClick);
+        window.removeEventListener("alva:dialog", onDialog);
         instance.off("scroll", onScroll);
         gsap.ticker.remove(onTick);
         gsap.ticker.lagSmoothing(500, 33);

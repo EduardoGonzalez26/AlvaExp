@@ -59,6 +59,23 @@
       "unknownField": "This field could not be processed.",
       "verificationRequired": "Complete the verification before sending.",
       "verificationUnavailable": "Verification is not available right now. Please try again later."
+    },
+    "conversation": {
+      "start": "Start",
+      "next": "Next",
+      "back": "Back",
+      "skip": "Skip",
+      "optional": "Optional",
+      "close": "Close",
+      "step": "Step {current} of {total}",
+      "reviewTitle": "Review and send",
+      "edit": "Edit",
+      "empty": "No answer",
+      "enterHint": "Press Enter ↵ to continue",
+      "dialogLabel": "Start a conversation",
+      "placeholder": "Type your answer",
+      "stepOnly": "Step {current}",
+      "waiting": "Waiting for verification…"
     }
   },
   "Sources": {
