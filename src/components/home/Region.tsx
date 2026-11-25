@@ -36,7 +36,7 @@ export function Region({content, locale}: Props) {
   const perFigure = content.sourceIds.length === groups.length;
 
   return (
-    <Section shapes tone="gradient">
+    <Section shapes shapesId="region" tone="gradient">
       <Container>
         <SplitLayout
           lead={

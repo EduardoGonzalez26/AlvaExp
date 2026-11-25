@@ -10,3 +10,9 @@ build/
 *.tsbuildinfo
 next-env.d.ts
 npm-cache/
+
+# Artefactos de auditoría y herramientas (no van al repo)
+/preview/
+/graphify-out/
+/ALVA lookandfeel/
+--full-page

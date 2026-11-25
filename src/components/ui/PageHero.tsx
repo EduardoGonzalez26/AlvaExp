@@ -13,11 +13,11 @@ type Props = {
 
 /**
  * Opening statement for interior pages, in the style of the deck covers: a
- * blue surface with the hairline lattice and oversized fragments of the mark,
- * the title in serif with an italic closing phrase, and the brand gradient as
- * a strip along the bottom edge. Stacks with the title first on small screens.
- * On load the strip and rule are drawn and the content enters in sequence
- * (see PageMotion).
+ * blue surface with the hairline lattice and the oversized A mark from the
+ * logo (ribbon included), the title in serif with an italic closing phrase,
+ * and the brand gradient as a strip along the bottom edge. Stacks with the
+ * title first on small screens. On load the strip and rule are drawn and the
+ * content enters in sequence (see PageMotion).
  */
 export function PageHero({title, paragraphs, locale}: Props) {
   return (
@@ -27,7 +27,7 @@ export function PageHero({title, paragraphs, locale}: Props) {
       data-surface="dark"
     >
       <Lattice />
-      <BrandShapes className="top-0 right-0 hidden md:block" />
+      <BrandShapes className="top-0 right-0 hidden md:block" markId="page" />
 
       <Container>
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-x-8">

@@ -17,7 +17,7 @@ export function RegionScale({content, locale}: Props) {
   const [lead, ...rest] = content.paragraphs;
 
   return (
-    <Section shapes tone="gradient">
+    <Section shapes shapesId="region-scale" tone="gradient">
       <Container>
         <SplitLayout
           lead={

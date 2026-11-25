@@ -17,8 +17,10 @@ type Props = ComponentPropsWithoutRef<"section"> & {
   padded?: boolean;
   /** Decorative numeric index above the content ("01", "02"...). */
   index?: boolean;
-  /** Oversized "A" fragments on a dark surface. */
+  /** Oversized A mark from the logo (ribbon included) on a dark surface. */
   shapes?: boolean;
+  /** Unique suffix for the shape mask ids. One shape per page section. */
+  shapesId?: string;
   /** Soft letterhead wave on a paper surface. */
   wave?: boolean;
 };
@@ -43,6 +45,7 @@ export function Section({
   padded = true,
   index = true,
   shapes = false,
+  shapesId = "section",
   wave = false,
   className,
   children,
@@ -68,7 +71,7 @@ export function Section({
       {tone === "gradient" ? <GradientCover /> : null}
       {dark ? <Lattice /> : null}
       {dark && shapes ? (
-        <BrandShapes className="top-0 right-0" />
+        <BrandShapes className="top-0 right-0" markId={shapesId} />
       ) : null}
       {!dark && wave ? <BrandWave /> : null}
 

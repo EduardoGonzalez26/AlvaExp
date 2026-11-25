@@ -1,10 +1,11 @@
 import type {HomeContent, Locale} from "@/content/types";
+import {BRAND_DESCRIPTOR} from "@/content/brand";
+import {BrandLogo} from "@/components/layout/BrandLogo";
 import {BrandShapes, Lattice} from "@/components/ui/Backdrop";
 import {ButtonLink} from "@/components/ui/ButtonLink";
 import {Container} from "@/components/ui/Container";
 import {Emphasis} from "@/components/ui/Emphasis";
 import {EnglishTerm} from "@/components/ui/EnglishTerm";
-import {LocalizedText} from "@/components/ui/LocalizedText";
 import {Prose} from "@/components/ui/Prose";
 
 type Props = {
@@ -14,37 +15,46 @@ type Props = {
 
 /**
  * Cover-style hero (brand deck): solid blue with the hairline lattice and
- * oversized fragments of the mark. The brand gradient runs along the bottom
- * edge, and the title closes in italics. On load the strip and rules are drawn
- * and the content enters in sequence (see PageMotion).
+ * the oversized A mark from the logo (ribbon included). The brand gradient
+ * runs along the bottom edge, and the title closes in italics. On load the
+ * strip and rules are drawn and the content enters in sequence (see
+ * PageMotion).
  */
 export function Hero({content, locale}: Props) {
   return (
     <section
-      className="relative isolate overflow-x-clip bg-alva-blue pt-[clamp(3.5rem,8vw,7.5rem)] pb-[clamp(4.5rem,9vw,8rem)] text-alva-paper"
+      className="relative isolate flex min-h-[calc(100svh-var(--spacing-header))] flex-col overflow-x-clip bg-alva-blue pt-[clamp(2.5rem,6svh,5rem)] pb-[clamp(3rem,7svh,5.5rem)] text-alva-paper"
       data-m="hero"
       data-surface="dark"
     >
       <Lattice />
-      <BrandShapes className="top-0 right-0" />
+      <BrandShapes className="top-0 right-0" markId="hero" />
 
-      <Container>
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-x-8">
+      <Container className="flex flex-1 flex-col">
+        <div className="grid flex-1 gap-10 lg:grid-cols-12 lg:gap-x-8">
           <div className="min-w-0 lg:col-span-8 lg:pr-8">
-            <p
-              className="mb-[clamp(1.75rem,3vw,2.75rem)] flex items-center gap-4 font-mono text-eyebrow text-alva-stone"
-              data-m-i="eyebrow"
+            <div
+              className="mb-[clamp(1.5rem,2.5vw,2.25rem)]"
+              data-m-i="lockup"
               data-m-pre=""
             >
-              <span
-                aria-hidden="true"
-                className="h-px w-10 shrink-0 bg-alva-stone"
-                data-m="rule"
+              <p className="flex items-center gap-4 font-mono text-eyebrow text-alva-stone">
+                <span
+                  aria-hidden="true"
+                  className="h-px w-10 shrink-0 bg-alva-stone"
+                  data-m="rule"
+                />
+                <span>
+                  <EnglishTerm locale={locale}>{BRAND_DESCRIPTOR}</EnglishTerm>
+                </span>
+              </p>
+              <BrandLogo
+                className="mt-4 block sm:mt-5"
+                priority
+                size="xl"
+                variant="dark"
               />
-              <span>
-                <LocalizedText locale={locale} text={content.eyebrow} />
-              </span>
-            </p>
+            </div>
             <h1
               className="text-display-1 text-balance"
               data-m-i="title"
@@ -59,9 +69,32 @@ export function Hero({content, locale}: Props) {
             >
               {content.lead}
             </p>
+
+            <div className="mt-[clamp(1.5rem,2.5vw,2rem)] flex w-full max-w-2xl flex-col gap-3 sm:flex-row">
+              <div className="min-w-0 sm:flex-1" data-m-i="cta" data-m-pre="">
+                <ButtonLink
+                  className="w-full"
+                  href={content.primaryCta.href}
+                  size="large"
+                  variant="inverse-accent"
+                >
+                  {content.primaryCta.label}
+                </ButtonLink>
+              </div>
+              <div className="min-w-0 sm:flex-1" data-m-i="cta" data-m-pre="">
+                <ButtonLink
+                  className="w-full"
+                  href={content.secondaryCta.href}
+                  size="large"
+                  variant="outline-inverse"
+                >
+                  {content.secondaryCta.label}
+                </ButtonLink>
+              </div>
+            </div>
           </div>
 
-          <div className="relative min-w-0 pt-6 lg:col-span-4 lg:flex lg:flex-col lg:justify-end lg:pt-8">
+          <div className="relative min-w-0 pt-6 lg:col-span-4 lg:pt-8">
             <span
               aria-hidden="true"
               className="absolute inset-x-0 top-0 h-px bg-alva-stone"
@@ -78,27 +111,6 @@ export function Hero({content, locale}: Props) {
             >
               <EnglishTerm locale={locale}>{content.formula}</EnglishTerm>
             </p>
-
-            <div className="mt-7 flex flex-col gap-3">
-              <div data-m-i="cta" data-m-pre="">
-                <ButtonLink
-                  className="w-full"
-                  href={content.primaryCta.href}
-                  variant="inverse"
-                >
-                  {content.primaryCta.label}
-                </ButtonLink>
-              </div>
-              <div data-m-i="cta" data-m-pre="">
-                <ButtonLink
-                  className="w-full"
-                  href={content.secondaryCta.href}
-                  variant="outline-inverse"
-                >
-                  {content.secondaryCta.label}
-                </ButtonLink>
-              </div>
-            </div>
           </div>
         </div>
       </Container>
