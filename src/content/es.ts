@@ -117,11 +117,12 @@ export const es: SiteContent = {
         "Validar, construir y escalar: cómo se desarrolla la alianza en cinco pasos, qué lidera Alva y qué decidimos juntos."
     },
     hero: {
-      title: "Una alianza construida para avanzar.",
+      title: "Una *alianza*\nconstruida\npara avanzar.",
       paragraphs: [
         "Cada empresa y cada oportunidad de expansión son distintas. Nuestro enfoque da claridad al camino y deja espacio para adaptar el trabajo a la oportunidad.",
         "Validate · Build · Scale conecta la primera conversación con las relaciones, capacidades y ejecución necesarias para desarrollar un negocio en un nuevo mercado. Al final de cada paso revisamos juntos la evidencia y decidimos el siguiente."
-      ]
+      ],
+      phasesLabel: "Las tres fases de la alianza"
     },
     phases: [
       {
@@ -238,10 +239,14 @@ export const es: SiteContent = {
         "Una visión regional y una estrategia para cada mercado: qué puede significar América Latina para tu negocio y cómo convertimos la escala regional en una oportunidad comercial."
     },
     hero: {
-      title: "Una visión regional. Una estrategia para cada mercado.",
+      title: "Una *visión* regional.\nUna estrategia\npara cada mercado.",
       paragraphs: [
         "América Latina ofrece a las empresas la oportunidad de llegar a nuevos clientes, desarrollar relaciones estratégicas y construir nuevas fuentes de crecimiento.",
         "Cada mercado tiene sus propios clientes, canales, prácticas de negocio y condiciones operativas. Esa diversidad pide una estrategia que conecte tu ambición regional con las oportunidades específicas que tu negocio puede atender, ya sea que empieces por un país o mires varios."
+      ],
+      stats: [
+        {value: "667", label: "millones de habitantes"},
+        {value: "US$7.4", label: "billones de PIB"}
       ]
     },
     scale: {
@@ -322,11 +327,12 @@ export const es: SiteContent = {
         "Conoce a las personas detrás de Alva y qué significa aliarse con nosotros: decisiones compartidas, liderazgo local y una relación construida para durar."
     },
     hero: {
-      title: "Construidos para desarrollar negocios juntos.",
+      title: "Construidos para\ndesarrollar\nnegocios *juntos*.",
       paragraphs: [
         "Alva reúne criterio de negocio, perspectiva internacional y ejecución local para ayudar a las empresas a construir y crecer en América Latina.",
         "Creemos que una expansión es más sólida cuando las personas detrás del negocio y quienes lideran el trabajo en el mercado comparten una visión, intercambian perspectivas y toman juntas las decisiones importantes. Así trabajamos."
-      ]
+      ],
+      diagram: {business: "Tu negocio", alva: "Alva en el mercado", shared: "Juntos"}
     },
     together: {
       heading: "Lo que reunimos",

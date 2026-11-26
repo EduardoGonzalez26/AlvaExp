@@ -4,6 +4,7 @@ import {resolveLocale} from "@/lib/locale";
 import {buildPageMetadata} from "@/lib/seo";
 import {Connectivity} from "@/components/why-latin-america/Connectivity";
 import {Examples} from "@/components/why-latin-america/Examples";
+import {HeroStats} from "@/components/why-latin-america/HeroStats";
 import {Investment} from "@/components/why-latin-america/Investment";
 import {MarketMeaning} from "@/components/why-latin-america/MarketMeaning";
 import {RegionScale} from "@/components/why-latin-america/RegionScale";
@@ -35,7 +36,12 @@ export default async function WhyLatinAmericaPage({params}: Props) {
 
   return (
     <>
-      <PageHero locale={locale} paragraphs={content.hero.paragraphs} title={content.hero.title} />
+      <PageHero
+        locale={locale}
+        paragraphs={content.hero.paragraphs}
+        signature={<HeroStats sourceNote={content.scale.sourceNote} stats={content.hero.stats} />}
+        title={content.hero.title}
+      />
       <RegionScale content={content.scale} locale={locale} />
       <MarketMeaning content={content.marketMeaning} />
       <Investment content={content.investment} locale={locale} />

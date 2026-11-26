@@ -25,26 +25,40 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   });
 }
 
-/** Home. Sections follow the brief's order exactly. */
+/**
+ * Home. Sections follow the brief's order exactly. Each one is a face of the
+ * desktop box scroll (see boxScroll in @/lib/motion/animations): the navy
+ * backdrop shows in the wedges the tilted faces open. Without motion the
+ * wrappers are plain blocks and the backdrop stays covered.
+ */
 export default async function HomePage({params}: Props) {
   const locale = resolveLocale((await params).locale);
   const content = getSiteContent(locale).home;
 
+  const sections = [
+    <Hero content={content.hero} key="hero" locale={locale} />,
+    <SharedVision content={content.sharedVision} key="shared-vision" />,
+    <WhyPartner content={content.whyPartner} key="why-partner" />,
+    <Region content={content.region} key="region" locale={locale} />,
+    <Approach content={content.approach} key="approach" locale={locale} />,
+    <Relationships content={content.relationships} key="relationships" />,
+    <Team content={content.team} key="team" locale={locale} />,
+    <CtaPanel
+      body={content.finalCta.body}
+      cta={content.finalCta.cta}
+      heading={content.finalCta.heading}
+      key="cta"
+      locale={locale}
+    />
+  ];
+
   return (
-    <>
-      <Hero content={content.hero} locale={locale} />
-      <SharedVision content={content.sharedVision} />
-      <WhyPartner content={content.whyPartner} />
-      <Region content={content.region} locale={locale} />
-      <Approach content={content.approach} locale={locale} />
-      <Relationships content={content.relationships} />
-      <Team content={content.team} locale={locale} />
-      <CtaPanel
-        body={content.finalCta.body}
-        cta={content.finalCta.cta}
-        heading={content.finalCta.heading}
-        locale={locale}
-      />
-    </>
+    <div className="bg-alva-navy" data-m="box-scroll">
+      {sections.map((section) => (
+        <div data-m="box-face" key={section.key}>
+          {section}
+        </div>
+      ))}
+    </div>
   );
 }

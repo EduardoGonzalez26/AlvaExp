@@ -322,6 +322,284 @@ export function stats() {
   });
 }
 
+/** Delay before the hero signatures play, once the hero content is in. */
+const SIGNATURE_START = 0.5;
+
+/**
+ * How We Work hero track: the progress line runs from dot to dot, pausing
+ * on each one; every dot lights up with a ripple as the line reaches it and
+ * its number, name and summary rise in. The line then runs out to the edge.
+ * Below sm the line is hidden and the phases simply enter in order.
+ */
+function heroTrack(track: HTMLElement) {
+  const line = track.querySelector<HTMLElement>('[data-m="track-line"]');
+  const steps = all('[data-m="track-step"]', track);
+  const timeline = gsap.timeline({delay: SIGNATURE_START});
+  const lineWidth = line?.offsetWidth ?? 0;
+  const drawLine = line !== null && lineWidth > 0;
+  // Seconds between one phase lighting up and the next.
+  const STEP = 0.65;
+
+  if (drawLine) {
+    timeline.set(line, {scaleX: 0, transformOrigin: "0% 50%"}, 0);
+  }
+
+  steps.forEach((step, index) => {
+    const dot = step.querySelector<HTMLElement>('[data-m="track-dot"]');
+    const core = step.querySelector<HTMLElement>('[data-m="track-core"]');
+    const texts = all('[data-m="track-text"]', step);
+    const summary = step.querySelector<HTMLElement>('[data-m="track-summary"]');
+    const at = 0.1 + index * STEP;
+
+    if (drawLine && dot && index > 0) {
+      const centre = dot.getBoundingClientRect().left + dot.offsetWidth / 2;
+      const fraction = (centre - line.getBoundingClientRect().left) / lineWidth;
+
+      timeline.to(
+        line,
+        {scaleX: fraction, duration: STEP, ease: "power1.inOut"},
+        at - STEP
+      );
+    }
+
+    if (dot) {
+      timeline.fromTo(
+        dot,
+        {scale: 0.3, opacity: 0, boxShadow: "0 0 0 0 rgba(134, 176, 160, 0.55)"},
+        {
+          scale: 1,
+          opacity: 1,
+          boxShadow: "0 0 0 16px rgba(134, 176, 160, 0)",
+          duration: 0.7,
+          ease: "back.out(2.2)",
+          clearProps: "transform,opacity,boxShadow"
+        },
+        at
+      );
+    }
+
+    if (core) {
+      timeline.fromTo(
+        core,
+        {scale: 0},
+        {scale: 1, duration: 0.35, ease: "back.out(3)", clearProps: "transform"},
+        at + 0.1
+      );
+    }
+
+    timeline.fromTo(
+      texts,
+      {yPercent: 110},
+      {yPercent: 0, duration: DURATION.base, ease: EASE, stagger: 0.07, clearProps: "transform"},
+      at + 0.05
+    );
+
+    if (summary) {
+      timeline.fromTo(
+        summary,
+        {opacity: 0, y: RISE / 2},
+        {opacity: 1, y: 0, duration: DURATION.base, ease: EASE, clearProps: CLEAR},
+        at + 0.2
+      );
+    }
+  });
+
+  if (drawLine) {
+    timeline.to(
+      line,
+      {scaleX: 1, duration: 0.8, ease: "power2.out", clearProps: "transform,transformOrigin"},
+      0.1 + (steps.length - 1) * STEP + 0.1
+    );
+  }
+}
+
+/**
+ * Counts a figure up from zero, keeping prefix, suffix, decimals and decimal
+ * separator of the published value. data-value holds the published figure so
+ * a rebuild halfway through (breakpoint change) never keeps a partial number.
+ */
+function countUp(element: HTMLElement, delay: number) {
+  const final = element.dataset.value ?? element.textContent ?? "";
+  const match = /^(\D*)(\d+(?:[.,]\d+)?)(.*)$/.exec(final);
+
+  element.textContent = final;
+
+  if (!match) {
+    return;
+  }
+
+  const [, prefix = "", number = "0", suffix = ""] = match;
+  const separator = number.includes(",") ? "," : ".";
+  const decimals = number.split(/[.,]/)[1]?.length ?? 0;
+  const target = Number.parseFloat(number.replace(",", "."));
+  const counter = {value: 0};
+  const format = (value: number) =>
+    prefix + value.toFixed(decimals).replace(".", separator) + suffix;
+
+  // Hold the final width so the layout does not shift while counting.
+  element.style.minWidth = `${element.getBoundingClientRect().width}px`;
+  element.textContent = format(0);
+
+  gsap.to(counter, {
+    value: target,
+    duration: 2,
+    ease: "expo.out",
+    delay,
+    onUpdate: () => {
+      element.textContent = format(counter.value);
+    },
+    onComplete: () => {
+      element.textContent = final;
+      element.style.minWidth = "";
+    }
+  });
+}
+
+/**
+ * Why Latin America hero figures: the rule is drawn, each figure rises out
+ * of its mask while it counts up, then the labels and the source appear.
+ */
+function heroStats(section: HTMLElement) {
+  const rule = section.querySelector<HTMLElement>('[data-m="stats-rule"]');
+  const counts = all('[data-m="count"]', section);
+  const labels = all('[data-m="stats-label"]', section);
+  const note = section.querySelector<HTMLElement>('[data-m="stats-note"]');
+  const timeline = gsap.timeline({delay: SIGNATURE_START});
+
+  if (rule) {
+    timeline.fromTo(
+      rule,
+      {scaleX: 0, transformOrigin: "0% 50%"},
+      {scaleX: 1, duration: DURATION.slow, ease: EASE_EXPO, clearProps: "transform,transformOrigin"},
+      0
+    );
+  }
+
+  counts.forEach((count, index) => {
+    const at = 0.2 + index * 0.18;
+
+    timeline.fromTo(
+      count,
+      {yPercent: 100},
+      {yPercent: 0, duration: DURATION.slow, ease: EASE_EXPO, clearProps: "transform"},
+      at
+    );
+    countUp(count, SIGNATURE_START + at);
+  });
+
+  timeline.fromTo(
+    labels,
+    {opacity: 0, y: RISE / 2},
+    {opacity: 1, y: 0, duration: DURATION.base, ease: EASE, stagger: 0.18, clearProps: CLEAR},
+    0.55
+  );
+
+  if (note) {
+    timeline.fromTo(
+      note,
+      {opacity: 0},
+      {opacity: 1, duration: DURATION.base, ease: EASE, clearProps: "opacity"},
+      1
+    );
+  }
+}
+
+/**
+ * About hero diagram: each circle is drawn from its outer side while both
+ * travel in from the edges; when they overlap the shared space fills with
+ * the gradient and pulses once, the shared word rises from its mask and the
+ * labels settle beside their circles.
+ */
+function heroVenn(venn: HTMLElement) {
+  const left = venn.querySelector('[data-m="venn-a"]');
+  const right = venn.querySelector('[data-m="venn-b"]');
+  const strokes = venn.querySelectorAll('[data-m="venn-stroke"]');
+  const shared = venn.querySelector('[data-m="venn-x"]');
+  const caption = venn.querySelector('[data-m="venn-caption"]');
+  const [first, second] = all('[data-m="venn-label"]', venn);
+  // In viewBox units: far enough apart that the circles do not touch.
+  const gap = 34;
+  const travel = 1.5;
+
+  const timeline = gsap
+    .timeline({delay: SIGNATURE_START})
+    .fromTo(
+      strokes,
+      // Dashed only while drawing: a resting dash leaves a seam on the circle.
+      {strokeDasharray: "1 1", strokeDashoffset: 1},
+      {
+        strokeDashoffset: 0,
+        duration: 1.1,
+        ease: "power2.inOut",
+        clearProps: "strokeDasharray,strokeDashoffset"
+      },
+      0
+    )
+    .fromTo(left, {x: -gap}, {x: 0, duration: travel, ease: "power3.inOut"}, 0)
+    .fromTo(right, {x: gap}, {x: 0, duration: travel, ease: "power3.inOut"}, 0)
+    // Scaled from the centre of the overlap (viewBox 100,50), not the
+    // circle's own box, which the clip would leave off-centre.
+    .fromTo(
+      shared,
+      {opacity: 0, scale: 0.4, svgOrigin: "100 50"},
+      {opacity: 1, scale: 1.08, duration: 0.55, ease: "power3.out"},
+      travel - 0.25
+    )
+    .to(shared, {scale: 1, duration: 0.7, ease: "elastic.out(1, 0.5)"}, ">")
+    .fromTo(
+      caption,
+      {yPercent: 110},
+      {yPercent: 0, duration: DURATION.base, ease: EASE, clearProps: "transform"},
+      travel - 0.05
+    );
+
+  if (first) {
+    timeline.fromTo(
+      first,
+      {opacity: 0, x: 24},
+      {opacity: 1, x: 0, duration: DURATION.base, ease: EASE, clearProps: CLEAR},
+      travel
+    );
+  }
+
+  if (second) {
+    timeline.fromTo(
+      second,
+      {opacity: 0, x: -24},
+      {opacity: 1, x: 0, duration: DURATION.base, ease: EASE, clearProps: CLEAR},
+      travel + 0.1
+    );
+  }
+}
+
+/**
+ * PageHero signatures, played once on load after the hero content enters.
+ * The markup already holds the final state, so with reduced motion (nothing
+ * runs) or without JavaScript every signature is simply shown complete.
+ */
+export function heroSignature() {
+  const section = all('[data-m="hero"]')[0];
+
+  if (!section) {
+    return;
+  }
+
+  const track = section.querySelector<HTMLElement>('[data-m="track"]');
+  const venn = section.querySelector<HTMLElement>('[data-m="venn"]');
+
+  if (track) {
+    heroTrack(track);
+  }
+
+  if (section.querySelector('[data-m="count"]')) {
+    heroStats(section);
+  }
+
+  if (venn) {
+    heroVenn(venn);
+  }
+}
+
 /**
  * Home approach: the blue to green line is drawn as you scroll (left to right
  * on desktop, top to bottom on small screens) and each stage dot switches on
@@ -563,6 +841,133 @@ export function surfaces(desktop: boolean) {
       }
     );
   });
+}
+
+/**
+ * Home box scroll (desktop only): the sections behave as the faces of a box
+ * rolling upwards. At every boundary the outgoing section tilts back on its
+ * bottom edge while the incoming one straightens from its top edge; both
+ * hinge on the shared edge, so the corner between them stays rigid (the two
+ * angles always differ by ANGLE). The viewer sits at the centre of the
+ * viewport: the container's perspective-origin follows the scroll.
+ *
+ * Each face is a wrapper (incoming tilt, hinged at its top) around the
+ * section (outgoing tilt, hinged at its bottom), so a section shorter than
+ * the viewport can do both at once. Rotations are computed from layout
+ * offsets, not from ScrollTrigger tweens, and are zeroed on every refresh so
+ * the other triggers on the page always measure the flat layout.
+ *
+ * Returns a cleanup for the refresh listeners; the inline styles are
+ * recorded by the matchMedia context and reverted with it.
+ */
+export function boxScroll() {
+  const box = all('main [data-m="box-scroll"]')[0];
+
+  if (!box) {
+    return undefined;
+  }
+
+  const ANGLE = 40;
+  const faces = all(':scope > [data-m="box-face"]', box).map((face) => ({
+    face,
+    inner: face.firstElementChild as HTMLElement | null,
+    top: 0,
+    height: 0
+  }));
+  let boxTop = 0;
+
+  const docTop = (element: HTMLElement) => {
+    let top = 0;
+    let node: HTMLElement | null = element;
+
+    while (node) {
+      top += node.offsetTop;
+      node = node.offsetParent as HTMLElement | null;
+    }
+
+    return top;
+  };
+
+  gsap.set(box, {perspective: 1600});
+  faces.forEach(({face, inner}) => {
+    gsap.set(face, {transformStyle: "preserve-3d", transformOrigin: "50% 0%"});
+
+    if (inner) {
+      gsap.set(inner, {transformOrigin: "50% 100%"});
+    }
+  });
+
+  const setters = faces.map(({face, inner}) => ({
+    face: gsap.quickSetter(face, "rotationX", "deg"),
+    inner: inner ? gsap.quickSetter(inner, "rotationX", "deg") : null
+  }));
+
+  const measure = () => {
+    boxTop = docTop(box);
+    faces.forEach((item) => {
+      item.top = docTop(item.face);
+      item.height = item.face.offsetHeight;
+    });
+  };
+
+  const clamp = (value: number) => Math.min(1, Math.max(0, value));
+
+  const update = () => {
+    const y = window.scrollY;
+    const viewport = window.innerHeight;
+
+    box.style.perspectiveOrigin = `50% ${y - boxTop + viewport / 2}px`;
+
+    faces.forEach(({top, height}, index) => {
+      const setter = setters[index];
+
+      if (!setter) {
+        return;
+      }
+
+      // Incoming: flat once its top edge reaches the top of the viewport.
+      if (index > 0) {
+        const entered = clamp((y - (top - viewport)) / viewport);
+        setter.face(-ANGLE * (1 - entered));
+      }
+
+      // Outgoing: fully tilted once its bottom edge reaches the top.
+      if (index < faces.length - 1 && setter.inner) {
+        const left = clamp((y - (top + height - viewport)) / viewport);
+        setter.inner(ANGLE * left);
+      }
+    });
+  };
+
+  const flatten = () => {
+    setters.forEach((setter) => {
+      setter.face(0);
+      setter.inner?.(0);
+    });
+  };
+
+  const onRefresh = () => {
+    measure();
+    update();
+  };
+
+  ScrollTrigger.addEventListener("refreshInit", flatten);
+  ScrollTrigger.addEventListener("refresh", onRefresh);
+  ScrollTrigger.create({
+    trigger: box,
+    start: "top bottom",
+    end: "bottom top",
+    // Refreshed last, so it never re-tilts a face while others measure.
+    refreshPriority: -100,
+    onUpdate: update
+  });
+
+  onRefresh();
+
+  return () => {
+    ScrollTrigger.removeEventListener("refreshInit", flatten);
+    ScrollTrigger.removeEventListener("refresh", onRefresh);
+  };
 }
 
 /** Footer: logo and columns settle in as the footer comes into view. */

@@ -117,11 +117,12 @@ export const en: SiteContent = {
         "Validate, build and scale: how the partnership develops in five steps, what Alva leads and what we decide together."
     },
     hero: {
-      title: "A partnership built to move forward.",
+      title: "A *partnership* built\nto move forward.",
       paragraphs: [
         "Every business and every expansion opportunity is different. Our approach brings clarity to the journey while leaving room to shape the work around the opportunity.",
         "Validate · Build · Scale connects the first conversation to the relationships, capabilities and execution needed to develop a business in a new market. At the end of each step, we review the evidence together and decide the next one."
-      ]
+      ],
+      phasesLabel: "The three phases of the partnership"
     },
     phases: [
       {
@@ -238,10 +239,14 @@ export const en: SiteContent = {
         "One regional vision and a strategy built for each market: what Latin America can mean for your business and how we turn regional scale into a commercial opportunity."
     },
     hero: {
-      title: "One regional vision. A strategy built for each market.",
+      title: "One regional *vision*.\nA strategy built\nfor each market.",
       paragraphs: [
         "Latin America offers companies the opportunity to reach new customers, develop strategic relationships and build new sources of growth.",
         "Each market has its own customers, channels, business practices and operating conditions. That diversity calls for a strategy that connects your regional ambition to the specific opportunities your business can serve, whether you begin with one country or look at several."
+      ],
+      stats: [
+        {value: "667M", label: "people"},
+        {value: "US$7.4T", label: "economy"}
       ]
     },
     scale: {
@@ -323,11 +328,12 @@ export const en: SiteContent = {
         "Meet the people behind Alva and what partnering with us means: shared decisions, local leadership and a relationship built to last."
     },
     hero: {
-      title: "Built to develop business together.",
+      title: "Built to develop\nbusiness *together*.",
       paragraphs: [
         "Alva brings together business judgment, international perspective and local execution to help companies build and grow in Latin America.",
         "We believe an expansion is stronger when the people behind the business and the people leading the work in the market share a vision, exchange perspectives and make the important decisions together. That is how we work."
-      ]
+      ],
+      diagram: {business: "Your business", alva: "Alva in the market", shared: "Together"}
     },
     together: {
       heading: "What we bring together",

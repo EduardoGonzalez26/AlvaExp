@@ -4,6 +4,7 @@ import {resolveLocale} from "@/lib/locale";
 import {buildPageMetadata} from "@/lib/seo";
 import {AboutTeam} from "@/components/about/AboutTeam";
 import {Partnership} from "@/components/about/Partnership";
+import {TogetherDiagram} from "@/components/about/TogetherDiagram";
 import {WhatWeBring} from "@/components/about/WhatWeBring";
 import {ClosingStatement} from "@/components/ui/ClosingStatement";
 import {CtaPanel} from "@/components/ui/CtaPanel";
@@ -30,7 +31,12 @@ export default async function AboutPage({params}: Props) {
 
   return (
     <>
-      <PageHero locale={locale} paragraphs={content.hero.paragraphs} title={content.hero.title} />
+      <PageHero
+        locale={locale}
+        paragraphs={content.hero.paragraphs}
+        signature={<TogetherDiagram {...content.hero.diagram} />}
+        title={content.hero.title}
+      />
       <WhatWeBring content={content.together} />
       <Partnership content={content.partnership} />
       <AboutTeam content={content.team} locale={locale} />

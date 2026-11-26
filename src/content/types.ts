@@ -112,6 +112,8 @@ export type HowWeWorkContent = {
   hero: {
     title: string;
     paragraphs: string[];
+    /** Accessible name of the phase track shown in the hero. */
+    phasesLabel: string;
   };
   phases: PhaseContent[];
   connected: {
@@ -130,6 +132,8 @@ export type WhyLatinAmericaContent = {
   hero: {
     title: string;
     paragraphs: string[];
+    /** Headline figures shown in the hero; sourced as scale.sourceNote. */
+    stats: {value: string; label: string}[];
   };
   scale: {
     heading: string;
@@ -173,6 +177,8 @@ export type AboutContent = {
   hero: {
     title: string;
     paragraphs: string[];
+    /** Two-circle diagram in the hero: your business, Alva, and what they share. */
+    diagram: {business: string; alva: string; shared: string};
   };
   together: {
     heading: string;

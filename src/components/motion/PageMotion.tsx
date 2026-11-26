@@ -3,6 +3,7 @@
 import {usePathname} from "next/navigation";
 import {
   approach,
+  boxScroll,
   surfaces,
   diagrams,
   expansionMap,
@@ -10,6 +11,7 @@ import {
   gradients,
   headings,
   hero,
+  heroSignature,
   indexRules,
   phases,
   releaseAll,
@@ -87,6 +89,7 @@ export function PageMotion() {
       try {
         media = whenMotionAllowed(({desktop}) => {
           hero();
+          heroSignature();
           headings();
           indexRules();
           reveals();
@@ -98,6 +101,8 @@ export function PageMotion() {
           diagrams();
           surfaces(desktop);
           phases();
+          // Last: its trigger must refresh after every other one.
+          const cleanBox = desktop ? boxScroll() : undefined;
 
           // Opening or closing a FAQ item changes the page height.
           let timer = 0;
@@ -114,6 +119,7 @@ export function PageMotion() {
           return () => {
             window.clearTimeout(timer);
             document.removeEventListener("toggle", onToggle, true);
+            cleanBox?.();
           };
         });
       } finally {

@@ -1,6 +1,5 @@
 import type {HomeContent, Locale} from "@/content/types";
 import {BRAND_DESCRIPTOR} from "@/content/brand";
-import {BrandLogo} from "@/components/layout/BrandLogo";
 import {BrandShapes, Lattice} from "@/components/ui/Backdrop";
 import {ButtonLink} from "@/components/ui/ButtonLink";
 import {Container} from "@/components/ui/Container";
@@ -48,12 +47,6 @@ export function Hero({content, locale}: Props) {
                   <EnglishTerm locale={locale}>{BRAND_DESCRIPTOR}</EnglishTerm>
                 </span>
               </p>
-              <BrandLogo
-                className="mt-4 block sm:mt-5"
-                priority
-                size="xl"
-                variant="dark"
-              />
             </div>
             <h1
               className="text-display-1 text-balance"
