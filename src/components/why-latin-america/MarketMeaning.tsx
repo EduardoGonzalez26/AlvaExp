@@ -1,7 +1,8 @@
 import type {WhyLatinAmericaContent} from "@/content/types";
 import {Container} from "@/components/ui/Container";
 import {Emphasis} from "@/components/ui/Emphasis";
-import {ItemGrid} from "@/components/ui/ItemGrid";
+import {CARD_IMAGES} from "@/content/media";
+import {ExpandingCards} from "@/components/ui/ExpandingCards";
 import {Section} from "@/components/ui/Section";
 
 type Props = {
@@ -17,7 +18,7 @@ export function MarketMeaning({content}: Props) {
           <Emphasis text={content.heading} />
         </h2>
 
-        <ItemGrid items={content.items} />
+        <ExpandingCards images={CARD_IMAGES.marketMeaning} items={content.items} />
       </Container>
     </Section>
   );
