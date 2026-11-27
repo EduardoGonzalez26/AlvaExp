@@ -256,6 +256,112 @@ export function NetworkDiagram({
 }
 
 /**
+ * Full-width network for the foot of Home 05: the dense constellation laid
+ * out four times across a 1280 × 260 field, alternately mirrored so the
+ * repetition doesn't read, with long links between the hubs.
+ *
+ * The drawn links are the resting state (and all that shows without
+ * motion). With motion, PageMotion › networkPulse dims them and keeps
+ * drawing and erasing links between random nearby points, using the empty
+ * paths of the `pulse` group.
+ */
+const FIELD = {width: 1280, height: 260, tile: 320} as const;
+const PULSE_PATHS = 14;
+
+function placeTile(index: number) {
+  const mirrorX = index % 2 === 1;
+  const mirrorY = index >= 2;
+  const offset = index * FIELD.tile;
+
+  return (x: number, y: number) =>
+    [offset + (mirrorX ? FIELD.tile - x : x), mirrorY ? FIELD.height - y : y] as const;
+}
+
+/** Moves every "x y" pair of a path to its place in the field. */
+function placePath(d: string, place: ReturnType<typeof placeTile>) {
+  return d.replace(/(-?[\d.]+) (-?[\d.]+)/g, (_, x: string, y: string) =>
+    place(Number(x), Number(y)).map((n) => Number(n.toFixed(1))).join(" ")
+  );
+}
+
+export function NetworkField({className}: {className?: string}) {
+  const id = "alva-network-field";
+  const ink = "var(--color-alva-blue)";
+  const tiles = [0, 1, 2, 3].map(placeTile);
+  const hubs = tiles.map((place) => place(160, 130));
+
+  const nodes = tiles.flatMap((place) =>
+    DENSE_NODES.map((node) => ({...node, at: place(...node.at)}))
+  );
+  const links: LinkSpec[] = [
+    ...tiles.flatMap((place) =>
+      DENSE_LINKS.map((link) => ({...link, d: placePath(link.d, place)}))
+    ),
+    ...hubs.slice(1).map((hub, index) => ({
+      d: curve(hubs[index]!, hub, index % 2 === 0 ? 0.12 : -0.12),
+      opacity: 0.35
+    }))
+  ];
+
+  return (
+    <svg
+      aria-hidden="true"
+      className={cn("pointer-events-none hidden w-full sm:block", className)}
+      data-m="diagram"
+      data-m-field=""
+      fill="none"
+      focusable="false"
+      viewBox={`0 0 ${FIELD.width} ${FIELD.height}`}
+    >
+      <Gradient height={FIELD.height} id={id} tone="light" />
+
+      <g data-m="field-rest" stroke={`url(#${id})`} strokeWidth="1.25">
+        {links.map((link, index) => (
+          <path
+            d={link.d}
+            data-m="draw"
+            key={`${link.d}-${index}`}
+            pathLength={1}
+            strokeOpacity={link.opacity}
+          />
+        ))}
+      </g>
+
+      <g data-m="field-pulse" stroke={`url(#${id})`} strokeLinecap="round" strokeWidth="1.5">
+        {Array.from({length: PULSE_PATHS}, (_, index) => (
+          <path key={index} pathLength={1} />
+        ))}
+      </g>
+
+      {nodes.map(({at, r, soft}) => (
+        <circle
+          cx={at[0]}
+          cy={at[1]}
+          data-m="pop"
+          data-node=""
+          fill={soft ? ink : `url(#${id})`}
+          fillOpacity={soft ? 0.55 : undefined}
+          key={`n-${at[0]}-${at[1]}`}
+          r={r}
+        />
+      ))}
+
+      {/* One main hub (second tile); the others read as secondary hubs. */}
+      {hubs.map(([x, y], index) =>
+        index === 1 ? (
+          <g key={`hub-${x}`}>
+            <circle cx={x} cy={y} data-m="pop" data-node="" fill={ink} r="12" />
+            <circle cx={x} cy={y} r="22" stroke={ink} strokeOpacity="0.4" />
+          </g>
+        ) : (
+          <circle cx={x} cy={y} data-m="pop" data-node="" fill={`url(#${id})`} key={`hub-${x}`} r="7" />
+        )
+      )}
+    </svg>
+  );
+}
+
+/**
  * Flows that come down from above and settle into one point: activity that
  * turns into an opportunity. Drawn from the top down.
  */

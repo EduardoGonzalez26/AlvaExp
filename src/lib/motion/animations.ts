@@ -77,28 +77,6 @@ function riseByLines(
   });
 }
 
-/** Ribbon of the letterhead: drawn from left to right once per visit. */
-export function ribbon() {
-  const element = all('[data-m="ribbon"]')[0];
-
-  if (!element) {
-    return;
-  }
-
-  gsap.fromTo(
-    element,
-    {scaleX: 0, opacity: 1, transformOrigin: "0% 50%"},
-    {
-      scaleX: 1,
-      duration: DURATION.slow,
-      ease: EASE_EXPO,
-      delay: 0.1,
-      clearProps: "opacity,transform,transformOrigin"
-    }
-  );
-  release(element);
-}
-
 /** Hero and PageHero: strip and rules drawn, content in sequence. */
 export function hero() {
   const section = all('[data-m="hero"]')[0];
@@ -792,9 +770,17 @@ export function diagrams() {
       timeline.from(b, {x: 36, duration: DURATION.slow, ease: EASE}, 0);
     }
 
+    // Large diagrams (the Home 05 field) share a fixed total instead.
+    const large = lines.length > 40;
+
     timeline.to(
       lines,
-      {strokeDashoffset: 0, duration: DURATION.slow, ease: EASE_EXPO, stagger: 0.06},
+      {
+        strokeDashoffset: 0,
+        duration: DURATION.slow,
+        ease: EASE_EXPO,
+        stagger: large ? {amount: 2.4} : 0.06
+      },
       0.1
     );
     timeline.to(
@@ -804,7 +790,7 @@ export function diagrams() {
         scale: 1,
         duration: DURATION.fast,
         ease: EASE,
-        stagger: {each: 0.012, from: "start"}
+        stagger: large ? {amount: 1.6} : {each: 0.012, from: "start"}
       },
       0.35
     );
@@ -814,6 +800,140 @@ export function diagrams() {
       timeline.timeScale(0.7);
     }
   });
+}
+
+/**
+ * Home 05 network field: once it has been drawn, the resting links dim and a
+ * handful of links keep appearing and fading between random nearby points,
+ * their two ends pulsing as they connect. Runs only while the field is in
+ * view, and the button next to it pauses it for good (WCAG 2.2.2).
+ *
+ * Returns a cleanup for the button; the tweens are reverted by matchMedia.
+ */
+export function networkPulse() {
+  const field = all('main [data-m-field]')[0];
+  const toggle = all<HTMLButtonElement>('main [data-m="field-toggle"]')[0];
+
+  // Hidden below `sm`: nothing to animate there.
+  if (!field || !toggle || field.getBoundingClientRect().width === 0) {
+    return undefined;
+  }
+
+  const rest = field.querySelector('[data-m="field-rest"]');
+  const paths = all('[data-m="field-pulse"] path', field);
+  const nodes = all("[data-node]", field).map((element) => ({
+    element,
+    x: Number(element.getAttribute("cx")),
+    y: Number(element.getAttribute("cy"))
+  }));
+
+  // Candidate links: points close enough to read as neighbours.
+  const pairs: [number, number][] = [];
+  nodes.forEach((a, i) => {
+    nodes.forEach((b, j) => {
+      const distance = Math.hypot(a.x - b.x, a.y - b.y);
+
+      if (j > i && distance > 40 && distance < 220) {
+        pairs.push([i, j]);
+      }
+    });
+  });
+
+  if (!pairs.length) {
+    return undefined;
+  }
+
+  const random = gsap.utils.random;
+  const master = gsap.timeline({paused: true});
+  let userPaused = false;
+  let inView = false;
+
+  // The resting network steps back once the first draw has finished.
+  if (rest) {
+    master.to(rest, {opacity: 0.35, duration: 1.2, ease: EASE}, 2.4);
+  }
+
+  const cycle = (path: HTMLElement, first: boolean) => {
+    const [i, j] = pairs[Math.floor(random(0, pairs.length - 0.001))]!;
+    const a = nodes[i]!;
+    const b = nodes[j]!;
+    const bend = random(-0.22, 0.22);
+    const cx = (a.x + b.x) / 2 - (b.y - a.y) * bend;
+    const cy = (a.y + b.y) / 2 + (b.x - a.x) * bend;
+
+    path.setAttribute("d", `M${a.x} ${a.y}Q${cx.toFixed(1)} ${cy.toFixed(1)} ${b.x} ${b.y}`);
+
+    const step = gsap.timeline({
+      onComplete: () => {
+        master.remove(step);
+        cycle(path, false);
+      }
+    });
+
+    step
+      .set(path, {strokeDasharray: "1 1", strokeDashoffset: 1}, first ? random(2.6, 5) : random(0.2, 1.6))
+      .to(path, {strokeDashoffset: 0, duration: random(0.8, 1.3), ease: EASE})
+      .to(
+        [a.element, b.element],
+        {scale: 1.6, duration: 0.3, ease: EASE, yoyo: true, repeat: 1, transformOrigin: "50% 50%", transformBox: "fill-box"},
+        "<0.5"
+      )
+      .to(path, {strokeDashoffset: -1, duration: random(0.8, 1.3), ease: EASE}, `+=${random(0.6, 1.8)}`);
+
+    master.add(step, master.time());
+  };
+
+  gsap.set(paths, {strokeDasharray: "1 1", strokeDashoffset: 1});
+  paths.forEach((path) => cycle(path, true));
+
+  const sync = () => {
+    if (inView && !userPaused) {
+      master.play();
+    } else {
+      master.pause();
+    }
+  };
+
+  ScrollTrigger.create({
+    trigger: field,
+    start: "top 85%",
+    end: "bottom top",
+    onToggle: (self) => {
+      inView = self.isActive;
+      sync();
+    }
+  });
+
+  const label = toggle.querySelector(".sr-only");
+  const icons = {
+    pause: toggle.querySelector('[data-icon="pause"]'),
+    play: toggle.querySelector('[data-icon="play"]')
+  };
+
+  const render = () => {
+    if (label) {
+      label.textContent = (userPaused ? toggle.dataset.labelPlay : toggle.dataset.labelPause) ?? "";
+    }
+
+    icons.pause?.classList.toggle("hidden", userPaused);
+    icons.play?.classList.toggle("hidden", !userPaused);
+  };
+
+  const onClick = () => {
+    userPaused = !userPaused;
+    render();
+    sync();
+  };
+
+  toggle.addEventListener("click", onClick);
+  toggle.setAttribute("data-ready", "");
+
+  return () => {
+    toggle.removeEventListener("click", onClick);
+    toggle.removeAttribute("data-ready");
+    userPaused = false;
+    render();
+  };
 }
 
 /**
@@ -845,7 +965,9 @@ export function surfaces(desktop: boolean) {
 
 /**
  * Home box scroll (desktop only): the sections behave as the faces of a box
- * rolling upwards. At every boundary the outgoing section tilts back on its
+ * rolling upwards. Only faces marked data-box-out / data-box-in hinge (the
+ * page decides which boundaries); the rest scroll flat. At each hinged
+ * boundary the outgoing section tilts back on its
  * bottom edge while the incoming one straightens from its top edge; both
  * hinge on the shared edge, so the corner between them stays rigid (the two
  * angles always differ by ANGLE). The viewer sits at the centre of the
@@ -871,6 +993,8 @@ export function boxScroll() {
   const faces = all(':scope > [data-m="box-face"]', box).map((face) => ({
     face,
     inner: face.firstElementChild as HTMLElement | null,
+    tiltIn: face.hasAttribute("data-box-in"),
+    tiltOut: face.hasAttribute("data-box-out"),
     top: 0,
     height: 0
   }));
@@ -918,7 +1042,7 @@ export function boxScroll() {
 
     box.style.perspectiveOrigin = `50% ${y - boxTop + viewport / 2}px`;
 
-    faces.forEach(({top, height}, index) => {
+    faces.forEach(({top, height, tiltIn, tiltOut}, index) => {
       const setter = setters[index];
 
       if (!setter) {
@@ -926,13 +1050,13 @@ export function boxScroll() {
       }
 
       // Incoming: flat once its top edge reaches the top of the viewport.
-      if (index > 0) {
+      if (tiltIn) {
         const entered = clamp((y - (top - viewport)) / viewport);
         setter.face(-ANGLE * (1 - entered));
       }
 
       // Outgoing: fully tilted once its bottom edge reaches the top.
-      if (index < faces.length - 1 && setter.inner) {
+      if (tiltOut && setter.inner) {
         const left = clamp((y - (top + height - viewport)) / viewport);
         setter.inner(ANGLE * left);
       }

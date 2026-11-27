@@ -86,7 +86,8 @@ export const en: SiteContent = {
       paragraphs: [
         "Entering a market takes more than understanding its size. It takes knowing who the customers are, how decisions are made, which relationships matter and how the business will serve the market.",
         "Alva develops those conversations and brings the work together around a shared plan. From prospective buyers and channel partners to local talent and specialized support, we build the relationships and capabilities that turn a market opportunity into a business."
-      ]
+      ],
+      motion: {pause: "Pause animation", play: "Play animation"}
     },
     team: {
       heading: "Meet the people behind Alva",

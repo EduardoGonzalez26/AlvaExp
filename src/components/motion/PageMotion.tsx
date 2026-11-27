@@ -13,10 +13,10 @@ import {
   hero,
   heroSignature,
   indexRules,
+  networkPulse,
   phases,
   releaseAll,
   reveals,
-  ribbon,
   staggers,
   stats
 } from "@/lib/motion/animations";
@@ -58,13 +58,16 @@ function whenMotionAllowed(setup: Setup) {
  * the animations live in @/lib/motion/animations.
  *
  * Two scopes:
- *  - the layout (ribbon and footer): once per layout mount;
+ *  - the layout (footer): once per layout mount;
  *  - the page: rebuilt on every route change, reverting the previous page.
  *
  * The initial states are set inside useGSAP (a layout effect), before the
  * browser paints the hydrated tree. Elements that are visible on first paint
  * are held back by `[data-m-pre]` (see globals.css), which has
  * a short CSS fail-safe, and released here once GSAP owns them.
+ *
+ * The header ribbon is not here: it is hidden on the home page and may mount
+ * after the layout, so TopRibbon runs its own draw-in and undulation.
  */
 export function PageMotion() {
   const pathname = usePathname();
@@ -72,7 +75,6 @@ export function PageMotion() {
   useGSAP(
     () => {
       const media = whenMotionAllowed(() => {
-        ribbon();
         gradients("footer");
         footer();
       });
@@ -99,6 +101,7 @@ export function PageMotion() {
           stats();
           expansionMap();
           diagrams();
+          const cleanPulse = networkPulse();
           surfaces(desktop);
           phases();
           // Last: its trigger must refresh after every other one.
@@ -120,6 +123,7 @@ export function PageMotion() {
             window.clearTimeout(timer);
             document.removeEventListener("toggle", onToggle, true);
             cleanBox?.();
+            cleanPulse?.();
           };
         });
       } finally {

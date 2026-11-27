@@ -74,6 +74,8 @@ export type HomeContent = {
   relationships: {
     heading: string;
     paragraphs: string[];
+    /** Labels of the button that pauses the network animation. */
+    motion: {pause: string; play: string};
   };
   team: {
     heading: string;

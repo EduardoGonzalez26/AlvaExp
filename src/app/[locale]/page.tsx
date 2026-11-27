@@ -26,8 +26,8 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 }
 
 /**
- * Home. Sections follow the brief's order exactly. Each one is a face of the
- * desktop box scroll (see boxScroll in @/lib/motion/animations): the navy
+ * Home. Sections follow the brief's order exactly. They are grouped into the
+ * faces of the desktop box scroll (see boxScroll in @/lib/motion/animations): the navy
  * backdrop shows in the wedges the tilted faces open. Without motion the
  * wrappers are plain blocks and the backdrop stays covered.
  */
@@ -52,11 +52,31 @@ export default async function HomePage({params}: Props) {
     />
   ];
 
+  // Sections that tilt away into the next one. Sections between two hinges
+  // share one face, so they turn together as a single side of the box while
+  // staying separate sections.
+  const hinges = new Set(["hero", "why-partner", "region", "team"]);
+  const faces: (typeof sections)[] = [[]];
+
+  sections.forEach((section, index) => {
+    faces[faces.length - 1]!.push(section);
+
+    if (index < sections.length - 1 && hinges.has(String(section.key))) {
+      faces.push([]);
+    }
+  });
+
   return (
     <div className="bg-alva-navy" data-m="box-scroll">
-      {sections.map((section) => (
-        <div data-m="box-face" key={section.key}>
-          {section}
+      {faces.map((group, index) => (
+        <div
+          data-box-in={index > 0 ? "" : undefined}
+          data-box-out={index < faces.length - 1 ? "" : undefined}
+          data-m="box-face"
+          key={String(group[0]!.key)}
+        >
+          {/* Hinge of the outgoing tilt (see boxScroll). */}
+          <div>{group}</div>
         </div>
       ))}
     </div>

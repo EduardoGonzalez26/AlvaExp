@@ -86,7 +86,8 @@ export const es: SiteContent = {
       paragraphs: [
         "Entrar a un mercado requiere más que entender su tamaño. Requiere saber quiénes son los clientes, cómo se toman las decisiones, qué relaciones importan y cómo se atenderá al mercado.",
         "Alva desarrolla esas conversaciones y reúne el trabajo alrededor de un plan compartido. Desde posibles compradores y aliados de canal hasta talento local y apoyo especializado, construimos las relaciones y capacidades que convierten una oportunidad de mercado en un negocio."
-      ]
+      ],
+      motion: {pause: "Pausar animación", play: "Reanudar animación"}
     },
     team: {
       heading: "Conoce a las personas detrás de Alva",
